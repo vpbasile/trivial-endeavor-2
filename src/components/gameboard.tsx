@@ -9,9 +9,13 @@ import AppRow from "./structure/appRow";
 import PlayerColumn from "./scoreboard/PlayerColumn";
 import DataDisplay from "./DataDisplay";
 
+export type zzColor = string
+
 export default function GameBoard() {
 
+
     const [displayMessage, SETdisplayMessage] = useState("Welcome! How many players?")
+    // const [messageColor, SETmessageColor] = useState<zzColor>("blue")
     // <><><> What's happening
     const [whatsHappening, setwhatsHappening] = useState<whatsHappeningHolder>({ currentPhase: gamePhases[0], currentPlayerIndex: 0 });
     const blankQuestion: questionInternal = { questionText: null, choices: ["", "", "", ""], correctAnswer: null, correctIndex: 0, categoryTag: categoryList[0].queryTag, guessEntered: 0 };
@@ -31,8 +35,7 @@ export default function GameBoard() {
     }
 
     // FIXME - Centralize where I control which components are displayed.
-    function whatToDisplay(phaseTitle: string, currentPlayerIndex: number) {
-        const currentPlayer: player = scoreState[currentPlayerIndex]
+    function whatToDisplay(phaseTitle: string) {
         switch (phaseTitle) {
             case "Welcome": {
                 return (<AppRow id="setup">
@@ -96,8 +99,8 @@ export default function GameBoard() {
 
     return (<ErrorBoundary fallback={<Box>Error in component</Box>}>
 
-        <Heading id='displayMessage' as='h2'>{displayMessage}</Heading>
-        {whatToDisplay(whatsHappening.currentPhase.title, whatsHappening.currentPlayerIndex)}
+        <Heading id='displayMessage' as='h2' m={2} p={8} border={'2px'}>{displayMessage}</Heading>
+        {whatToDisplay(whatsHappening.currentPhase.title)}
         {<Center id="controls" >
             < ErrorBoundary fallback={<Box>Error in component</Box>}>
                 <DataDisplay

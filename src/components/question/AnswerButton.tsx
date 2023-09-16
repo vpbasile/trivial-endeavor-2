@@ -12,8 +12,9 @@ type AnswerButtonProps = {
 	// <><><> Game Globals
 	// <><><> Button-specific Globals
 	text: string,
-	disabled: boolean,
+	isDisabled: boolean,
 	handleGuess: (buttonIndex: number, currentPlayerIndex: number, questionCategoryTag: string) => void,
+	isCorrectChoice: boolean,
 }
 
 export default function AnswerButton(props: AnswerButtonProps) {
@@ -32,14 +33,20 @@ export default function AnswerButton(props: AnswerButtonProps) {
 	// <><><> Derivative values
 	const currentPlayerIndex = whatsHappening.currentPlayerIndex;
 	const questionCategoryTag = currentQuestion.categoryTag;
+	const isDisabled = props.isDisabled
 
 	const buttonID = `choice-${buttonIndex}`;
 
+	let color = "gray"
+	if(guessedYet){
+		if(props.isCorrectChoice){ color = "green"
+		} else color = "red"
+	}
 
 	return (
 		<Box>
-			<Button id={buttonID} w="100%" m="2"
-				disabled={guessedYet}
+			<Button colorScheme={color} id={buttonID} w="100%" m="2"
+				isDisabled={isDisabled}
 				onClick={() => { setguessedYet(true); handleGuess(buttonIndex, currentPlayerIndex, questionCategoryTag) }} >
 				{buttonText}
 			</Button>

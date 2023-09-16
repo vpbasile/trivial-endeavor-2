@@ -7,6 +7,7 @@ import { Dispatch } from "react";
 import { category, choices, phaseDefinition, player, questionInternal, whatsHappeningHolder, winners } from "../helpers/dataStructures";
 import { CheckCircleIcon } from "@chakra-ui/icons";
 import { Button } from "@chakra-ui/react";
+import { zzColor } from "../gameboard";
 
 type CategoryButtonProps = {
 	key: string,
@@ -18,6 +19,7 @@ type CategoryButtonProps = {
 	scoreState: player[],
 	guessedYet: boolean, setguessedYet: Dispatch<boolean>,
 	displayMessage: string; SETdisplayMessage: Dispatch<string>;
+	messageColor: zzColor; SETmessageColor: Dispatch<zzColor>;
 	// <><><> Winning
 	vyingForPlace: winners;
 	// <><><> Game Globals
@@ -36,7 +38,8 @@ export default function CategoryButton(props: CategoryButtonProps) {
 	const whatsHappening = props.whatsHappening, setwhatsHappening = props.setwhatsHappening;
 	const setCurrentQuestion = props.setCurrentQuestion;
 	const setguessedYet = props.setguessedYet;
-	const displayMessage = props.displayMessage; const SETdisplayMessage = props.SETdisplayMessage;
+ const SETdisplayMessage = props.SETdisplayMessage;
+ const SETmessageColor=props.SETmessageColor
 	// <><><> Winning
 	// const vyingForPlace = props.vyingForPlace;
 	// <><><> Game Globals
@@ -84,7 +87,7 @@ export default function CategoryButton(props: CategoryButtonProps) {
 		// else {
 		// Query the API for a new question and parse it	
 		fetch(url).then(response => response.json())
-			.then(data => { parseReceivedQuestion(data[0]) })
+			.then(data => { parseReceivedQuestion(data[0]); })
 			.catch(error => { console.log(error); });
 		// }
 	}
@@ -154,6 +157,8 @@ export default function CategoryButton(props: CategoryButtonProps) {
 		}
 		// Update the game state with the new question
 		setCurrentQuestion(questionObject);
+		SETdisplayMessage(categoryName);
+		SETmessageColor(category[0].color)
 	}
 
 	function shuffleArray(array: string[]): string[] {
@@ -184,9 +189,9 @@ export default function CategoryButton(props: CategoryButtonProps) {
 	const hasWon = player.wonPlace;
 	if (hasWon) {
 		switch (hasWon) {
-			case 1: return (<Button key={buttonKey} isDisabled={true} colorScheme="yellow">1st place!</Button>);
-			case 2: return (<Button key={buttonKey} isDisabled={true} colorScheme="cyan">2nd place!</Button>);
-			case 3: return (<Button key={buttonKey} isDisabled={true} colorScheme="orange">3rd place!</Button>);
+			case 1: return (<Button key={buttonKey} isDisabled={true} colorScheme="yellow">First place!</Button>);
+			case 2: return (<Button key={buttonKey} isDisabled={true} colorScheme="cyan">Second place!</Button>);
+			case 3: return (<Button key={buttonKey} isDisabled={true} colorScheme="orange">Third place!</Button>);
 		}
 	}
 	// If the player has already completed this category, show the category as completed, regardless of whether it that player's turn or not

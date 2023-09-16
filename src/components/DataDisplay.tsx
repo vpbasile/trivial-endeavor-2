@@ -1,5 +1,5 @@
 import { player, whatsHappeningHolder } from "./helpers/dataStructures"
-import { Box, Button, Center, Checkbox, Stack } from "@chakra-ui/react";
+import { Box, Button, Stack } from "@chakra-ui/react";
 import ColorModeButton from "./colorModeButton";
 
 type DataDisplayProps = {

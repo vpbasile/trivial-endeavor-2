@@ -2,7 +2,7 @@ import { Dispatch } from 'react';
 import { phaseDefinition, player, whatsHappeningHolder } from './helpers/dataStructures';
 import { Text, Stack, ListItem, List, ListIcon, Button, Center } from '@chakra-ui/react';
 import { AddIcon, CheckIcon, MinusIcon, QuestionOutlineIcon } from '@chakra-ui/icons';
-import { namesToUse } from './helpers/settings';
+import { namesToUse, players } from './helpers/settings';
 
 // FIXME are all the propsTypes similar? Should they be standardized or customized?
 
@@ -71,7 +71,6 @@ export default function GameSetup(props: propsType) {
 			onClick={() => {
 				console.log("Begin game");
 				const z = phases.find(phase => phase.title === "Select");
-				SETdisplayMessage("Select a category")
 				if (z) {
 					setwhatsHappening({
 						// FIXTHIS Neet to make this safer
@@ -79,6 +78,8 @@ export default function GameSetup(props: propsType) {
 						currentPlayerIndex: currentPlayerIndex
 					});
 				}
+				const currentPlayer = players[whatsHappening.currentPlayerIndex];
+				SETdisplayMessage(`Select a category, ${currentPlayer.name}`)
 			}}>Begin Game</Button>
 
 

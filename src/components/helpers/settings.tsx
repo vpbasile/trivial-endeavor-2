@@ -9,7 +9,7 @@ export const players: player[] = [
 ]
 
 export const categoryList: category[] = [
-    { key: "00", queryTag: "none", title: "Select a category", color: "black" },
+    { key: "00", queryTag: "none", title: "x", color: "black" },
     { key: "08", queryTag: "science", title: "Science", color: "green" },
     { key: "02", queryTag: "geography", title: "Geography", color: "blue" },
     { key: "04", queryTag: "history", title: "History", color: "yellow" },

@@ -37,7 +37,7 @@ export default function Question(props: QuestionProps): JSX.Element | null {
 	const questionCategoryTag = currentQuestion.categoryTag;
 	const scoreState = props.scoreState; const setScoreState = props.setScoreState;
 	const guessedYet = props.guessedYet; const setguessedYet = props.setguessedYet;
-	const displayMessage = props.displayMessage; const SETdisplayMessage = props.SETdisplayMessage;
+	const SETdisplayMessage = props.SETdisplayMessage;
 	// <><><> Winning
 	const vyingForPlace = props.vyingForPlace;
 	// <><><> Game Globals
@@ -75,11 +75,11 @@ export default function Question(props: QuestionProps): JSX.Element | null {
 			// If the player guessed correctly, add questionCategoryTag to the player's score
 			console.log(messageText);
 			const winCheck = updatedScore(currentPlayerIndex, questionCategoryTag);
-			console.log(`${currentPlayer.name}'s score: ${JSON.stringify(winCheck)}/${neededToWin}`);
 			// let tempWinners = Array.from(winners);
 			if (winCheck >= neededToWin) {
 				console.log(`${scoreState[currentPlayerIndex].name} has gotten enough points!`)
 				scoreState[currentPlayerIndex].wonPlace = vyingForPlace;
+				stuff = `${currentPlayer.name} wins ${ordinal(vyingForPlace)} place!  Everyone else is playing for ${ordinal(vyingForPlace + 1)}.`
 				props.SETvyingForPlace(vyingForPlace + 1)
 			}
 		} else {
@@ -99,9 +99,20 @@ export default function Question(props: QuestionProps): JSX.Element | null {
 		sleep(5000).then(() => moveOn(nextPlayerIndex))
 	}
 
+	function ordinal(number: number): string {
+		switch (number) {
+			case 1: return "first";
+			case 2: return "second";
+			case 3: return "third";
+			default: return "last";
+		}
+	}
+
 	function sleep(ms: number) { return new Promise(resolve => setTimeout(resolve, ms)); }
 
 	function moveOn(nextPlayerIndex: number) {
+		const currentPlayerName = scoreState[nextPlayerIndex].name;
+		SETdisplayMessage(`Select a category, ${currentPlayerName}`)
 		const y = props.phases.find(phase => phase.title === "Select");
 		// Update the game state
 		if (y) {
@@ -111,7 +122,7 @@ export default function Question(props: QuestionProps): JSX.Element | null {
 				currentPlayerIndex: nextPlayerIndex
 			});
 		}
-		console.log(`===== <> Now it is ${scoreState[nextPlayerIndex].name}'s turn <> =====`);
+		// console.log(`===== <> Now it is ${currentPlayerName}'s turn <> =====`);
 	}
 
 	function updatedScore(playerIndex: number, categoryTag: categoryTag) {
@@ -146,6 +157,7 @@ export default function Question(props: QuestionProps): JSX.Element | null {
 	const answerButtons = choices.map((choice) => {
 		// If the choice is null, return a disabled button and exit
 		// console.log(`Choice: ${choice}`);
+		const isCorrect = (buttonIndex === currentQuestion.correctIndex);
 		if (choice === null) {
 			// console.log("Choice is null");
 			return (<AnswerButton
@@ -153,11 +165,11 @@ export default function Question(props: QuestionProps): JSX.Element | null {
 				key={buttonIndex}
 				index={buttonIndex++}
 				text="Please select a category"
-				disabled={true}
+				isDisabled={true}
 				scoreState={scoreState} setScoreState={setScoreState}
 				currentQuestion={currentQuestion}
 				handleGuess={handleGuess}
-				whatsHappening={whatsHappening} />)
+				whatsHappening={whatsHappening} isCorrectChoice={false} />)
 		}
 		else {
 			return (
@@ -165,10 +177,11 @@ export default function Question(props: QuestionProps): JSX.Element | null {
 					scoreState={scoreState} setScoreState={setScoreState}
 					whatsHappening={whatsHappening}
 					guessedYet={guessedYet} setguessedYet={setguessedYet}
+					isCorrectChoice={isCorrect}
 					key={buttonIndex}
 					index={buttonIndex++}
 					text={choice}
-					disabled={(currentQuestion.guessEntered === null)}
+					isDisabled={(currentQuestion.guessEntered === null)}
 					currentQuestion={currentQuestion} handleGuess={handleGuess} />
 			);
 		}
@@ -179,9 +192,9 @@ export default function Question(props: QuestionProps): JSX.Element | null {
 		// FIXME Need to have a way to give this box the color of the current category
 		// FIXME It should also display the category title
 		<Box>
-			<Heading as="h4" id="display-category" colorScheme={questionCategory.color}>
+			{/* <Heading as="h4" id="display-category" colorScheme={questionCategory.color}>
 				{questionCategory.title}
-			</Heading>
+			</Heading> */}
 			<Heading id="display-question">{questionText}</Heading>
 			{/* If it's time to select a category, show the column for the current player. */}
 			{(phaseTitle === "Answer") && answerButtons}
