@@ -6,8 +6,8 @@ import { ExternalLinkIcon, QuestionIcon } from '@chakra-ui/icons'
 // Import my utility modules and data structures
 
 // <> Import my modules
-import logoWhite from "../public/trivialEndeavorLogoWhite.svg";
-import logoBlack from "../public/trivialEndeavorLogoBlack.svg"
+import logoWhite from "/trivialEndeavorLogoWhite.svg";
+import logoBlack from "/trivialEndeavorLogoBlack.svg"
 import AppRow from "./components/structure/appRow";
 import GameBoard from "./components/Gameboard";
 
