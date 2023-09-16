@@ -10,7 +10,6 @@ const colrModeConfig: ThemeConfig = {
 // variant and color scheme every time you use a button:
 export const buttonTheme = defineStyleConfig({
   defaultProps: {
-    size: 'lg',
     variant: 'outline',
     colorScheme: 'red',
   },

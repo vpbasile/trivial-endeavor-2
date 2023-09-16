@@ -7,7 +7,7 @@ import { Dispatch } from "react";
 import { category, choices, phaseDefinition, player, questionInternal, whatsHappeningHolder, winners } from "../helpers/dataStructures";
 import { CheckCircleIcon } from "@chakra-ui/icons";
 import { Button } from "@chakra-ui/react";
-import { zzColor } from "../gameboard";
+// import { zzColor } from "../gameboard";
 
 type CategoryButtonProps = {
 	key: string,
@@ -19,7 +19,7 @@ type CategoryButtonProps = {
 	scoreState: player[],
 	guessedYet: boolean, setguessedYet: Dispatch<boolean>,
 	displayMessage: string; SETdisplayMessage: Dispatch<string>;
-	messageColor: zzColor; SETmessageColor: Dispatch<zzColor>;
+	// messageColor: zzColor; SETmessageColor: Dispatch<zzColor>;
 	// <><><> Winning
 	vyingForPlace: winners;
 	// <><><> Game Globals
@@ -39,7 +39,7 @@ export default function CategoryButton(props: CategoryButtonProps) {
 	const setCurrentQuestion = props.setCurrentQuestion;
 	const setguessedYet = props.setguessedYet;
  const SETdisplayMessage = props.SETdisplayMessage;
- const SETmessageColor=props.SETmessageColor
+//  const SETmessageColor=props.SETmessageColor
 	// <><><> Winning
 	// const vyingForPlace = props.vyingForPlace;
 	// <><><> Game Globals
@@ -158,7 +158,7 @@ export default function CategoryButton(props: CategoryButtonProps) {
 		// Update the game state with the new question
 		setCurrentQuestion(questionObject);
 		SETdisplayMessage(categoryName);
-		SETmessageColor(category[0].color)
+		// SETmessageColor(category[0].color)
 	}
 
 	function shuffleArray(array: string[]): string[] {

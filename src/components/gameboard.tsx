@@ -99,7 +99,10 @@ export default function GameBoard() {
 
     return (<ErrorBoundary fallback={<Box>Error in component</Box>}>
 
-        <Heading id='displayMessage' as='h2' m={2} p={8} border={'2px'}>{displayMessage}</Heading>
+        <Box my={8} p={4} bg={'gray.500'} rounded={'xl'}>
+            {/* <Button as={'h2'} colorScheme="red">{displayMessage}</Button> */}
+            <Heading id='displayMessage' as='h2'>{displayMessage}</Heading>
+        </Box>
         {whatToDisplay(whatsHappening.currentPhase.title)}
         {<Center id="controls" >
             < ErrorBoundary fallback={<Box>Error in component</Box>}>

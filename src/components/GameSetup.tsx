@@ -23,7 +23,7 @@ export default function GameSetup(props: propsType) {
 	const currentPlayerIndex = whatsHappening.currentPlayerIndex;
 	const scoreState = props.scoreState;
 	const setScoreState = props.setScoreState;
-	const displayMessage = props.displayMessage; const SETdisplayMessage = props.SETdisplayMessage;
+ const SETdisplayMessage = props.SETdisplayMessage;
 	const phases = props.phases;
 
 	const namefields = scoreState.map(player => {
