@@ -45,7 +45,7 @@ export default function AnswerButton(props: AnswerButtonProps) {
 
 	return (
 		<Box>
-			<Button colorScheme={color} id={buttonID} w="100%" m="2"
+			<Button colorScheme={color} id={buttonID} w="100%" m="2"  whiteSpace={'normal'}
 				isDisabled={isDisabled}
 				onClick={() => { setguessedYet(true); handleGuess(buttonIndex, currentPlayerIndex, questionCategoryTag) }} >
 				{buttonText}

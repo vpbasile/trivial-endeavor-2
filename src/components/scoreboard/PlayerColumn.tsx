@@ -1,7 +1,8 @@
 import { Dispatch } from 'react';
 import { category, phaseDefinition, player, questionInternal, whatsHappeningHolder, winners } from '../helpers/dataStructures';
-import { Text, Stack } from '@chakra-ui/react';
+import { Text, Stack, useColorModeValue } from '@chakra-ui/react';
 import CategoryButton from './CategoryButton';
+import { sidePad } from '../helpers/style';
 
 type PlayerColumnProps = {
 	// <><><> Dev mode stuff
@@ -41,8 +42,10 @@ export default function PlayerColumn(props: PlayerColumnProps) {
 	const playerKey = "player-" + player.index;
 	// <><><> Derivative values
 
+	const fgColor = useColorModeValue('black', 'white')
+
 	return (
-		<Stack direction='column' id={playerKey + "-column"} p="2%" >
+		<Stack direction='column' id={playerKey + "-column"} flex={1} px={sidePad} borderY={`2px solid ${fgColor}`} py={3} my={3}>
 			<Text colorScheme='gray' >{player.name}</Text>
 			{categoryList.map(category => {
 				if (category.queryTag !== "none") {

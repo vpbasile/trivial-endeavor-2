@@ -1,6 +1,6 @@
 import { Dispatch } from 'react';
 import { phaseDefinition, player, whatsHappeningHolder } from './helpers/dataStructures';
-import { Text, Stack, ListItem, List, ListIcon, Button, Center } from '@chakra-ui/react';
+import { Text, Stack, ListItem, List, ListIcon, Button, Box, Center } from '@chakra-ui/react';
 import { AddIcon, CheckIcon, MinusIcon, QuestionOutlineIcon } from '@chakra-ui/icons';
 import { namesToUse, players } from './helpers/settings';
 
@@ -23,7 +23,7 @@ export default function GameSetup(props: propsType) {
 	const currentPlayerIndex = whatsHappening.currentPlayerIndex;
 	const scoreState = props.scoreState;
 	const setScoreState = props.setScoreState;
- const SETdisplayMessage = props.SETdisplayMessage;
+	const SETdisplayMessage = props.SETdisplayMessage;
 	const phases = props.phases;
 
 	const namefields = scoreState.map(player => {
@@ -84,15 +84,18 @@ export default function GameSetup(props: propsType) {
 
 
 	return (
-		<Center dir='row' border={'red'}>
-			<Stack id="playerList" p="3" px={10} m={3} flex={3} borderRadius="5px" maxWidth={'30%'}>
-				<Text>You can play with up to 4 teams.</Text>
-				<List>{namefields}</List>
-			</Stack>
-			<Stack id='addRemovePlayers' p="3" px={10} m={3} flex={3} borderRadius="5px" maxWidth={'30%'}>
+		<Box display={{ sm: 'flex' }}>
+			<Stack id='addRemovePlayers' flex={5} p={8}>
 				{addButton}
 				{startButton}
 				{removeButton}
 			</Stack>
-		</Center>)
+			<Center id="playerList" flex={5}>
+				<Box w={'fit-content'} py={8}>
+					<Text>Teams/Players</Text>
+					<List>{namefields}</List>
+					{/* Make it so the list always has four lines.  This will eliminate moving the footer */}
+				</Box>
+			</Center>
+		</Box>)
 }
