@@ -1,6 +1,6 @@
 import { player, whatsHappeningHolder } from "./helpers/dataStructures"
 import { Box, Button, ListItem, Stack, UnorderedList } from "@chakra-ui/react";
-import ColorModeButton from "./colorModeButton";
+import ColorModeButton from "./helpers/colorModeButton";
 
 type DataDisplayProps = {
 	// <><><> Dev mode stuff
@@ -32,7 +32,7 @@ export default function DataDisplay(props: DataDisplayProps) {
 
 
 	return (
-		<Stack id="devModeBox" w={'100%'}>
+		<Stack id="devModeBox">
 			<Stack id="specialControls" p={8}>
 				<ColorModeButton />
 				<Button id="devModeToggle" onClick={toggleDevMode}>
@@ -40,7 +40,7 @@ export default function DataDisplay(props: DataDisplayProps) {
 				</Button>
 			</Stack>
 			{/* {If devMode is on, then return the text} */}
-			{devMode ? (<Box id="devData">
+			{devMode ? (<Box id="devData" whiteSpace={'normal'} maxWidth={'50%'}>
 				<UnorderedList>
 					<ListItem>Player: {currentPlayer.name}</ListItem>
 					<ListItem>Phase: {whatsHappening.currentPhase.title}</ListItem>

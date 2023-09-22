@@ -95,8 +95,9 @@ export default function Question(props: QuestionProps): JSX.Element | null {
 
 
 
-		// Every time i use this find, I should be using a map instead
-		sleep(5000).then(() => moveOn(nextPlayerIndex))
+		// Pause then advance to the next player
+		// FIXME Every time i use this find, I should be using a map instead
+		// sleep(5000).then(() => moveOn(nextPlayerIndex))
 	}
 
 	function ordinal(number: number): string {
@@ -158,21 +159,8 @@ export default function Question(props: QuestionProps): JSX.Element | null {
 		// If the choice is null, return a disabled button and exit
 		// console.log(`Choice: ${choice}`);
 		const isCorrect = (buttonIndex === currentQuestion.correctIndex);
-		if (choice === null) {
-			// console.log("Choice is null");
-			return (<AnswerButton
-				guessedYet={guessedYet} setguessedYet={setguessedYet}
-				key={buttonIndex}
-				index={buttonIndex++}
-				text="Please select a category"
-				isDisabled={true}
-				scoreState={scoreState} setScoreState={setScoreState}
-				currentQuestion={currentQuestion}
-				handleGuess={handleGuess}
-				whatsHappening={whatsHappening} isCorrectChoice={false} />)
-		}
-		else {
-			return (
+		return (
+			<>
 				<AnswerButton
 					scoreState={scoreState} setScoreState={setScoreState}
 					whatsHappening={whatsHappening}
@@ -183,22 +171,16 @@ export default function Question(props: QuestionProps): JSX.Element | null {
 					text={choice}
 					isDisabled={(currentQuestion.guessEntered === null)}
 					currentQuestion={currentQuestion} handleGuess={handleGuess} />
-			);
-		}
+			</>
+		);
 	});
 
-	const phaseTitle = whatsHappening.currentPhase.title;
 	return (
 		// FIXME Need to have a way to give this box the color of the current category
 		// FIXME It should also display the category title
-		<Box>
-			{/* <Heading as="h4" id="display-category" colorScheme={questionCategory.color}>
-				{questionCategory.title}
-			</Heading> */}
-			<Heading id="display-question">{questionText}</Heading>
-			{/* If it's time to select a category, show the column for the current player. */}
-			{(phaseTitle === "Answer") && answerButtons}
-			{(phaseTitle === "Select")}
+		<Box id="questionWrapper">
+			<Heading id="display-question" bg={'gray.500'} p={5} m={5} borderRadius={'lg'}>{questionText}</Heading>
+			{answerButtons}
 		</Box>
 	);
 }

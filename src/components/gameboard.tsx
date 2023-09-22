@@ -96,7 +96,7 @@ export default function GameBoard() {
 
     return (<ErrorBoundary fallback={<Box>Error in component</Box>}>
         <AppRow id="displayMessage">
-            <Box textAlign={'center'} id="messageDisplay" w={'100%'} bg={bgColor}
+            <Box textAlign={'center'} id="messageDisplay" w={'100%'}
                 my={5}
                 p={8}
                 borderRadius={'lg'}>
