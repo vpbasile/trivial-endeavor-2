@@ -20,15 +20,4 @@ export const categoryList: category[] = [
     { key: "06", queryTag: "movies", title: "Film & TV", color: "red" },
 ]
 
-export const gamePhases: phaseDefinition[] = [
-    // FIXME This would be much better as a map
-    { key: "00", title: "Welcome", index: 1 },
-    { key: "02", title: "Select", index: 2 },
-    { key: "04", title: "Question", index: 4 },
-    { key: "06", title: "Answer", index: 6 },
-    { key: "07", title: "Feedback", index: 7 },
-    { key: "08", title: "Score", index: 8 },
-    { key: "10", title: "End", index: 10 }
-]
-
 export function neededToWin(devMode: boolean): number { if (devMode) { return 2 } else { return categoryList.length - 1 } }

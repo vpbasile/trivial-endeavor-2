@@ -1,5 +1,5 @@
 import { Dispatch, SetStateAction } from "react";
-import { category, phaseDefinition, categoryTag, player, questionInternal, choices, whatsHappeningHolder, winners } from "../helpers/dataStructures";
+import { category, categoryTag, player, questionInternal, choices, whatsHappeningHolder, winners } from "../helpers/dataStructures";
 import AnswerButton from './AnswerButton';
 import { Box, Heading } from "@chakra-ui/react";
 import { ordinal, sleep } from "../helpers/routines";
@@ -16,24 +16,21 @@ type QuestionProps = {
 	guessedYet: boolean; setguessedYet: Dispatch<boolean>;
 
 	guessEntered: null | number; SETguessEntered: Dispatch<null | number>
-	displayMessage: string; SETdisplayMessage: Dispatch<string>;
+	SETdisplayMessage: Dispatch<string>;
 	// <><><> Winning
 	vyingForPlace: winners; SETvyingForPlace: Dispatch<winners>;
 	// <><><> Game Globals
 	categoryList: category[];
-	phases: phaseDefinition[];
 };
 
 export default function QuestionDisplay(props: QuestionProps): JSX.Element | null {
 
 	// <><><> Dev mode stuff
-	const devMode = props.devMode;
+	// const devMode = props.devMode;
 	const neededToWin = props.neededToWin;
 	// <><><> What's happening
 	const whatsHappening = props.whatsHappening;
 	const setwhatsHappening = props.setwhatsHappening;
-	// ====== Pause to check if we need to render
-	if (!devMode && (whatsHappening.currentPhase.title === "Welcome")) { return null; }
 	// <><><> Continue with the What's happening
 	const currentQuestion = props.currentQuestion
 	const questionCategoryTag = currentQuestion.categoryTag;
@@ -44,7 +41,6 @@ export default function QuestionDisplay(props: QuestionProps): JSX.Element | nul
 	const vyingForPlace = props.vyingForPlace;
 	// <><><> Game Globals
 	const categoryList = props.categoryList;
-	const phases = props.phases;
 	// <><><> Question Globals
 	const questionText = currentQuestion.questionText;
 	const choices: choices = currentQuestion.choices;
@@ -55,14 +51,10 @@ export default function QuestionDisplay(props: QuestionProps): JSX.Element | nul
 
 	function handleGuess(guess: number, currentPlayerIndex: number, questionCategoryTag: string): void {
 		const currentPlayer = scoreState[currentPlayerIndex];
-		const x = phases.find(phase => phase.title === "Answer")
-		// FIXTHIS Neet to make this safer
-		if (x) {
-			setwhatsHappening({
-				currentPhase: x,
-				currentPlayerIndex: currentPlayerIndex
-			})
-		}
+		setwhatsHappening({
+			currentPhase: "Answer",
+			currentPlayerIndex: currentPlayerIndex
+		})
 		const question = props.currentQuestion;
 		const correctChoice = question.correctIndex;
 		let stuff;
@@ -99,15 +91,11 @@ export default function QuestionDisplay(props: QuestionProps): JSX.Element | nul
 	function moveOn(nextPlayerIndex: number) {
 		const currentPlayerName = scoreState[nextPlayerIndex].name;
 		SETdisplayMessage(`Select a category, ${currentPlayerName}`)
-		const y = props.phases.find(phase => phase.title === "Select");
 		// Update the game state
-		if (y) {
-			// FIXTHIS Neet to make this safer
-			setwhatsHappening({
-				currentPhase: y,
-				currentPlayerIndex: nextPlayerIndex
-			});
-		}
+		setwhatsHappening({
+			currentPhase: "Select",
+			currentPlayerIndex: nextPlayerIndex
+		});
 		// console.log(`===== <> Now it is ${currentPlayerName}'s turn <> =====`);
 	}
 

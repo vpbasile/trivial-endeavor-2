@@ -1,7 +1,7 @@
 import { Box, Heading, useColorModeValue } from "@chakra-ui/react"
 import { ErrorBoundary } from "react-error-boundary";
 import GameSetup from "./GameSetup";
-import { neededToWin, categoryList, gamePhases, players } from "./helpers/settings";
+import { neededToWin, categoryList, players } from "./helpers/settings";
 import QuestionDisplay from "./question/QuestionDisplay";
 import { useState } from "react";
 import { player, questionInternal, whatsHappeningHolder, winners } from "./helpers/dataStructures";
@@ -15,7 +15,7 @@ export default function GameBoard() {
 
     const [displayMessage, SETdisplayMessage] = useState("Welcome! You can play with up to 4 teams.")
     // <><><> What's happening
-    const [whatsHappening, setwhatsHappening] = useState<whatsHappeningHolder>({ currentPhase: gamePhases[0], currentPlayerIndex: 0 });
+    const [whatsHappening, setwhatsHappening] = useState<whatsHappeningHolder>({ currentPhase: "Welcome", currentPlayerIndex: 0 });
     const blankQuestion: questionInternal = { questionText: null, choices: ["", "", "", ""], correctAnswer: null, correctIndex: 0, categoryTag: categoryList[0].queryTag };
     const [currentQuestion, setCurrentQuestion] = useState<questionInternal>(blankQuestion);
     // <><><> Winning
@@ -44,9 +44,7 @@ export default function GameBoard() {
                         // <><><> What's happening
                         whatsHappening={whatsHappening} setwhatsHappening={setwhatsHappening}
                         scoreState={scoreState} setScoreState={setScoreState}
-                        displayMessage="Welcome!" SETdisplayMessage={SETdisplayMessage}
-                        // <><><> Game Globals
-                        phases={gamePhases}
+                        SETdisplayMessage={SETdisplayMessage}
                     />
                 </Box>); break;
             }
@@ -58,9 +56,8 @@ export default function GameBoard() {
                             player={player}
                             categoryList={categoryList}
                             scoreState={scoreState}
-                            phases={gamePhases}
                             whatsHappening={whatsHappening} setwhatsHappening={setwhatsHappening}
-                            displayMessage={displayMessage} SETdisplayMessage={SETdisplayMessage}
+                            SETdisplayMessage={SETdisplayMessage}
                             vyingForPlace={vyingForPlace}
                             currentQuestion={currentQuestion} setCurrentQuestion={setCurrentQuestion}
                             guessedYet={guessedYet} setguessedYet={setguessedYet}
@@ -83,12 +80,11 @@ export default function GameBoard() {
                         scoreState={scoreState} setScoreState={setScoreState}
                         guessedYet={guessedYet} setguessedYet={setguessedYet}
                         guessEntered={guessEntered} SETguessEntered={SETguessEntered}
-                        displayMessage={displayMessage} SETdisplayMessage={SETdisplayMessage}
+                        SETdisplayMessage={SETdisplayMessage}
                         // <><><> Winning
                         vyingForPlace={vyingForPlace} SETvyingForPlace={SETvyingForPlace}
                         // <><><> Game Globals
                         categoryList={categoryList}
-                        phases={gamePhases}
                     />
                 </AppRow>)
             }
@@ -106,7 +102,7 @@ export default function GameBoard() {
             </Box>
         </AppRow>
         <Box id="gameBoardContainer">
-            {whatToDisplay(whatsHappening.currentPhase.title)}
+            {whatToDisplay(whatsHappening.currentPhase)}
         </Box>
         <AppRow id="controlRow" >
             < ErrorBoundary fallback={<Box>Error in component</Box>}>

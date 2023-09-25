@@ -4,7 +4,7 @@
 // https://api.trivia.willfry.co.uk/questions?categories=food_and_drink,geography,general_knowledge,history,literature,movies,music,science,society_and_culture,sport_and_leisure&limit=1
 
 import { Dispatch } from "react";
-import { category, choices, phaseDefinition, player, questionInternal, whatsHappeningHolder, winners } from "../helpers/dataStructures";
+import { category, choices, player, questionInternal, whatsHappeningHolder, winners } from "../helpers/dataStructures";
 import { CheckCircleIcon } from "@chakra-ui/icons";
 import { Button } from "@chakra-ui/react";
 // import { zzColor } from "../gameboard";
@@ -18,13 +18,12 @@ type CategoryButtonProps = {
 	currentQuestion: questionInternal, setCurrentQuestion: Dispatch<questionInternal>,
 	scoreState: player[],
 	guessedYet: boolean, setguessedYet: Dispatch<boolean>,
-	displayMessage: string; SETdisplayMessage: Dispatch<string>;
+	SETdisplayMessage: Dispatch<string>;
 	// messageColor: zzColor; SETmessageColor: Dispatch<zzColor>;
 	// <><><> Winning
 	vyingForPlace: winners;
 	// <><><> Game Globals
 	categoryList: category[],
-	phases: phaseDefinition[],
 	// <><><> Player and category we're iterating on 
 	category: category,
 	player: player,
@@ -38,13 +37,12 @@ export default function CategoryButton(props: CategoryButtonProps) {
 	const whatsHappening = props.whatsHappening, setwhatsHappening = props.setwhatsHappening;
 	const setCurrentQuestion = props.setCurrentQuestion;
 	const setguessedYet = props.setguessedYet;
- const SETdisplayMessage = props.SETdisplayMessage;
-//  const SETmessageColor=props.SETmessageColor
+	const SETdisplayMessage = props.SETdisplayMessage;
+	//  const SETmessageColor=props.SETmessageColor
 	// <><><> Winning
 	// const vyingForPlace = props.vyingForPlace;
 	// <><><> Game Globals
 	const categoryList = props.categoryList;
-	const phases = props.phases;
 	// <><><> Question Globals
 	// <><><> Player and category we're iterating on 
 	const player = props.player;
@@ -52,16 +50,10 @@ export default function CategoryButton(props: CategoryButtonProps) {
 	// <><><> Derivative values
 
 	function newQuestion(currentPlayerIndex: number, category: category) {
-		const temp = phases.find((phase: { title: string; }) => phase.title === "Answer");
-		// FIXTHIS Need to error handle
-		if (temp) {
-			setwhatsHappening({
-				currentPhase: temp,
-				currentPlayerIndex: currentPlayerIndex
-			})
-		}
-		// console.log(`Freshly set game phase:`)
-		// console.log(`whatsHappening: ${JSON.stringify(whatsHappening)}`);
+		setwhatsHappening({
+			currentPhase: "Answer",
+			currentPlayerIndex: currentPlayerIndex
+		})
 		const categoryTitle = category.title
 		console.log(`${player.name} requests a ${categoryTitle} question`);
 		// <> Old formats of the API request:
@@ -178,7 +170,7 @@ export default function CategoryButton(props: CategoryButtonProps) {
 	const buttonKey = player.name + '_' + category.queryTag;
 	const colorScheme = category.color;
 
-	
+
 	// If the player is a winner, the button should be gold.
 	const hasWon = player.wonPlace;
 	if (hasWon) {
@@ -197,5 +189,5 @@ export default function CategoryButton(props: CategoryButtonProps) {
 		);
 	}
 	// // Else (it is not the current player's turn and they have not completed this category), show the category as not completed
-	return (<Button key={buttonKey} isDisabled={true}  colorScheme={category.color}>{category.title}</Button>);
+	return (<Button key={buttonKey} isDisabled={true} colorScheme={category.color}>{category.title}</Button>);
 }

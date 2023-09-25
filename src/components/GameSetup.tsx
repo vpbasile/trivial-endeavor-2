@@ -1,5 +1,5 @@
 import { Dispatch } from 'react';
-import { phaseDefinition, player, whatsHappeningHolder } from './helpers/dataStructures';
+import { player, whatsHappeningHolder } from './helpers/dataStructures';
 import { Text, Stack, ListItem, List, ListIcon, Button, Box, Center } from '@chakra-ui/react';
 import { AddIcon, CheckIcon, MinusIcon, QuestionOutlineIcon } from '@chakra-ui/icons';
 import { namesToUse, players } from './helpers/settings';
@@ -12,19 +12,16 @@ type propsType = {
 	setwhatsHappening: Dispatch<whatsHappeningHolder>;
 	scoreState: player[];
 	setScoreState: Dispatch<player[]>;
-	displayMessage: string; SETdisplayMessage: Dispatch<string>;
-	// <><><> Game Globals
-	phases: phaseDefinition[];
+	SETdisplayMessage: Dispatch<string>;
 };
 
 export default function GameSetup(props: propsType) {
 	const whatsHappening = props.whatsHappening;
 	const setwhatsHappening = props.setwhatsHappening;
-	const currentPlayerIndex = whatsHappening.currentPlayerIndex;
 	const scoreState = props.scoreState;
+	const currentPlayerIndex = whatsHappening.currentPlayerIndex;
 	const setScoreState = props.setScoreState;
 	const SETdisplayMessage = props.SETdisplayMessage;
-	const phases = props.phases;
 
 	const namefields = scoreState.map(player => {
 		return (
@@ -70,14 +67,11 @@ export default function GameSetup(props: propsType) {
 			leftIcon={<CheckIcon color={'green'} />}
 			onClick={() => {
 				console.log("Begin game");
-				const z = phases.find(phase => phase.title === "Select");
-				if (z) {
-					setwhatsHappening({
-						// FIXTHIS Neet to make this safer
-						currentPhase: z,
-						currentPlayerIndex: currentPlayerIndex
-					});
-				}
+				setwhatsHappening({
+					// FIXTHIS Neet to make this safer
+					currentPhase: "Select",
+					currentPlayerIndex: currentPlayerIndex
+				});
 				const currentPlayer = players[whatsHappening.currentPlayerIndex];
 				SETdisplayMessage(`Select a category, ${currentPlayer.name}`)
 			}}>Begin Game</Button>

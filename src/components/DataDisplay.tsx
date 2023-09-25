@@ -33,7 +33,7 @@ export default function DataDisplay(props: DataDisplayProps) {
 
 	return (
 		<Stack id="devModeBox">
-			<Stack id="specialControls" p={8}>
+			<Stack id="specialControls" p={8} direction={{base:'column',sm:'row'}}>
 				<ColorModeButton />
 				<Button id="devModeToggle" onClick={toggleDevMode}>
 					{devMode ? <>{"Development Mode is On"}</> : <>{"Development Mode is Off"}</>}
@@ -43,7 +43,7 @@ export default function DataDisplay(props: DataDisplayProps) {
 			{devMode ? (<Box id="devData" whiteSpace={'normal'} maxWidth={'50%'}>
 				<UnorderedList>
 					<ListItem>Player: {currentPlayer.name}</ListItem>
-					<ListItem>Phase: {whatsHappening.currentPhase.title}</ListItem>
+					<ListItem>Phase: {whatsHappening.currentPhase}</ListItem>
 					<ListItem>Vying for place: {vyingForPlace}</ListItem>
 					<ListItem>'Needed to win' is set to 2 when in dev mode</ListItem>
 					<ListItem>Choosing a category with development mode on will hide the values of the answer choices and will instead display which is the correct choice.</ListItem>
