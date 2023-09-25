@@ -1,5 +1,5 @@
 import { Dispatch } from "react";
-import { player, questionInternal, whatsHappeningHolder } from "../helpers/dataStructures";
+import { guessType, player, questionInternal, whatsHappeningHolder } from "../helpers/dataStructures";
 import { Box, Button } from "@chakra-ui/react";
 
 type AnswerButtonProps = {
@@ -9,6 +9,7 @@ type AnswerButtonProps = {
 	currentQuestion: questionInternal,
 	scoreState: player[], setScoreState: Dispatch<player[]>,
 	guessedYet: boolean, setguessedYet: Dispatch<boolean>,
+	guessEntered: guessType;
 	// <><><> Game Globals
 	// <><><> Button-specific Globals
 	text: string,
@@ -25,6 +26,7 @@ export default function AnswerButton(props: AnswerButtonProps) {
 	if (currentQuestion === undefined) { return null; }
 	// <><><> If we have a question, continue with 
 	const guessedYet = props.guessedYet; const setguessedYet = props.setguessedYet;
+	const guessEntered = props.guessEntered
 	// <><><> Game Globals
 	// <><><> Button-specific Globals
 	const buttonIndex = props.index;
@@ -38,9 +40,9 @@ export default function AnswerButton(props: AnswerButtonProps) {
 	const buttonID = `choice-${buttonIndex}`;
 
 	let color = "gray"
-	if(guessedYet){
-		if(props.isCorrectChoice){ color = "green"
-		} else color = "red"
+	if (guessedYet) {
+		if (props.isCorrectChoice) color = "green"
+		else color = "red"
 	}
 
 	return (

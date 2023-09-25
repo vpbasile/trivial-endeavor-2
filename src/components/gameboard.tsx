@@ -4,7 +4,7 @@ import GameSetup from "./GameSetup";
 import { neededToWin, categoryList, players } from "./helpers/settings";
 import QuestionDisplay from "./question/QuestionDisplay";
 import { useState } from "react";
-import { player, questionInternal, whatsHappeningHolder, winners } from "./helpers/dataStructures";
+import { guessType, player, questionInternal, whatsHappeningHolder, winners } from "./helpers/dataStructures";
 import AppRow from "./helpers/appRow";
 import PlayerColumn from "./scoreboard/PlayerColumn";
 import DataDisplay from "./DataDisplay";
@@ -22,7 +22,9 @@ export default function GameBoard() {
     const [vyingForPlace, SETvyingForPlace] = useState<winners>(1);
     // <> Create the states for the game
     const [guessedYet, setguessedYet] = useState(false);
-    const [guessEntered, SETguessEntered] = useState<null | number>(null);
+    
+
+    const [guessEntered, SETguessEntered] = useState<guessType>(null);
     const [scoreState, setScoreState] = useState<player[]>(players);
 
     // <><><> Dev mode stuff

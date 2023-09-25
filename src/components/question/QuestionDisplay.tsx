@@ -1,5 +1,5 @@
 import { Dispatch, SetStateAction } from "react";
-import { category, categoryTag, player, questionInternal, choices, whatsHappeningHolder, winners } from "../helpers/dataStructures";
+import { category, categoryTag, player, questionInternal, choices, whatsHappeningHolder, winners, guessType } from "../helpers/dataStructures";
 import AnswerButton from './AnswerButton';
 import { Box, Heading } from "@chakra-ui/react";
 import { ordinal, sleep } from "../helpers/routines";
@@ -14,8 +14,7 @@ type QuestionProps = {
 	questionCategoryTag: string;
 	scoreState: player[]; setScoreState: Dispatch<SetStateAction<player[]>>;
 	guessedYet: boolean; setguessedYet: Dispatch<boolean>;
-
-	guessEntered: null | number; SETguessEntered: Dispatch<null | number>
+	guessEntered: guessType; SETguessEntered: Dispatch<guessType>
 	SETdisplayMessage: Dispatch<string>;
 	// <><><> Winning
 	vyingForPlace: winners; SETvyingForPlace: Dispatch<winners>;
@@ -84,7 +83,7 @@ export default function QuestionDisplay(props: QuestionProps): JSX.Element | nul
 
 		// Pause then advance to the next player
 		// FIXME Every time i use this find, I should be using a map instead
-		sleep(5000).then(() => moveOn(nextPlayerIndex))
+		// sleep(5000).then(() => moveOn(nextPlayerIndex))
 	}
 
 
@@ -126,20 +125,22 @@ export default function QuestionDisplay(props: QuestionProps): JSX.Element | nul
 	}
 
 	// Make answer buttons
-	let buttonIndex = 0;
+	let buttonIndex = -1;
 
 	const answerButtons = choices.map((choice) => {
 		// If the choice is null, return a disabled button and exit
 		// console.log(`Choice: ${choice}`);
+		buttonIndex++;
 		const isCorrect = (buttonIndex === currentQuestion.correctIndex);
 		return (
 			<AnswerButton
 				scoreState={scoreState} setScoreState={setScoreState}
 				whatsHappening={whatsHappening}
 				guessedYet={guessedYet} setguessedYet={setguessedYet}
+				guessEntered={props.guessEntered}
 				isCorrectChoice={isCorrect}
 				key={buttonIndex}
-				index={buttonIndex++}
+				index={buttonIndex}
 				text={choice}
 				isDisabled={(props.guessEntered !== null)}
 				currentQuestion={currentQuestion} handleGuess={handleGuess} />
