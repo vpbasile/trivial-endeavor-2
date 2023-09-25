@@ -1,4 +1,4 @@
-import { player, category, phaseDefinition } from "./dataStructures"
+import { player, category } from "./dataStructures"
 
 // <><><> Game Globals
 export const namesToUse = ["Agamemnon", "Boethius", "Charlemagne", "Donatello"]

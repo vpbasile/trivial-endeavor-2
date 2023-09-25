@@ -1,4 +1,4 @@
-import { Box, Heading, useColorModeValue } from "@chakra-ui/react"
+import { Box, Heading } from "@chakra-ui/react"
 import { ErrorBoundary } from "react-error-boundary";
 import GameSetup from "./GameSetup";
 import { neededToWin, categoryList, players } from "./helpers/settings";
@@ -33,7 +33,7 @@ export default function GameBoard() {
         devMode ? console.log("Dev mode is now off") : console.log("Dev mode is now on")
     }
 
-    const bgColor = useColorModeValue('white', 'black')
+    // const bgColor = useColorModeValue('white', 'black')
 
     // FIXME - Centralize where I control which components are displayed.
     function whatToDisplay(phaseTitle: string) {
