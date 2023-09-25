@@ -10,6 +10,5 @@ export type questionInternal = {
   questionText: string | null, choices: choices,
   correctAnswer: string | null,
   correctIndex: number,
-  categoryTag: categoryTag,
-  guessEntered: number
+  categoryTag: categoryTag
 }

@@ -74,8 +74,7 @@ export default function CategoryButton(props: CategoryButtonProps) {
 			questionText: "Loading...",
 			choices: ["Loading...", "Loading...", "Loading...", "Loading..."],
 			correctAnswer: "Loading...",
-			correctIndex: 0,
-			guessEntered: 0
+			correctIndex: 0
 		}
 		setguessedYet(false);
 		setCurrentQuestion(tempQuestion);
@@ -100,7 +99,7 @@ export default function CategoryButton(props: CategoryButtonProps) {
 	}
 
 	function parseReceivedQuestion(data: questionFromAPI) {
-		console.log(`Parsing question`);
+		// console.log(`Parsing question`);
 		// <> Parse the received question into the game's data structure
 		// Make sure we don't have more than 4 incorrect answers
 		const incorrectAnswers: string[] = data.incorrectAnswers.slice(0, 4);
@@ -129,8 +128,7 @@ export default function CategoryButton(props: CategoryButtonProps) {
 			choices: choices,
 			correctAnswer: data.correctAnswer,
 			correctIndex: answerIndex,
-			categoryTag: categoryTag,
-			guessEntered: 0
+			categoryTag: categoryTag
 		}
 		// Send the question to the database to be saved
 		// DEV environment only
@@ -178,13 +176,9 @@ export default function CategoryButton(props: CategoryButtonProps) {
 
 	const checkmark = <CheckCircleIcon />
 	const buttonKey = player.name + '_' + category.queryTag;
+	const colorScheme = category.color;
 
-	// <> Build the button
-	// During the welcome phase, all buttons should be disabled
-	// if (whatsHappening.currentPhase.title === "Welcome") {
-	// 	return (<Button key={buttonKey} colorScheme={category.color} isDisabled={true} >{category.title}</Button>
-	// 	)
-	// }
+	
 	// If the player is a winner, the button should be gold.
 	const hasWon = player.wonPlace;
 	if (hasWon) {
@@ -199,10 +193,9 @@ export default function CategoryButton(props: CategoryButtonProps) {
 
 	// If it's the current player's turn, show the button
 	if (player.index === whatsHappening.currentPlayerIndex) {
-		return (<Button colorScheme={category.color} onClick={() => newQuestion(player.index, category)
-		} >{category.title}</Button>
+		return (<Button colorScheme={colorScheme} onClick={() => newQuestion(player.index, category)}>{category.title}</Button>
 		);
 	}
 	// // Else (it is not the current player's turn and they have not completed this category), show the category as not completed
-	return (<Button key={buttonKey} isDisabled={true}>{category.title}</Button>);
+	return (<Button key={buttonKey} isDisabled={true}  colorScheme={category.color}>{category.title}</Button>);
 }

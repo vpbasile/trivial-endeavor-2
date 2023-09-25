@@ -2,6 +2,7 @@ import { Dispatch, SetStateAction } from "react";
 import { category, phaseDefinition, categoryTag, player, questionInternal, choices, whatsHappeningHolder, winners } from "../helpers/dataStructures";
 import AnswerButton from './AnswerButton';
 import { Box, Heading } from "@chakra-ui/react";
+import { ordinal, sleep } from "../helpers/routines";
 
 type QuestionProps = {
 	// <><><> Dev mode stuff	
@@ -9,10 +10,12 @@ type QuestionProps = {
 	neededToWin: number;
 	// <><><> What's happening
 	whatsHappening: whatsHappeningHolder; setwhatsHappening: Dispatch<whatsHappeningHolder>;
-	currentQuestion: questionInternal; setCurrentQuestion: Dispatch<questionInternal>;
+	currentQuestion: questionInternal;
 	questionCategoryTag: string;
 	scoreState: player[]; setScoreState: Dispatch<SetStateAction<player[]>>;
 	guessedYet: boolean; setguessedYet: Dispatch<boolean>;
+
+	guessEntered: null | number; SETguessEntered: Dispatch<null | number>
 	displayMessage: string; SETdisplayMessage: Dispatch<string>;
 	// <><><> Winning
 	vyingForPlace: winners; SETvyingForPlace: Dispatch<winners>;
@@ -21,7 +24,7 @@ type QuestionProps = {
 	phases: phaseDefinition[];
 };
 
-export default function Question(props: QuestionProps): JSX.Element | null {
+export default function QuestionDisplay(props: QuestionProps): JSX.Element | null {
 
 	// <><><> Dev mode stuff
 	const devMode = props.devMode;
@@ -33,7 +36,6 @@ export default function Question(props: QuestionProps): JSX.Element | null {
 	if (!devMode && (whatsHappening.currentPhase.title === "Welcome")) { return null; }
 	// <><><> Continue with the What's happening
 	const currentQuestion = props.currentQuestion
-	const setCurrentQuestion = props.setCurrentQuestion;
 	const questionCategoryTag = currentQuestion.categoryTag;
 	const scoreState = props.scoreState; const setScoreState = props.setScoreState;
 	const guessedYet = props.guessedYet; const setguessedYet = props.setguessedYet;
@@ -52,12 +54,7 @@ export default function Question(props: QuestionProps): JSX.Element | null {
 	const questionCategory = categoryList.filter(category => category.queryTag === questionCategoryTag)[0];
 
 	function handleGuess(guess: number, currentPlayerIndex: number, questionCategoryTag: string): void {
-		// <> FIXME - When the determined to be correct or incorrect, we should log a message to the console and maybe also to the user
 		const currentPlayer = scoreState[currentPlayerIndex];
-		// console.log(`${currentPlayer.name} guesses ${guess}`);
-		const tempQuestionState = currentQuestion
-		tempQuestionState.guessEntered = guess
-		setCurrentQuestion(tempQuestionState)
 		const x = phases.find(phase => phase.title === "Answer")
 		// FIXTHIS Neet to make this safer
 		if (x) {
@@ -93,23 +90,11 @@ export default function Question(props: QuestionProps): JSX.Element | null {
 		const nextPlayerIndex = nextPlayer(currentPlayerIndex, playerCount, neededToWin, scoreState);
 		// Now tell them whether their guess was correct or not.  Also present a button to go to the next player's turn.
 
-
-
 		// Pause then advance to the next player
 		// FIXME Every time i use this find, I should be using a map instead
-		// sleep(5000).then(() => moveOn(nextPlayerIndex))
+		sleep(5000).then(() => moveOn(nextPlayerIndex))
 	}
 
-	function ordinal(number: number): string {
-		switch (number) {
-			case 1: return "first";
-			case 2: return "second";
-			case 3: return "third";
-			default: return "last";
-		}
-	}
-
-	function sleep(ms: number) { return new Promise(resolve => setTimeout(resolve, ms)); }
 
 	function moveOn(nextPlayerIndex: number) {
 		const currentPlayerName = scoreState[nextPlayerIndex].name;
@@ -137,12 +122,12 @@ export default function Question(props: QuestionProps): JSX.Element | null {
 
 	function nextPlayer(current: number, playerCount: number, neededToWin: number, scoreState: player[]): number {
 		// let foundPlayer = null;
-		console.log(`Finding next player`)
+		// console.log(`Finding next player`)
 		for (let i = 1; i < playerCount; i++) {
 			const nextPlayerIndex = (current + i) % playerCount;
 			const thatPlayer = scoreState[nextPlayerIndex];
 			const thatPlayerScore = (thatPlayer.correctCategories).length;
-			console.log(`Should ${thatPlayer.name} be next?  Their score is ${thatPlayerScore}/${neededToWin}`);
+			// console.log(`Should ${thatPlayer.name} be next?  Their score is ${thatPlayerScore}/${neededToWin}`);
 			if (thatPlayerScore < neededToWin) {
 				console.log(`${thatPlayer.name} is next.`)
 				return nextPlayerIndex;
@@ -160,18 +145,16 @@ export default function Question(props: QuestionProps): JSX.Element | null {
 		// console.log(`Choice: ${choice}`);
 		const isCorrect = (buttonIndex === currentQuestion.correctIndex);
 		return (
-			<>
-				<AnswerButton
-					scoreState={scoreState} setScoreState={setScoreState}
-					whatsHappening={whatsHappening}
-					guessedYet={guessedYet} setguessedYet={setguessedYet}
-					isCorrectChoice={isCorrect}
-					key={buttonIndex}
-					index={buttonIndex++}
-					text={choice}
-					isDisabled={(currentQuestion.guessEntered === null)}
-					currentQuestion={currentQuestion} handleGuess={handleGuess} />
-			</>
+			<AnswerButton
+				scoreState={scoreState} setScoreState={setScoreState}
+				whatsHappening={whatsHappening}
+				guessedYet={guessedYet} setguessedYet={setguessedYet}
+				isCorrectChoice={isCorrect}
+				key={buttonIndex}
+				index={buttonIndex++}
+				text={choice}
+				isDisabled={(props.guessEntered !== null)}
+				currentQuestion={currentQuestion} handleGuess={handleGuess} />
 		);
 	});
 

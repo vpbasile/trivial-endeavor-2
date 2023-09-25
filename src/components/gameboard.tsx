@@ -2,7 +2,7 @@ import { Box, Heading, useColorModeValue } from "@chakra-ui/react"
 import { ErrorBoundary } from "react-error-boundary";
 import GameSetup from "./GameSetup";
 import { neededToWin, categoryList, gamePhases, players } from "./helpers/settings";
-import Question from "./question/QuestionDisplay";
+import QuestionDisplay from "./question/QuestionDisplay";
 import { useState } from "react";
 import { player, questionInternal, whatsHappeningHolder, winners } from "./helpers/dataStructures";
 import AppRow from "./helpers/appRow";
@@ -16,12 +16,13 @@ export default function GameBoard() {
     const [displayMessage, SETdisplayMessage] = useState("Welcome! You can play with up to 4 teams.")
     // <><><> What's happening
     const [whatsHappening, setwhatsHappening] = useState<whatsHappeningHolder>({ currentPhase: gamePhases[0], currentPlayerIndex: 0 });
-    const blankQuestion: questionInternal = { questionText: null, choices: ["", "", "", ""], correctAnswer: null, correctIndex: 0, categoryTag: categoryList[0].queryTag, guessEntered: 0 };
+    const blankQuestion: questionInternal = { questionText: null, choices: ["", "", "", ""], correctAnswer: null, correctIndex: 0, categoryTag: categoryList[0].queryTag };
     const [currentQuestion, setCurrentQuestion] = useState<questionInternal>(blankQuestion);
     // <><><> Winning
     const [vyingForPlace, SETvyingForPlace] = useState<winners>(1);
     // <> Create the states for the game
     const [guessedYet, setguessedYet] = useState(false);
+    const [guessEntered, SETguessEntered] = useState<null | number>(null);
     const [scoreState, setScoreState] = useState<player[]>(players);
 
     // <><><> Dev mode stuff
@@ -71,16 +72,17 @@ export default function GameBoard() {
             case "End": { break; }
             default: {
                 return (<AppRow id="question">
-                    <Question key={"currentQuestion"}
+                    <QuestionDisplay key={"currentQuestion"}
                         // <><><> Dev mode stuff
                         devMode={devMode}
                         neededToWin={neededToWin(devMode)}
                         // <><><> What's happening
                         whatsHappening={whatsHappening} setwhatsHappening={setwhatsHappening}
-                        currentQuestion={currentQuestion} setCurrentQuestion={setCurrentQuestion}
+                        currentQuestion={currentQuestion}
                         questionCategoryTag={currentQuestion.categoryTag}
                         scoreState={scoreState} setScoreState={setScoreState}
                         guessedYet={guessedYet} setguessedYet={setguessedYet}
+                        guessEntered={guessEntered} SETguessEntered={SETguessEntered}
                         displayMessage={displayMessage} SETdisplayMessage={SETdisplayMessage}
                         // <><><> Winning
                         vyingForPlace={vyingForPlace} SETvyingForPlace={SETvyingForPlace}

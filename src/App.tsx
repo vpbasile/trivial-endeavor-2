@@ -25,7 +25,7 @@ export default function App(): JSX.Element {
         <AppRow id="header">
           <Center id="logoBox" w={'full'}>
             <Image id="app-logo" alt="Trivial Endeavor logo" src={logo} w={{ base: '90%', sm: '50%' }} />
-            Finished answer buttons do not match unfinished answer buttons
+            
           </Center>
         </AppRow>
         <GameBoard />

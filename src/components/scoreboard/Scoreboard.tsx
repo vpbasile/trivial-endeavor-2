@@ -1,4 +1,4 @@
-export default function Scoreboard(props:unknonw){
+export default function Scoreboard(props:unknown){
 
     return ()
 }
