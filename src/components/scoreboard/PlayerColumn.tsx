@@ -1,6 +1,6 @@
 import { Dispatch } from 'react';
 import { category, player, questionInternal, whatsHappeningHolder, winners } from '../helpers/dataStructures';
-import { Text, Stack, useColorModeValue } from '@chakra-ui/react';
+import { Text, Stack, useColorModeValue, Collapse } from '@chakra-ui/react';
 import CategoryButton from './CategoryButton';
 import { sidePad } from '../helpers/style';
 
@@ -16,9 +16,10 @@ type PlayerColumnProps = {
 	// <><><> Winning
 	vyingForPlace: winners;
 	// <><><> Game Globals
-	categoryList: category[],
+	categoryList: category[];
 	// <><><> Question Globals
-	player: player,
+	player: player;
+	show: boolean;
 	// <><><> Derivative values
 }
 
@@ -43,35 +44,37 @@ export default function PlayerColumn(props: PlayerColumnProps) {
 	const fgColor = useColorModeValue('black', 'white')
 
 	return (
-		<Stack direction='column' id={playerKey + "-column"} flex={1} px={sidePad} borderY={`2px solid ${fgColor}`} py={3} my={3}>
-			<Text colorScheme='gray' >{player.name}</Text>
-			{categoryList.map(category => {
-				if (category.queryTag !== "none") {
-					return (
-						<CategoryButton
-							key={category.key}
-							// <><><> Dev mode stuff
-							devMode={devMode}
-							// <><><> What's happening
-							whatsHappening={whatsHappening} setwhatsHappening={setwhatsHappening}
-							currentQuestion={currentQuestion} setCurrentQuestion={setCurrentQuestion}
-							scoreState={scoreState}
-							guessedYet={guessedYet} setguessedYet={setguessedYet}
-							SETdisplayMessage={SETdisplayMessage}
-							// <><><> Winning
-							vyingForPlace={vyingForPlace}
-							// <><><> Game Globals
-							categoryList={categoryList}
-							// <><><> Question Globals
-							// <><><> Player and category we're iterating on 
-							category={category}
-							player={player}
-						/>
-					);
-				} else { return null; }
-			}
-			)}
-		</Stack>
+		<Collapse in={true}>
+			<Stack direction='column' id={playerKey + "-column"} flex={1} px={sidePad} borderY={`2px solid ${fgColor}`} py={6}>
+				<Text colorScheme='gray' >{player.name}</Text>
+				{categoryList.map(category => {
+					if (category.queryTag !== "none") {
+						return (
+							<CategoryButton
+								key={category.key}
+								// <><><> Dev mode stuff
+								devMode={devMode}
+								// <><><> What's happening
+								whatsHappening={whatsHappening} setwhatsHappening={setwhatsHappening}
+								currentQuestion={currentQuestion} setCurrentQuestion={setCurrentQuestion}
+								scoreState={scoreState}
+								guessedYet={guessedYet} setguessedYet={setguessedYet}
+								SETdisplayMessage={SETdisplayMessage}
+								// <><><> Winning
+								vyingForPlace={vyingForPlace}
+								// <><><> Game Globals
+								categoryList={categoryList}
+								// <><><> Question Globals
+								// <><><> Player and category we're iterating on
+								category={category}
+								player={player}
+							/>
+						);
+					} else { return null; }
+				}
+				)}
+			</Stack>
+		</Collapse>
 	)
 }
 

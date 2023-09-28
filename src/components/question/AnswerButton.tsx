@@ -26,7 +26,7 @@ export default function AnswerButton(props: AnswerButtonProps) {
 	if (currentQuestion === undefined) { return null; }
 	// <><><> If we have a question, continue with 
 	const guessedYet = props.guessedYet; const setguessedYet = props.setguessedYet;
-	const guessEntered = props.guessEntered
+	// const guessEntered = props.guessEntered
 	// <><><> Game Globals
 	// <><><> Button-specific Globals
 	const buttonIndex = props.index;
@@ -46,8 +46,8 @@ export default function AnswerButton(props: AnswerButtonProps) {
 	}
 
 	return (
-		<Box>
-			<Button colorScheme={color} id={buttonID} whiteSpace={'normal'} w={'100%'} my={2}
+		<Box py={2}>
+			<Button colorScheme={color} id={buttonID} whiteSpace={'normal'} w={'100%'} py={2}
 				isDisabled={isDisabled}
 				onClick={() => { setguessedYet(true); handleGuess(buttonIndex, currentPlayerIndex, questionCategoryTag) }} >
 				{buttonText}

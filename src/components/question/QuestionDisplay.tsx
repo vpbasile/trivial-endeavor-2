@@ -82,8 +82,7 @@ export default function QuestionDisplay(props: QuestionProps): JSX.Element | nul
 		// Now tell them whether their guess was correct or not.  Also present a button to go to the next player's turn.
 
 		// Pause then advance to the next player
-		// FIXME Every time i use this find, I should be using a map instead
-		// sleep(5000).then(() => moveOn(nextPlayerIndex))
+		sleep(5000).then(() => moveOn(nextPlayerIndex))
 	}
 
 
@@ -151,8 +150,8 @@ export default function QuestionDisplay(props: QuestionProps): JSX.Element | nul
 		// FIXME Need to have a way to give this box the color of the current category
 		// FIXME It should also display the category title
 		<Box id="questionWrapper">
-			<Heading id="display-question" bg={'gray.500'} p={5} m={5} borderRadius={'lg'}>{questionText}</Heading>
-			{answerButtons}
+			<Heading id="display-question" bg={'gray.500'} p={8} borderRadius={'lg'}>{questionText}</Heading>
+			<Box id="buttonWrapper" p={2}>{answerButtons}</Box>
 		</Box>
 	);
 }

@@ -1,4 +1,4 @@
-import { Box, Heading } from "@chakra-ui/react"
+import { Box, Collapse, Heading } from "@chakra-ui/react"
 import { ErrorBoundary } from "react-error-boundary";
 import GameSetup from "./GameSetup";
 import { neededToWin, categoryList, players } from "./helpers/settings";
@@ -22,7 +22,7 @@ export default function GameBoard() {
     const [vyingForPlace, SETvyingForPlace] = useState<winners>(1);
     // <> Create the states for the game
     const [guessedYet, setguessedYet] = useState(false);
-    
+
 
     const [guessEntered, SETguessEntered] = useState<guessType>(null);
     const [scoreState, setScoreState] = useState<player[]>(players);
@@ -37,40 +37,28 @@ export default function GameBoard() {
 
     // const bgColor = useColorModeValue('white', 'black')
 
-    // FIXME - Centralize where I control which components are displayed.
-    function whatToDisplay(phaseTitle: string) {
-        switch (phaseTitle) {
-            case "Welcome": {
-                return (<Box id="setup">
+    const currentPhase = whatsHappening.currentPhase;
+    return (<ErrorBoundary fallback={<Box>Error in component</Box>}>
+        <AppRow id="displayMessage">
+            <Box textAlign={'center'} id="messageDisplay" w={'100%'}
+                p={10}
+                borderRadius={'lg'}>
+                <Heading id='displayMessage' as='h2' whiteSpace={'normal'}>{displayMessage}</Heading>
+            </Box>
+        </AppRow>
+        <Box id="gameBoardContainer">
+            <Collapse in={currentPhase === "Welcome"}  unmountOnExit animateOpacity>
+                <Box id="setup">
                     <GameSetup
                         // <><><> What's happening
                         whatsHappening={whatsHappening} setwhatsHappening={setwhatsHappening}
                         scoreState={scoreState} setScoreState={setScoreState}
                         SETdisplayMessage={SETdisplayMessage}
                     />
-                </Box>); break;
-            }
-            case "Select": {
-                return (<Box id="scoreboard" display={{ sm: 'flex' }} scrollBehavior={'smooth'}>
-                    {scoreState.map((player) => (
-                        <PlayerColumn
-                            key={player.name + "playerColumn"}
-                            player={player}
-                            categoryList={categoryList}
-                            scoreState={scoreState}
-                            whatsHappening={whatsHappening} setwhatsHappening={setwhatsHappening}
-                            SETdisplayMessage={SETdisplayMessage}
-                            vyingForPlace={vyingForPlace}
-                            currentQuestion={currentQuestion} setCurrentQuestion={setCurrentQuestion}
-                            guessedYet={guessedYet} setguessedYet={setguessedYet}
-                            devMode={devMode} />))
-                    }
-                </Box>)
-                break;
-            }
-            case "End": { break; }
-            default: {
-                return (<AppRow id="question">
+                </Box>
+            </Collapse>
+            <Collapse in={currentPhase === "Answer"} unmountOnExit animateOpacity>
+                <AppRow id="question">
                     <QuestionDisplay key={"currentQuestion"}
                         // <><><> Dev mode stuff
                         devMode={devMode}
@@ -88,23 +76,27 @@ export default function GameBoard() {
                         // <><><> Game Globals
                         categoryList={categoryList}
                     />
-                </AppRow>)
-            }
-                break;
-        }
-    }
-
-    return (<ErrorBoundary fallback={<Box>Error in component</Box>}>
-        <AppRow id="displayMessage">
-            <Box textAlign={'center'} id="messageDisplay" w={'100%'}
-                my={5}
-                p={8}
-                borderRadius={'lg'}>
-                <Heading id='displayMessage' as='h2' whiteSpace={'normal'}>{displayMessage}</Heading>
-            </Box>
-        </AppRow>
-        <Box id="gameBoardContainer">
-            {whatToDisplay(whatsHappening.currentPhase)}
+                </AppRow>
+            </Collapse>
+            <Collapse  in={currentPhase === "Select"}  unmountOnExit animateOpacity>
+                <Box id="scoreboard" display={{ sm: 'flex' }} scrollBehavior={'smooth'}>
+                    {scoreState.map((player) => (
+                        <PlayerColumn
+                            key={player.name + "playerColumn"}
+                            player={player}
+                            categoryList={categoryList}
+                            scoreState={scoreState}
+                            whatsHappening={whatsHappening} setwhatsHappening={setwhatsHappening}
+                            SETdisplayMessage={SETdisplayMessage}
+                            vyingForPlace={vyingForPlace}
+                            currentQuestion={currentQuestion} setCurrentQuestion={setCurrentQuestion}
+                            guessedYet={guessedYet} setguessedYet={setguessedYet}
+                            devMode={devMode}
+                            show={player.index === whatsHappening.currentPlayerIndex}
+                        />))
+                    }
+                </Box>
+            </Collapse>
         </Box>
         <AppRow id="controlRow" >
             < ErrorBoundary fallback={<Box>Error in component</Box>}>
