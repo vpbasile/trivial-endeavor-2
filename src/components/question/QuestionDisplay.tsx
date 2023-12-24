@@ -1,8 +1,9 @@
-import { Dispatch, SetStateAction } from "react";
-import { category, categoryTag, player, questionInternal, choices, whatsHappeningHolder, winners, guessType } from "../helpers/dataStructures";
-import AnswerButton from './AnswerButton';
 import { Box, Heading } from "@chakra-ui/react";
+import { Dispatch, SetStateAction } from "react";
+import { guessType, player, whatsHappeningHolder, winners } from "../helpers/dataStructures";
 import { ordinal, sleep } from "../helpers/routines";
+import AnswerButton from './AnswerButton';
+import { category, questionInternal } from "./queryTheTrivia";
 
 type QuestionProps = {
 	// <><><> Dev mode stuff	
@@ -42,7 +43,7 @@ export default function QuestionDisplay(props: QuestionProps): JSX.Element | nul
 	const categoryList = props.categoryList;
 	// <><><> Question Globals
 	const questionText = currentQuestion.questionText;
-	const choices: choices = currentQuestion.choices;
+	const choices: string[] = currentQuestion.choices;
 
 	// <><><> Derivative values
 	const playerCount = scoreState.length; // THis should be a const, maybe FIXTHIS
@@ -97,7 +98,7 @@ export default function QuestionDisplay(props: QuestionProps): JSX.Element | nul
 		// console.log(`===== <> Now it is ${currentPlayerName}'s turn <> =====`);
 	}
 
-	function updatedScore(playerIndex: number, categoryTag: categoryTag) {
+	function updatedScore(playerIndex: number, categoryTag: string) {
 		const temp = scoreState;
 		temp[playerIndex].correctCategories.push(categoryTag);
 		const currenPlayerScore = temp[playerIndex].correctCategories.length;

@@ -1,13 +1,14 @@
-import { Box, Collapse, Heading } from "@chakra-ui/react"
-import { ErrorBoundary } from "react-error-boundary";
-import GameSetup from "./GameSetup";
-import { neededToWin, categoryList, players } from "./helpers/settings";
-import QuestionDisplay from "./question/QuestionDisplay";
+import { Box, Collapse, Heading } from "@chakra-ui/react";
 import { useState } from "react";
-import { guessType, player, questionInternal, whatsHappeningHolder, winners } from "./helpers/dataStructures";
-import AppRow from "./helpers/appRow";
-import PlayerColumn from "./scoreboard/PlayerColumn";
+import { ErrorBoundary } from "react-error-boundary";
 import DataDisplay from "./DataDisplay";
+import GameSetup from "./GameSetup";
+import AppRow from "./helpers/appRow";
+import { guessType, player, whatsHappeningHolder, winners } from "./helpers/dataStructures";
+import { neededToWin, players } from "./helpers/settings";
+import QuestionDisplay from "./question/QuestionDisplay";
+import { categoryList, questionInternal } from "./question/queryTheTrivia";
+import PlayerColumn from "./scoreboard/PlayerColumn";
 
 export type zzColor = string
 
@@ -38,7 +39,7 @@ export default function GameBoard() {
     // const bgColor = useColorModeValue('white', 'black')
 
     const currentPhase = whatsHappening.currentPhase;
-    return (<ErrorBoundary fallback={<Box>Error in component</Box>}>
+    return (<ErrorBoundary fallback={<Box>Error in component AppRow</Box>}>
         <AppRow id="displayMessage">
             <Box textAlign={'center'} id="messageDisplay" w={'100%'}
                 p={10}
@@ -99,7 +100,7 @@ export default function GameBoard() {
             </Collapse>
         </Box>
         <AppRow id="controlRow" >
-            < ErrorBoundary fallback={<Box>Error in component</Box>}>
+            < ErrorBoundary fallback={<Box>Error in component DataDisplay</Box>}>
                 <DataDisplay
                     players={players}
                     scoreState={scoreState}

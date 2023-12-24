@@ -1,8 +1,8 @@
+import { Collapse, Stack, Text, useColorModeValue } from '@chakra-ui/react';
 import { Dispatch } from 'react';
 import { category, player, questionInternal, whatsHappeningHolder, winners } from '../helpers/dataStructures';
-import { Text, Stack, useColorModeValue, Collapse } from '@chakra-ui/react';
-import CategoryButton from './CategoryButton';
 import { sidePad } from '../helpers/style';
+import CategoryButton from './CategoryButton';
 
 type PlayerColumnProps = {
 	// <><><> Dev mode stuff
