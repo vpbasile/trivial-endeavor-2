@@ -1,5 +1,5 @@
 import { CheckCircleIcon } from "@chakra-ui/icons";
-import { Button } from "@chakra-ui/react";
+import { Button, Heading } from "@chakra-ui/react";
 import { Dispatch } from "react";
 import { player, whatsHappeningHolder, winners } from "../helpers/dataStructures";
 import { category, getQuestion, questionInternal } from "../question/queryTheTrivia";
@@ -13,7 +13,7 @@ type CategoryButtonProps = {
 	currentQuestion: questionInternal, setCurrentQuestion: Dispatch<questionInternal>,
 	scoreState: player[],
 	guessedYet: boolean, setguessedYet: Dispatch<boolean>,
-	SETdisplayMessage: Dispatch<string>;
+	SETdisplayMessage: Dispatch<JSX.Element>;
 	// <><><> Winning
 	vyingForPlace: winners;
 	// <><><> Game Globals
@@ -69,7 +69,7 @@ export default function CategoryButton(props: CategoryButtonProps) {
 			const question = await getQuestion(category.queryTag, devMode);
 			// Update the game state with the new question
 			setCurrentQuestion(question);
-			SETdisplayMessage(category.title);
+			SETdisplayMessage(<Heading id='displayMessage' as='h2' whiteSpace={'normal'}>{category.title}</Heading>);
 		} catch (error) {
 			console.error("Error fetching question:", error);
 			// Handle the error appropriately, e.g., show an error message to the user

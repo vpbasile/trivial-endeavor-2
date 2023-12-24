@@ -13,7 +13,7 @@ type PlayerColumnProps = {
 	currentQuestion: questionInternal; setCurrentQuestion: Dispatch<questionInternal>;
 	scoreState: player[]
 	guessedYet: boolean; setguessedYet: Dispatch<boolean>;
-	SETdisplayMessage: Dispatch<string>;
+	SETdisplayMessage: Dispatch<JSX.Element>;
 	// <><><> Winning
 	vyingForPlace: winners;
 	// <><><> Game Globals

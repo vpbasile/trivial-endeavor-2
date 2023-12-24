@@ -1,7 +1,7 @@
+import { AddIcon, CheckIcon, MinusIcon, QuestionOutlineIcon } from '@chakra-ui/icons';
+import { Box, Button, Center, Heading, List, ListIcon, ListItem, Stack, Text } from '@chakra-ui/react';
 import { Dispatch } from 'react';
 import { player, whatsHappeningHolder } from './helpers/dataStructures';
-import { Text, Stack, ListItem, List, ListIcon, Button, Box, Center } from '@chakra-ui/react';
-import { AddIcon, CheckIcon, MinusIcon, QuestionOutlineIcon } from '@chakra-ui/icons';
 import { namesToUse, players } from './helpers/settings';
 
 // FIXME are all the propsTypes similar? Should they be standardized or customized?
@@ -12,7 +12,7 @@ type propsType = {
 	setwhatsHappening: Dispatch<whatsHappeningHolder>;
 	scoreState: player[];
 	setScoreState: Dispatch<player[]>;
-	SETdisplayMessage: Dispatch<string>;
+	SETdisplayMessage: Dispatch<JSX.Element>;
 };
 
 export default function GameSetup(props: propsType) {
@@ -73,7 +73,8 @@ export default function GameSetup(props: propsType) {
 					currentPlayerIndex: currentPlayerIndex
 				});
 				const currentPlayer = players[whatsHappening.currentPlayerIndex];
-				SETdisplayMessage(`Select a category, ${currentPlayer.name}`)
+				SETdisplayMessage(<Heading id='displayMessage' as='h2' whiteSpace={'normal'}>{`Select a category, ${currentPlayer.name}`}</Heading>)
+					
 			}}>Begin Game</Button>
 
 

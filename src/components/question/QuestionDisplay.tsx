@@ -2,7 +2,9 @@ import { Box, Heading } from "@chakra-ui/react";
 import { Dispatch, SetStateAction } from "react";
 import { guessType, player, whatsHappeningHolder, winners } from "../helpers/dataStructures";
 import { ordinal, sleep } from "../helpers/routines";
+import { newBreaks } from "../helpers/style";
 import AnswerButton from './AnswerButton';
+import PleaseWait from "./PleaseWait";
 import { category, questionInternal } from "./queryTheTrivia";
 
 type QuestionProps = {
@@ -16,7 +18,7 @@ type QuestionProps = {
 	scoreState: player[]; setScoreState: Dispatch<SetStateAction<player[]>>;
 	guessedYet: boolean; setguessedYet: Dispatch<boolean>;
 	guessEntered: guessType; SETguessEntered: Dispatch<guessType>
-	SETdisplayMessage: Dispatch<string>;
+	SETdisplayMessage: Dispatch<JSX.Element>;
 	// <><><> Winning
 	vyingForPlace: winners; SETvyingForPlace: Dispatch<winners>;
 	// <><><> Game Globals
@@ -24,7 +26,6 @@ type QuestionProps = {
 };
 
 export default function QuestionDisplay(props: QuestionProps): JSX.Element | null {
-
 	// <><><> Dev mode stuff
 	// const devMode = props.devMode;
 	const neededToWin = props.neededToWin;
@@ -44,6 +45,7 @@ export default function QuestionDisplay(props: QuestionProps): JSX.Element | nul
 	// <><><> Question Globals
 	const questionText = currentQuestion.questionText;
 	const choices: string[] = currentQuestion.choices;
+	const devMode = props.devMode;
 
 	// <><><> Derivative values
 	const playerCount = scoreState.length; // THis should be a const, maybe FIXTHIS
@@ -57,10 +59,12 @@ export default function QuestionDisplay(props: QuestionProps): JSX.Element | nul
 		})
 		const question = props.currentQuestion;
 		const correctChoice = question.correctIndex;
-		let stuff;
+		let stuff: JSX.Element;
 		if (guess === correctChoice) {
 			const messageText = `Correct! ${currentPlayer.name} has completed the ${questionCategory.title} category`;
-			stuff = messageText;
+			stuff = <PleaseWait colorScheme="green">
+				<Heading id='displayMessage' as='h2' whiteSpace={'normal'}>{messageText}</Heading>
+			</PleaseWait>
 			// If the player guessed correctly, add questionCategoryTag to the player's score
 			console.log(messageText);
 			const winCheck = updatedScore(currentPlayerIndex, questionCategoryTag);
@@ -68,13 +72,18 @@ export default function QuestionDisplay(props: QuestionProps): JSX.Element | nul
 			if (winCheck >= neededToWin) {
 				console.log(`${scoreState[currentPlayerIndex].name} has gotten enough points!`)
 				scoreState[currentPlayerIndex].wonPlace = vyingForPlace;
-				stuff = `${currentPlayer.name} wins ${ordinal(vyingForPlace)} place!  Everyone else is playing for ${ordinal(vyingForPlace + 1)}.`
+				stuff = <Heading id='displayMessage' as='h2' whiteSpace={'normal'}>
+					{`${currentPlayer.name} wins ${ordinal(vyingForPlace)} place!  Everyone else is playing for ${ordinal(vyingForPlace + 1)}.`}
+				</Heading>
 				props.SETvyingForPlace(vyingForPlace + 1)
 			}
 		} else {
 			// If the player was incorrect
 			const messageText = `Incorrect!  The correct answer was: ${question.choices[correctChoice]}`;
-			stuff = messageText;
+			stuff = <PleaseWait colorScheme="red">
+				<Heading id='displayMessage' as='h2' whiteSpace={'normal'}>{messageText}</Heading>;
+			</PleaseWait>
+
 			console.log(messageText);
 		}
 		SETdisplayMessage(stuff)
@@ -83,13 +92,15 @@ export default function QuestionDisplay(props: QuestionProps): JSX.Element | nul
 		// Now tell them whether their guess was correct or not.  Also present a button to go to the next player's turn.
 
 		// Pause then advance to the next player
-		sleep(5000).then(() => moveOn(nextPlayerIndex))
+		if (!devMode) {
+			sleep(5000).then(() => moveOn(nextPlayerIndex))
+		}
 	}
 
 
 	function moveOn(nextPlayerIndex: number) {
 		const currentPlayerName = scoreState[nextPlayerIndex].name;
-		SETdisplayMessage(`Select a category, ${currentPlayerName}`)
+		SETdisplayMessage(<Heading id='displayMessage' as='h2' whiteSpace={'normal'}>{`Select a category, ${currentPlayerName}`}</Heading>)
 		// Update the game state
 		setwhatsHappening({
 			currentPhase: "Select",
@@ -146,12 +157,10 @@ export default function QuestionDisplay(props: QuestionProps): JSX.Element | nul
 				currentQuestion={currentQuestion} handleGuess={handleGuess} />
 		);
 	});
-
 	return (
 		// FIXME Need to have a way to give this box the color of the current category
-		// FIXME It should also display the category title
 		<Box id="questionWrapper">
-			<Heading id="display-question" bg={'gray.500'} p={8} borderRadius={'lg'}>{questionText}</Heading>
+			<Heading id="display-question" bg={'gray.500'} p={8} borderRadius={'lg'} maxW={newBreaks}>{questionText}</Heading>
 			<Box id="buttonWrapper" p={2}>{answerButtons}</Box>
 		</Box>
 	);

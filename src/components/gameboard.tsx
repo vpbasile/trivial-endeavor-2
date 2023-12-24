@@ -6,15 +6,14 @@ import GameSetup from "./GameSetup";
 import AppRow from "./helpers/appRow";
 import { guessType, player, whatsHappeningHolder, winners } from "./helpers/dataStructures";
 import { neededToWin, players } from "./helpers/settings";
+import { newBreaks } from "./helpers/style";
 import QuestionDisplay from "./question/QuestionDisplay";
 import { categoryList, questionInternal } from "./question/queryTheTrivia";
 import PlayerColumn from "./scoreboard/PlayerColumn";
 
-export type zzColor = string
-
 export default function GameBoard() {
 
-    const [displayMessage, SETdisplayMessage] = useState("Welcome! You can play with up to 4 teams.")
+    const [displayMessage, SETdisplayMessage] = useState(<Heading id='displayMessage' as='h2' whiteSpace={'normal'}>"Welcome! You can play with up to 4 teams."</Heading>)
     // <><><> What's happening
     const [whatsHappening, setwhatsHappening] = useState<whatsHappeningHolder>({ currentPhase: "Welcome", currentPlayerIndex: 0 });
     const blankQuestion: questionInternal = { questionText: null, choices: ["", "", "", ""], correctAnswer: null, correctIndex: 0, categoryTag: categoryList[0].queryTag };
@@ -41,14 +40,12 @@ export default function GameBoard() {
     const currentPhase = whatsHappening.currentPhase;
     return (<ErrorBoundary fallback={<Box>Error in component AppRow</Box>}>
         <AppRow id="displayMessage">
-            <Box textAlign={'center'} id="messageDisplay" w={'100%'}
-                p={10}
-                borderRadius={'lg'}>
-                <Heading id='displayMessage' as='h2' whiteSpace={'normal'}>{displayMessage}</Heading>
+            <Box textAlign={'center'} id="messageDisplay" w={'100%'} p={10} borderRadius={'lg'}>
+                {displayMessage}
             </Box>
         </AppRow>
-        <Box id="gameBoardContainer">
-            <Collapse in={currentPhase === "Welcome"}  unmountOnExit animateOpacity>
+        <Box id="gameBoardContainer" maxWidth={newBreaks}>
+            <Collapse in={currentPhase === "Welcome"} unmountOnExit animateOpacity>
                 <Box id="setup">
                     <GameSetup
                         // <><><> What's happening
@@ -59,7 +56,7 @@ export default function GameBoard() {
                 </Box>
             </Collapse>
             <Collapse in={currentPhase === "Answer"} unmountOnExit animateOpacity>
-                <AppRow id="question">
+                <AppRow id="question-row">
                     <QuestionDisplay key={"currentQuestion"}
                         // <><><> Dev mode stuff
                         devMode={devMode}
@@ -79,7 +76,7 @@ export default function GameBoard() {
                     />
                 </AppRow>
             </Collapse>
-            <Collapse  in={currentPhase === "Select"}  unmountOnExit animateOpacity>
+            <Collapse in={currentPhase === "Select"} unmountOnExit animateOpacity>
                 <Box id="scoreboard" display={{ sm: 'flex' }} scrollBehavior={'smooth'}>
                     {scoreState.map((player) => (
                         <PlayerColumn

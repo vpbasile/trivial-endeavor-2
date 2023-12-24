@@ -63,7 +63,7 @@ function parseReceivedQuestion(questionData: questionFromAPI,devMode: boolean): 
     const choicesCount = incorrectAnswers.length + 1
     shuffleArray(incorrectAnswers);
     const answerIndex = Math.floor(Math.random() * (choicesCount));
-    const choices: string[] = ["", "", "", ""]
+    const choices: string[] = ["Incorrect Choice", "Incorrect Choice", "Incorrect Choice", "Incorrect Choice"]
     if (!devMode) {
         // choices[answerIndex] = questionData.correctAnswer;
         for (let i = 0; i < choicesCount; i++) {
@@ -73,8 +73,7 @@ function parseReceivedQuestion(questionData: questionFromAPI,devMode: boolean): 
                 if (x !== undefined) { choices[i] = x; }
             }
         }
-
-    }
+    } else { choices[answerIndex] = "Correct Coice" }
     // This is where we get the category object from the list
     const category: category[] = categoryList.filter((categoryTemp) => {
         return categoryTemp.queryTag === questionData.category;
