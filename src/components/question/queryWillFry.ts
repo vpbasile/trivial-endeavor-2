@@ -22,7 +22,7 @@ export const categoryList: category[] = [
     { key: "06", queryTag: "movies", title: "Film & TV", color: "red" },
 ]
 
-export async function getQuestion(categoryID: string, devMode:boolean): Promise<questionInternal> {
+export async function getQuestion(categoryID: string, devMode: boolean): Promise<questionInternal> {
     // ---------------------------------------------
     // <><> This stuff is all specific to this particualr API
     // ---------------------------------------------
@@ -32,21 +32,21 @@ export async function getQuestion(categoryID: string, devMode:boolean): Promise<
         // ---------------------------------------------
         const queryURL = `https://the-trivia-api.com/api/questions?categories=${categoryID}&limit=1`;
         const response = await fetch(queryURL);
-        const receivedQuestion:questionFromAPI[] = await response.json();
+        const receivedQuestion: questionFromAPI[] = await response.json();
         // }
 
         // ---------------------------------------------
         // <><> Parse and return the result
         // ---------------------------------------------
         // The API returns an array of question objects.  Currently, I'm requesting these one at a time so I always use the first question
-        return parseReceivedQuestion(receivedQuestion[0]);
+        return parseReceivedQuestion(receivedQuestion[0],devMode);
     } catch (error) {
         console.error("Error encountered", (error as Error).message);
         throw error; // It's generally a good practice to rethrow errors in async functions.
     }
 }
 
-function parseReceivedQuestion(questionData: questionFromAPI): questionInternal {
+function parseReceivedQuestion(questionData: questionFromAPI, devMode: boolean): questionInternal {
 
     // console.log(`Parsing question`);
     // <> Parse the received question into the game's data structure
@@ -56,12 +56,13 @@ function parseReceivedQuestion(questionData: questionFromAPI): questionInternal 
     shuffleArray(incorrectAnswers);
     const answerIndex = Math.floor(Math.random() * (choicesCount));
     const choices: string[] = ["", "", "", ""]
-    choices[answerIndex] = questionData.correctAnswer;
-    for (let i = 0; i < choicesCount; i++) {
-        if (i === answerIndex) { choices[i] = questionData.correctAnswer; }
-        else {
-            const x = incorrectAnswers.pop()
-            if (x !== undefined) { choices[i] = x; }
+    if (!devMode) {
+        for (let i = 0; i < choicesCount; i++) {
+            if (i === answerIndex) { choices[i] = questionData.correctAnswer; }
+            else {
+                const x = incorrectAnswers.pop()
+                if (x !== undefined) { choices[i] = x; }
+            }
         }
     }
     const categoryName: string = questionData.category;

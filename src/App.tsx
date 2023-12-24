@@ -33,7 +33,7 @@ export default function App(): JSX.Element {
           <Box display={{ sm: 'flex' }}>
             <Center id="version">
               <Image id="app-logo" src={logo} alt="Trivial Endeavor logo" w='300px' borderRadius={'3xl'} p={5} px={10} />
-              <Text>Version 2.0</Text>
+              <Text>Version 2.1</Text>
             </Center>
             <Box id="links" justifyContent={'center'}>
               <Heading as="h3">Links</Heading>

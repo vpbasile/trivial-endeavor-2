@@ -47,14 +47,14 @@ export async function getQuestion(categoryID: string, devMode: boolean): Promise
         // <><> Parse and return the result
         // ---------------------------------------------
         // The API returns an array of question objects.  Currently, I'm requesting these one at a time so I always use the first question
-        return parseReceivedQuestion(receivedQuestion[0]);
+        return parseReceivedQuestion(receivedQuestion[0],devMode);
     } catch (error) {
         console.error("Error encountered", (error as Error).message);
         throw error; // It's generally a good practice to rethrow errors in async functions.
     }
 }
 
-function parseReceivedQuestion(questionData: questionFromAPI): questionInternal {
+function parseReceivedQuestion(questionData: questionFromAPI,devMode: boolean): questionInternal {
 
     // console.log(`Parsing question`);
     // <> Parse the received question into the game's data structure
@@ -64,13 +64,16 @@ function parseReceivedQuestion(questionData: questionFromAPI): questionInternal 
     shuffleArray(incorrectAnswers);
     const answerIndex = Math.floor(Math.random() * (choicesCount));
     const choices: string[] = ["", "", "", ""]
-    // choices[answerIndex] = questionData.correctAnswer;
-    for (let i = 0; i < choicesCount; i++) {
-        if (i === answerIndex) { choices[i] = questionData.correctAnswer; }
-        else {
-            const x = incorrectAnswers.pop()
-            if (x !== undefined) { choices[i] = x; }
+    if (!devMode) {
+        // choices[answerIndex] = questionData.correctAnswer;
+        for (let i = 0; i < choicesCount; i++) {
+            if (i === answerIndex) { choices[i] = questionData.correctAnswer; }
+            else {
+                const x = incorrectAnswers.pop()
+                if (x !== undefined) { choices[i] = x; }
+            }
         }
+
     }
     // This is where we get the category object from the list
     const category: category[] = categoryList.filter((categoryTemp) => {

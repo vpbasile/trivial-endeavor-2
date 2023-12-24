@@ -1,7 +1,8 @@
 import { Collapse, Stack, Text, useColorModeValue } from '@chakra-ui/react';
 import { Dispatch } from 'react';
-import { category, player, questionInternal, whatsHappeningHolder, winners } from '../helpers/dataStructures';
+import { player, whatsHappeningHolder, winners } from '../helpers/dataStructures';
 import { sidePad } from '../helpers/style';
+import { category, questionInternal } from '../question/queryTheTrivia';
 import CategoryButton from './CategoryButton';
 
 type PlayerColumnProps = {

@@ -1,6 +1,7 @@
 import { Dispatch } from "react";
-import { guessType, player, questionInternal, whatsHappeningHolder } from "../helpers/dataStructures";
+import { guessType, player, whatsHappeningHolder } from "../helpers/dataStructures";
 import { Box, Button } from "@chakra-ui/react";
+import { questionInternal } from "./queryTheTrivia";
 
 type AnswerButtonProps = {
 	key: number, index: number,
