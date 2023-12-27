@@ -89,7 +89,7 @@ export default function GameSetup(props: propsType) {
 				<Box w={'fit-content'} py={8}>
 					<Text>Teams/Players</Text>
 					<List>{namefields}</List>
-					{/* Make it so the list always has four lines.  This will eliminate moving the footer */}
+					{/* <> FIXME Make it so the list always has four lines.  This will eliminate moving the footer */}
 				</Box>
 			</Center>
 		</Box>)

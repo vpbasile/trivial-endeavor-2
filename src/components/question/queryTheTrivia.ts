@@ -73,7 +73,7 @@ function parseReceivedQuestion(questionData: questionFromAPI,devMode: boolean): 
                 if (x !== undefined) { choices[i] = x; }
             }
         }
-    } else { choices[answerIndex] = "Correct Coice" }
+    } else { choices[answerIndex] = "Correct Choice" }
     // This is where we get the category object from the list
     const category: category[] = categoryList.filter((categoryTemp) => {
         return categoryTemp.queryTag === questionData.category;

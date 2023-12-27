@@ -92,8 +92,9 @@ export default function QuestionDisplay(props: QuestionProps): JSX.Element | nul
 		// Now tell them whether their guess was correct or not.  Also present a button to go to the next player's turn.
 
 		// Pause then advance to the next player
+		sleep(5000).then(() => moveOn(nextPlayerIndex))
 		if (!devMode) {
-			sleep(5000).then(() => moveOn(nextPlayerIndex))
+			console.log("Nothing")
 		}
 	}
 
@@ -153,7 +154,7 @@ export default function QuestionDisplay(props: QuestionProps): JSX.Element | nul
 				key={buttonIndex}
 				index={buttonIndex}
 				text={choice}
-				isDisabled={(props.guessEntered !== null)}
+				isDisabled={props.guessedYet}
 				currentQuestion={currentQuestion} handleGuess={handleGuess} />
 		);
 	});

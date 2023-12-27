@@ -21,6 +21,8 @@ type PlayerColumnProps = {
 	// <><><> Question Globals
 	player: player;
 	show: boolean;
+	askedQuestions: string[],
+	SETaskedQuestions: Dispatch<string[]>,
 	// <><><> Derivative values
 }
 
@@ -40,6 +42,8 @@ export default function PlayerColumn(props: PlayerColumnProps) {
 	// <><><> Question Globals
 	const player = props.player;
 	const playerKey = "player-" + player.index;
+	const askedQuestions=props.askedQuestions
+	const SETaskedQuestions=props.SETaskedQuestions
 	// <><><> Derivative values
 
 	const fgColor = useColorModeValue('black', 'white')
@@ -66,6 +70,8 @@ export default function PlayerColumn(props: PlayerColumnProps) {
 								// <><><> Game Globals
 								categoryList={categoryList}
 								// <><><> Question Globals
+								askedQuestions={props.askedQuestions}
+								SETaskedQuestions={props.SETaskedQuestions}
 								// <><><> Player and category we're iterating on
 								category={category}
 								player={player}

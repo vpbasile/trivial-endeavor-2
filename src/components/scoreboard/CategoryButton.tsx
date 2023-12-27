@@ -22,6 +22,8 @@ type CategoryButtonProps = {
 	category: category,
 	player: player,
 	// <><><> Derivative values
+	askedQuestions: string[],
+	SETaskedQuestions: Dispatch<string[]>,
 }
 
 export default function CategoryButton(props: CategoryButtonProps) {
@@ -33,10 +35,6 @@ export default function CategoryButton(props: CategoryButtonProps) {
 	const setguessedYet = props.setguessedYet;
 	const SETdisplayMessage = props.SETdisplayMessage;
 	//  const SETmessageColor=props.SETmessageColor
-	// <><><> Winning
-	// const vyingForPlace = props.vyingForPlace;
-	// <><><> Game Globals
-	// const categoryList = props.categoryList;
 	// <><><> Question Globals
 	// <><><> Player and category we're iterating on 
 	const player = props.player;
@@ -48,33 +46,35 @@ export default function CategoryButton(props: CategoryButtonProps) {
 			currentPhase: "Answer",
 			currentPlayerIndex: currentPlayerIndex,
 		});
-	
+
 		const categoryTitle = category.title;
 		console.log(`${player.name} requests a ${categoryTitle} question`);
-	
+
 		// Create a temporary question while we wait for the API to respond
-	
+
 		setguessedYet(false);
 		// <> Set a temp question while we wait
 		setCurrentQuestion({
-				categoryTag: category.queryTag,
-				questionText: "Loading...",
-				choices: ["Loading...", "Loading...", "Loading...", "Loading..."],
-				correctAnswer: "Loading...",
-				correctIndex: 0,
-			});
-	
+			categoryTag: category.queryTag,
+			questionText: "Loading...",
+			choices: ["Loading...", "Loading...", "Loading...", "Loading..."],
+			correctAnswer: "Loading...",
+			correctIndex: 0,
+		});
+
 		try {
 			// Use await within the async function
 			const question = await getQuestion(category.queryTag, devMode);
 			// Update the game state with the new question
+			
 			setCurrentQuestion(question);
+			
 			SETdisplayMessage(<Heading id='displayMessage' as='h2' whiteSpace={'normal'}>{category.title}</Heading>);
 		} catch (error) {
 			console.error("Error fetching question:", error);
 			// Handle the error appropriately, e.g., show an error message to the user
 		}
-	}	
+	}
 
 	const checkmark = <CheckCircleIcon />
 	const buttonKey = player.name + '_' + category.queryTag;

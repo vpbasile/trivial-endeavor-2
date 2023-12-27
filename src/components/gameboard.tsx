@@ -21,21 +21,22 @@ export default function GameBoard() {
     // <><><> Winning
     const [vyingForPlace, SETvyingForPlace] = useState<winners>(1);
     // <> Create the states for the game
+
+    // I probably could get away with only one of these.
     const [guessedYet, setguessedYet] = useState(false);
-
-
     const [guessEntered, SETguessEntered] = useState<guessType>(null);
+    // -----------------------------------------------------------------
+
     const [scoreState, setScoreState] = useState<player[]>(players);
+    const [askedQuestions, SETaskedQuestions] = useState<string[]>(["first"])
 
     // <><><> Dev mode stuff
     const [devMode, setDevMode] = useState(false);
     function toggleDevMode() {
-        // console.log("devMode", devMode)
         setDevMode(!devMode)
         devMode ? console.log("Dev mode is now off") : console.log("Dev mode is now on")
     }
 
-    // const bgColor = useColorModeValue('white', 'black')
 
     const currentPhase = whatsHappening.currentPhase;
     return (<ErrorBoundary fallback={<Box>Error in component AppRow</Box>}>
@@ -91,6 +92,8 @@ export default function GameBoard() {
                             guessedYet={guessedYet} setguessedYet={setguessedYet}
                             devMode={devMode}
                             show={player.index === whatsHappening.currentPlayerIndex}
+                            askedQuestions={askedQuestions}
+                            SETaskedQuestions={SETaskedQuestions}
                         />))
                     }
                 </Box>

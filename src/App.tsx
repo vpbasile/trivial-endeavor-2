@@ -1,15 +1,15 @@
 
 // Import ChakraUI elements
-import { Box, Text, Link, Image, Center, useColorMode, Heading, List, ListIcon, ListItem } from '@chakra-ui/react'
+import { Box, Center, Heading, Image, Link, List, ListIcon, ListItem, Text, useColorMode } from '@chakra-ui/react';
 
 // Import my utility modules and data structures
 
 // <> Import my modules
-import logoWhite from "/trivialEndeavorLogoWhite.svg";
-import logoBlack from "/trivialEndeavorLogoBlack.svg"
-import AppRow from "./components/helpers/appRow";
-import GameBoard from "./components/Gameboard";
 import { ExternalLinkIcon, QuestionIcon } from '@chakra-ui/icons';
+import GameBoard from "./components/Gameboard";
+import AppRow from "./components/helpers/appRow";
+import logoBlack from "/trivialEndeavorLogoBlack.svg";
+import logoWhite from "/trivialEndeavorLogoWhite.svg";
 
 export default function App(): JSX.Element {
   // <> Do the thing
@@ -46,9 +46,13 @@ export default function App(): JSX.Element {
                   <ListIcon as={ExternalLinkIcon} />
                   <Link href="https://github.com/vpbasile/trivial-endeavor-2" isExternal>Repository on GitHub</Link>
                 </ListItem>
-                <ListItem>
+                {/* <ListItem>
                   <ListIcon as={QuestionIcon} />
                   <Link href="https://the-trivia-api.com/" isExternal>The Trivia API by Will Fry</Link>
+                </ListItem> */}
+                <ListItem>
+                <ListIcon as={QuestionIcon} />
+                Using questions from <Link href='https://the-trivia-api.com/'>The Trivia API</Link>
                 </ListItem>
               </List>
             </Box>
