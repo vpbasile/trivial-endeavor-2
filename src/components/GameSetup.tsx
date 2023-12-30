@@ -1,29 +1,23 @@
 import { AddIcon, CheckIcon, MinusIcon, QuestionOutlineIcon } from '@chakra-ui/icons';
-import { Box, Button, Center, Heading, List, ListIcon, ListItem, Stack, Text } from '@chakra-ui/react';
-import { Dispatch } from 'react';
-import { player, whatsHappeningHolder } from './helpers/dataStructures';
-import { namesToUse, players } from './helpers/settings';
-
-// FIXME are all the propsTypes similar? Should they be standardized or customized?
-
-type propsType = {
-	// <><><> What's happening
-	whatsHappening: whatsHappeningHolder;
-	setwhatsHappening: Dispatch<whatsHappeningHolder>;
-	scoreState: player[];
-	setScoreState: Dispatch<player[]>;
-	SETdisplayMessage: Dispatch<JSX.Element>;
-};
+import { Box, Button, Center, List, ListIcon, ListItem, Stack, Text } from '@chakra-ui/react';
+import { propsType } from './gameReducer';
 
 export default function GameSetup(props: propsType) {
-	const whatsHappening = props.whatsHappening;
-	const setwhatsHappening = props.setwhatsHappening;
-	const scoreState = props.scoreState;
-	const currentPlayerIndex = whatsHappening.currentPlayerIndex;
-	const setScoreState = props.setScoreState;
-	const SETdisplayMessage = props.SETdisplayMessage;
+	const { gameState, dispatch } = props;
+	const playerList = gameState.playerList;
 
-	const namefields = scoreState.map(player => {
+	// const namefields = playerList.map(player => {
+	// 	return (
+	// 		<ListItem key={player.name + "namefield"}>
+	// 			<ListIcon as={QuestionOutlineIcon} />
+	// 			<label htmlFor={player.name + "name"}>{player.name}</label>
+	// 			{/* <input type="text" id={player.name + "name"} placeholder={player.name} onChange={(e) => { console.log(`${player.index}. ${e.target.value}`); />*/}
+	// 		</ListItem>
+	// 	);
+
+	// });
+
+	const namefields = playerList.map(player => {
 		return (
 			<ListItem key={player.name + "namefield"}>
 				<ListIcon as={QuestionOutlineIcon} />
@@ -31,52 +25,39 @@ export default function GameSetup(props: propsType) {
 				{/* <input type="text" id={player.name + "name"} placeholder={player.name} onChange={(e) => { console.log(`${player.index}. ${e.target.value}`); />*/}
 			</ListItem>
 		);
-
 	});
 
-	const playerCount = scoreState.length
+	{/* If namefields is shorter than four items, add empty list items to fill the space. This will eliminate moving the footer */ }
+	for (let i = playerList.length; i < 4; i++) {
+		namefields.push(<ListItem key={i + "namefield"}><ListIcon as={QuestionOutlineIcon} /></ListItem>);
+	}
+
+	const playerCount = playerList.length
 	const rosterMaxed: boolean = playerCount < 4
-	const rosterMinnd: boolean = scoreState.length === 1;
+	const rosterMinnd: boolean = playerList.length === 1;
+
+	const addTeam = () => dispatch({ type: 'add_player', payload: playerCount + 1 });
+	const removeTeam = () => dispatch({ type: 'remove_player', payload: playerCount - 1 });
 
 	const addButton =
 		<Button
 			leftIcon={<AddIcon />}
 			textAlign={'left'}
 			isDisabled={!rosterMaxed}
-			onClick={() => setScoreState(
-				// Add another player to the scoreState array
-				[...scoreState, {
-					index: scoreState.length, key: scoreState.length, name: namesToUse[scoreState.length],
-					correctCategories: [], wonPlace: 0
-				}]
-			)}> Add another team</Button>
+			onClick={addTeam}> Add another team</Button>
 
 	const removeButton =
 		<Button
 			leftIcon={<MinusIcon />}
 			textAlign={'left'}
 			isDisabled={rosterMinnd}
-			onClick={() => setScoreState(
-				// Remove the last player from the scoreState array
-				scoreState.slice(0, scoreState.length - 1)
-			)}>Remove a team</Button>
+			onClick={removeTeam}>Remove a team</Button>
 
 	const startButton =
 		<Button
 			textAlign={'left'}
 			leftIcon={<CheckIcon color={'green'} />}
-			onClick={() => {
-				console.log("Begin game");
-				setwhatsHappening({
-					// FIXTHIS Neet to make this safer
-					currentPhase: "Select",
-					currentPlayerIndex: currentPlayerIndex
-				});
-				const currentPlayer = players[whatsHappening.currentPlayerIndex];
-				SETdisplayMessage(<Heading id='displayMessage' as='h2' whiteSpace={'normal'}>{`Select a category, ${currentPlayer.name}`}</Heading>)
-					
-			}}>Begin Game</Button>
-
+			onClick={() => { dispatch({ type: 'begin_game' }) }}>Begin Game</Button>
 
 	return (
 		<Box display={{ sm: 'flex' }}>
@@ -89,7 +70,9 @@ export default function GameSetup(props: propsType) {
 				<Box w={'fit-content'} py={8}>
 					<Text>Teams/Players</Text>
 					<List>{namefields}</List>
-					{/* <> FIXME Make it so the list always has four lines.  This will eliminate moving the footer */}
+
+
+
 				</Box>
 			</Center>
 		</Box>)

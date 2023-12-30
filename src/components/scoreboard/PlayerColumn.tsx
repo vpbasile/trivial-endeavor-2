@@ -1,87 +1,48 @@
-import { Collapse, Stack, Text, useColorModeValue } from '@chakra-ui/react';
-import { Dispatch } from 'react';
-import { player, whatsHappeningHolder, winners } from '../helpers/dataStructures';
+import { Collapse, Stack, Text } from '@chakra-ui/react';
+import { player, propsType } from '../gameReducer';
+import { categoryList } from '../helpers/queryTheTrivia';
 import { sidePad } from '../helpers/style';
-import { category, questionInternal } from '../question/queryTheTrivia';
 import CategoryButton from './CategoryButton';
 
-type PlayerColumnProps = {
-	// <><><> Dev mode stuff
-	devMode: boolean;
-	// <><><> What's happening
-	whatsHappening: whatsHappeningHolder; setwhatsHappening: Dispatch<whatsHappeningHolder>,
-	currentQuestion: questionInternal; setCurrentQuestion: Dispatch<questionInternal>;
-	scoreState: player[]
-	guessedYet: boolean; setguessedYet: Dispatch<boolean>;
-	SETdisplayMessage: Dispatch<JSX.Element>;
-	// <><><> Winning
-	vyingForPlace: winners;
-	// <><><> Game Globals
-	categoryList: category[];
-	// <><><> Question Globals
-	player: player;
-	show: boolean;
-	askedQuestions: string[],
-	SETaskedQuestions: Dispatch<string[]>,
-	// <><><> Derivative values
+interface playerColumnProps extends propsType {
+	playerKey: number;
+	isDisabled: boolean;
 }
 
-export default function PlayerColumn(props: PlayerColumnProps) {
-	// <><><> Dev mode stuff
-	const devMode = props.devMode;
-	// <><><> What's happening
-	const whatsHappening = props.whatsHappening; const setwhatsHappening = props.setwhatsHappening;
-	const currentQuestion = props.currentQuestion; const setCurrentQuestion = props.setCurrentQuestion;
-	const scoreState = props.scoreState;
-	const guessedYet = props.guessedYet; const setguessedYet = props.setguessedYet;
-	const SETdisplayMessage = props.SETdisplayMessage;
-	// <><><> Winning
-	const vyingForPlace = props.vyingForPlace;
-	// <><><> Game Globals
-	const categoryList = props.categoryList;
-	// <><><> Question Globals
-	const player = props.player;
-	const playerKey = "player-" + player.index;
-	const askedQuestions=props.askedQuestions
-	const SETaskedQuestions=props.SETaskedQuestions
-	// <><><> Derivative values
+export default function PlayerColumn(props: playerColumnProps) {
+	// Cache props
+	const { gameState, dispatch, playerKey } = props;
+	const playerList = gameState.playerList;
+	const player: player = playerList[playerKey];
+	// If the player has won, show the column disabeled
+	// Determine the color scheme and disabled state based on the player's state
+let colorScheme = 'gray';
+let isDisabled = props.isDisabled;
 
-	const fgColor = useColorModeValue('black', 'white')
+if (player.wonPlace) {
+  colorScheme = 'yellow';
+} else if (player.index === gameState.currentPlayerIndex) {
+  isDisabled = false;
+}
 
-	return (
-		<Collapse in={true}>
-			<Stack direction='column' id={playerKey + "-column"} flex={1} px={sidePad} borderY={`2px solid ${fgColor}`} py={6}>
-				<Text colorScheme='gray' >{player.name}</Text>
-				{categoryList.map(category => {
-					if (category.queryTag !== "none") {
-						return (
-							<CategoryButton
-								key={category.key}
-								// <><><> Dev mode stuff
-								devMode={devMode}
-								// <><><> What's happening
-								whatsHappening={whatsHappening} setwhatsHappening={setwhatsHappening}
-								currentQuestion={currentQuestion} setCurrentQuestion={setCurrentQuestion}
-								scoreState={scoreState}
-								guessedYet={guessedYet} setguessedYet={setguessedYet}
-								SETdisplayMessage={SETdisplayMessage}
-								// <><><> Winning
-								vyingForPlace={vyingForPlace}
-								// <><><> Game Globals
-								categoryList={categoryList}
-								// <><><> Question Globals
-								askedQuestions={props.askedQuestions}
-								SETaskedQuestions={props.SETaskedQuestions}
-								// <><><> Player and category we're iterating on
-								category={category}
-								player={player}
-							/>
-						);
-					} else { return null; }
-				}
-				)}
-			</Stack>
-		</Collapse>
-	)
+return (
+  <Collapse in={true}>
+    <Stack direction='column' id={playerKey + "-column"} flex={1} px={sidePad} borderY={`2px solid`} py={6}>
+      <Text colorScheme={colorScheme}>{player.name}</Text>
+      {categoryList.map(category => (
+        <CategoryButton
+          // <><><> Player and category we're iterating on
+          category={category}
+          key={category.key}
+          player={player} 
+          gameState={gameState} 
+          dispatch={dispatch}
+          isDisabled={isDisabled} 
+        />
+      ))}
+    </Stack>
+  </Collapse>
+);
+
 }
 

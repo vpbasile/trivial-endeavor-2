@@ -1,52 +1,39 @@
-import { player, whatsHappeningHolder } from "./helpers/dataStructures"
 import { Box, Button, ListItem, Stack, UnorderedList } from "@chakra-ui/react";
+import { propsType } from "./gameReducer";
 import ColorModeButton from "./helpers/colorModeButton";
 
-type DataDisplayProps = {
-	// <><><> Dev mode stuff
-	devMode: boolean, toggleDevMode: () => void,
-	// <><><> What's happening
-	whatsHappening: whatsHappeningHolder,
-	scoreState: player[],
-	// <><><> Derivative values
-	players: player[],
-	vyingForPlace: number,
-}
+export default function DataDisplay(props: propsType) {
+	const { gameState, dispatch } = props;
 
-export default function DataDisplay(props: DataDisplayProps) {
-	// <><><> Dev mode stuff
-	const devMode = props.devMode; const toggleDevMode = props.toggleDevMode
-	// <><><> What's happening
-	const whatsHappening = props.whatsHappening;
-	const scoreState = props.scoreState;
-	const vyingForPlace = props.vyingForPlace;
+	// Situation
+	const { currentPlayerIndex,
+		currentPhase,
+		vyingForPlace,
+		playerList,
+		askedQuestions,
+		devMode } = gameState;
+	const currentPlayer = playerList[currentPlayerIndex];
 
-	// Icons
-	// const isOff = <IconButton aria-label='Search database' id="devModeToggle" icon={<SearchIcon />} onClick={() => toggleDevMode()} />
-	// const isOn = <IconButton aria-label="" id="devModeToggle" icon={<EditIcon />} onClick={() => toggleDevMode()} />
-
-
-	// <><><> Derivative values
-	const currentPlayerIndex = whatsHappening.currentPlayerIndex;
-	const currentPlayer = scoreState[currentPlayerIndex];
-
+	// Devmode
+	const toggleDevMode = () => dispatch({ type: 'toggleDevMode' });
 
 	return (
 		<Stack id="devModeBox">
-			<Stack id="specialControls" p={8} direction={{base:'column',sm:'row'}}>
+			<Stack id="specialControls" p={8} direction={{ base: 'column', sm: 'row' }}>
 				<ColorModeButton />
 				<Button id="devModeToggle" onClick={toggleDevMode}>
-					{devMode ? <>{"Development Mode is On"}</> : <>{"Development Mode is Off"}</>}
+					{devMode ? <>{"Dev Mode is On"}</> : <>{"Deve Mode is Off"}</>}
 				</Button>
 			</Stack>
 			{/* {If devMode is on, then return the text} */}
 			{devMode ? (<Box id="devData" whiteSpace={'normal'} maxWidth={'50%'}>
 				<UnorderedList>
-					<ListItem>Player: {currentPlayer.name}</ListItem>
-					<ListItem>Phase: {whatsHappening.currentPhase}</ListItem>
+					<ListItem>Player {currentPlayerIndex}: {currentPlayer.name}</ListItem>
+					<ListItem>Phase: {currentPhase}</ListItem>
 					<ListItem>Vying for place: {vyingForPlace}</ListItem>
 					<ListItem>'Needed to win' is set to 2 when in dev mode</ListItem>
-					<ListItem>Choosing a category with development mode on will hide the values of the answer choices and will instead display which is the correct choice.</ListItem>
+					<ListItem>Choosing a category with dev mode on will hide the values of the answer choices and will instead display which is the correct choice.</ListItem>
+					<ListItem>askedQuestions: {askedQuestions}</ListItem>
 				</UnorderedList>
 			</Box>) : null}
 		</Stack>)

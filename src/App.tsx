@@ -6,10 +6,10 @@ import { Box, Center, Heading, Image, Link, List, ListIcon, ListItem, Text, useC
 
 // <> Import my modules
 import { ExternalLinkIcon, QuestionIcon } from '@chakra-ui/icons';
-import GameBoard from "./components/Gameboard";
 import AppRow from "./components/helpers/appRow";
 import logoBlack from "/trivialEndeavorLogoBlack.svg";
 import logoWhite from "/trivialEndeavorLogoWhite.svg";
+import GameBoard from './components/gameboard';
 
 export default function App(): JSX.Element {
   // <> Do the thing

@@ -1,23 +1,17 @@
-import { shuffleArray } from "../helpers/routines";
 
+import { category, questionInternal } from "./queryTheTrivia";
+import { shuffleArray } from "./routines";
 
-export type categoryTag = string
-export type category = { key: string, queryTag: categoryTag, title: string, color: string }
 type questionFromAPI = {
     correctAnswer: string;
     incorrectAnswers: string[];
     category: string;
-    question: { text: string };
-}
-export type questionInternal = {
-    questionText: string | null, choices: string[],
-    correctAnswer: string | null,
-    correctIndex: number,
-    categoryTag: categoryTag
+    question: string;
 }
 
 // This should probably be done as a map or a map-like tuple
 export const categoryList: category[] = [
+    // <> FIXME <> These keys are probably no longer necessary
     { key: "00", queryTag: "none", title: "x", color: "black" },
     { key: "08", queryTag: "science", title: "Science", color: "green" },
     { key: "02", queryTag: "geography", title: "Geography", color: "blue" },
@@ -26,11 +20,10 @@ export const categoryList: category[] = [
     { key: "01", queryTag: "food_and_drink", title: "Food & Drink", color: "cyan" },
     { key: "05", queryTag: "sport_and_leisure", title: "Sport & Leisure", color: "orange" },
     { key: "07", queryTag: "music", title: "Music", color: "purple" },
-    { key: "06", queryTag: "film_and_tv", title: "Film & TV", color: "red" },
+    { key: "06", queryTag: "movies", title: "Film & TV", color: "red" },
 ]
 
-
-export async function getQuestion(categoryID: string, devMode: boolean): Promise<questionInternal> {
+export async function getQuestion(categoryID: string): Promise<questionInternal> {
     // ---------------------------------------------
     // <><> This stuff is all specific to this particualr API
     // ---------------------------------------------
@@ -38,7 +31,7 @@ export async function getQuestion(categoryID: string, devMode: boolean): Promise
         // ---------------------------------------------
         // <><> Send the query
         // ---------------------------------------------
-        const queryURL = `https://the-trivia-api.com/v2/questions?limit=1&categories=${categoryID}&difficulties=medium%2Chard`;
+        const queryURL = `https://the-trivia-api.com/api/questions?categories=${categoryID}&limit=1`;
         const response = await fetch(queryURL);
         const receivedQuestion: questionFromAPI[] = await response.json();
         // }
@@ -47,14 +40,14 @@ export async function getQuestion(categoryID: string, devMode: boolean): Promise
         // <><> Parse and return the result
         // ---------------------------------------------
         // The API returns an array of question objects.  Currently, I'm requesting these one at a time so I always use the first question
-        return parseReceivedQuestion(receivedQuestion[0],devMode);
+        return parseReceivedQuestion(receivedQuestion[0]);
     } catch (error) {
         console.error("Error encountered", (error as Error).message);
         throw error; // It's generally a good practice to rethrow errors in async functions.
     }
 }
 
-function parseReceivedQuestion(questionData: questionFromAPI,devMode: boolean): questionInternal {
+function parseReceivedQuestion(questionData: questionFromAPI): questionInternal {
 
     // console.log(`Parsing question`);
     // <> Parse the received question into the game's data structure
@@ -63,24 +56,23 @@ function parseReceivedQuestion(questionData: questionFromAPI,devMode: boolean): 
     const choicesCount = incorrectAnswers.length + 1
     shuffleArray(incorrectAnswers);
     const answerIndex = Math.floor(Math.random() * (choicesCount));
-    const choices: string[] = ["Incorrect Choice", "Incorrect Choice", "Incorrect Choice", "Incorrect Choice"]
-    if (!devMode) {
-        // choices[answerIndex] = questionData.correctAnswer;
-        for (let i = 0; i < choicesCount; i++) {
-            if (i === answerIndex) { choices[i] = questionData.correctAnswer; }
-            else {
-                const x = incorrectAnswers.pop()
-                if (x !== undefined) { choices[i] = x; }
-            }
+    const choices: string[] = ["", "", "", ""]
+    for (let i = 0; i < choicesCount; i++) {
+        if (i === answerIndex) { choices[i] = questionData.correctAnswer; }
+        else {
+            const x = incorrectAnswers.pop()
+            if (x !== undefined) { choices[i] = x; }
         }
-    } else { choices[answerIndex] = "Correct Choice" }
+    }
+
+    const categoryName: string = questionData.category;
     // This is where we get the category object from the list
     const category: category[] = categoryList.filter((categoryTemp) => {
-        return categoryTemp.queryTag === questionData.category;
+        return categoryTemp.title === categoryName;
     });
 
     return {
-        questionText: questionData.question.text,
+        questionText: questionData.question,
         choices: choices,
         correctAnswer: questionData.correctAnswer,
         correctIndex: answerIndex,

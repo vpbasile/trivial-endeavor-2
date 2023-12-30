@@ -1,3 +1,5 @@
+import { Heading } from "@chakra-ui/react";
+
 /**
 * Shuffles an array of four strings
 */
@@ -33,3 +35,5 @@ export function ordinal(number: number): "first" | "second" | "third" | "last" {
 * Returns a promise and sleeps
 */
 export function sleep(ms: number) { return new Promise(resolve => setTimeout(resolve, ms)); }
+
+export function wrapHeading(text: string) { return < Heading id='displayMessage' as='h2' whiteSpace={'normal'} > {text}</Heading > }
