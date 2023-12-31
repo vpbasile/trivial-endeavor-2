@@ -1,5 +1,5 @@
-import { Box, Heading } from "@chakra-ui/react";
-import { category } from "./queryTheTrivia";
+import { Heading } from "@chakra-ui/react";
+import { category } from "../gameReducer";
 import { newBreaks } from "./style";
 
 /**
@@ -38,7 +38,8 @@ export function ordinal(number: number): "first" | "second" | "third" | "last" {
 */
 export function sleep(ms: number) { return new Promise(resolve => setTimeout(resolve, ms)); }
 
-export function wrapHeading(text: string, colorScheme?: string) { return <Box bgColor={colorScheme} id='displayWrapper' p={8} borderRadius={'lg'} maxW={newBreaks}>< Heading id='displayMessage' as='h2' whiteSpace={'normal'} > {text}</Heading ></Box> }
+export function wrapHeading(text:string, color?: string) { return < Heading id='displayMessage' as='h2' whiteSpace={'normal'} color={color} borderRadius={'lg'} maxW={newBreaks}> {text}</Heading >
+     }
 
 //Return the category object given its queryTag
 export function getCategory(categoryList: category[], tag: string): category {

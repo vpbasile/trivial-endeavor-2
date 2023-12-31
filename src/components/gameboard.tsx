@@ -21,9 +21,7 @@ export default function GameBoard() {
 
     return (<ErrorBoundary fallback={<Box>Error in component AppRow</Box>}>
         <AppRow id="displayMessage">
-            <Box textAlign={'center'} id="messageDisplay" w={'100%'} p={10} borderRadius={'lg'}>
-                {displayMessage}
-            </Box>
+            {displayMessage}
         </AppRow>
         <Box id="gameBoardContainer" maxWidth={newBreaks}>
             <Collapse in={currentPhase === "Welcome"} unmountOnExit animateOpacity>
