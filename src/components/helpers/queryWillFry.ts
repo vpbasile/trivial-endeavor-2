@@ -76,6 +76,7 @@ function parseReceivedQuestion(questionData: questionFromAPI): questionInternal 
         choices: choices,
         correctAnswer: questionData.correctAnswer,
         correctIndex: answerIndex,
+        // FIXME: This is a hack.  I should probably just pass the category object around
         categoryTag: category[0].queryTag
     }
 }

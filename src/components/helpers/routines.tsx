@@ -1,4 +1,6 @@
-import { Heading } from "@chakra-ui/react";
+import { Box, Heading } from "@chakra-ui/react";
+import { category } from "./queryTheTrivia";
+import { newBreaks } from "./style";
 
 /**
 * Shuffles an array of four strings
@@ -36,4 +38,12 @@ export function ordinal(number: number): "first" | "second" | "third" | "last" {
 */
 export function sleep(ms: number) { return new Promise(resolve => setTimeout(resolve, ms)); }
 
-export function wrapHeading(text: string) { return < Heading id='displayMessage' as='h2' whiteSpace={'normal'} > {text}</Heading > }
+export function wrapHeading(text: string, colorScheme?: string) { return <Box bgColor={colorScheme} id='displayWrapper' p={8} borderRadius={'lg'} maxW={newBreaks}>< Heading id='displayMessage' as='h2' whiteSpace={'normal'} > {text}</Heading ></Box> }
+
+//Return the category object given its queryTag
+export function getCategory(categoryList: category[], tag: string): category {
+    const filteredList: category[] = categoryList.filter((categoryTemp) => {
+        return categoryTemp.queryTag === tag;
+    });
+    return filteredList[0];
+}

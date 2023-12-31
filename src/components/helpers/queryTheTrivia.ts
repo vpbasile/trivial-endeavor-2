@@ -1,8 +1,6 @@
+import { category, categoryTag } from "../gameReducer";
 import { shuffleArray } from "./routines";
 
-
-export type categoryTag = string
-export type category = { key: string, queryTag: categoryTag, title: string, color: string }
 type questionFromAPI = {
     correctAnswer: string;
     incorrectAnswers: string[];
@@ -75,16 +73,12 @@ function parseReceivedQuestion(questionData: questionFromAPI, devMode: boolean):
             }
         }
     } else { choices[answerIndex] = "Correct Choice" }
-    // This is where we get the category object from the list
-    const category: category[] = categoryList.filter((categoryTemp) => {
-        return categoryTemp.queryTag === questionData.category;
-    });
 
     return {
         questionText: questionData.question.text,
         choices: choices,
         correctAnswer: questionData.correctAnswer,
         correctIndex: answerIndex,
-        categoryTag: category[0].queryTag
+        categoryTag: questionData.category
     }
 }

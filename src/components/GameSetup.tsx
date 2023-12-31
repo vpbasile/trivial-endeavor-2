@@ -57,7 +57,7 @@ export default function GameSetup(props: propsType) {
 		<Button
 			textAlign={'left'}
 			leftIcon={<CheckIcon color={'green'} />}
-			onClick={() => { dispatch({ type: 'begin_game' }) }}>Begin Game</Button>
+			onClick={() => { dispatch({ type: 'phase_begin_game' }) }}>Begin Game</Button>
 
 	return (
 		<Box display={{ sm: 'flex' }}>

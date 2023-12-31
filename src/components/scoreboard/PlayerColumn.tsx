@@ -19,6 +19,7 @@ export default function PlayerColumn(props: playerColumnProps) {
 let colorScheme = 'gray';
 let isDisabled = props.isDisabled;
 
+// Winning players are yellow
 if (player.wonPlace) {
   colorScheme = 'yellow';
 } else if (player.index === gameState.currentPlayerIndex) {

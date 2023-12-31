@@ -31,7 +31,7 @@ export default function GameBoard() {
                     <GameSetup gameState={gameState} dispatch={dispatch} />
                 </Box>
             </Collapse>
-            <Collapse in={currentPhase === "Answer"} unmountOnExit animateOpacity>
+            <Collapse in={currentPhase === "Answer" || currentPhase === "Feedback"} unmountOnExit animateOpacity>
                 <AppRow id="question-row">
                     <QuestionDisplay key={"currentQuestion"} gameState={gameState} dispatch={dispatch} />
                 </AppRow>

@@ -1,6 +1,7 @@
 import { Box, Button } from "@chakra-ui/react";
 import { guessType, propsType } from "../gameReducer";
-import { categoryList, categoryTag, questionInternal } from "../helpers/queryTheTrivia";
+import { categoryList, questionInternal } from "../helpers/queryTheTrivia";
+import { handleGuess } from "./handleGuess";
 
 /**
  * Props for the AnswerButton component.
@@ -49,37 +50,10 @@ export default function AnswerButton(props: AnswerButtonProps) {
 				w={'100%'}
 				py={2}
 				isDisabled={isDisabled}
-				onClick={() => handleGuess(buttonIndex, currentPlayerIndex, questionCategoryTag, neededToWin)}
+				onClick={() => handleGuess(question, buttonIndex, gameState.playerList[currentPlayerIndex], questionCategoryTag, neededToWin, dispatch, gameState.devMode)}
 			>
 				{buttonText}
 			</Button>
 		</Box>
 	);
-	/**
-	 * Handles the player's guess.
-	 * @param guess - The index of the guessed answer.
-	 * @param currentPlayerIndex - The index of the current player.
-	 * @param category - The category of the question.
-	 * @param neededToWin - The number of points needed to win the game.
-	 */
-	function handleGuess(guess: number, currentPlayerIndex: number, category: categoryTag, neededToWin: number): void {
-		const correctIndex = question.correctIndex;
-		console.log(`${gameState.playerList[currentPlayerIndex].name} guessed choice ${guess}: ${question.choices[guess]}.`);
-		console.log(`The correct answer was ${correctIndex}: ${question.choices[correctIndex]}.`)
-		dispatch({ type: "set_guess_entered", payload: guess });
-		if (guess === correctIndex) {
-			// If the player guessed correctly, 
-			// add category to the player's score
-			dispatch({ type: "give_player_score", payload: { playerIndex: currentPlayerIndex, categoryTag: category } });
-			// If the player has enough points to win, set their place and move on to the next player
-			const playerScore = gameState.playerList[currentPlayerIndex].correctCategories.length;
-			if (playerScore >= neededToWin) {
-				dispatch({ type: "set_player_place", payload: { playerIndex: currentPlayerIndex, place: 1 } });
-				// Move on to the next player
-				// ...
-			}
-		}
-		// Otherwise, tell them they were correct and to wait for the next player
-		// ...
-	}
 }

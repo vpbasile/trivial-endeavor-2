@@ -1,19 +1,21 @@
 
 // Import ChakraUI elements
 import { Box, Center, Heading, Image, Link, List, ListIcon, ListItem, Text, useColorMode } from '@chakra-ui/react';
+import packageJson from '../package.json';
 
 // Import my utility modules and data structures
 
 // <> Import my modules
 import { ExternalLinkIcon, QuestionIcon } from '@chakra-ui/icons';
+import GameBoard from './components/gameboard';
 import AppRow from "./components/helpers/appRow";
 import logoBlack from "/trivialEndeavorLogoBlack.svg";
 import logoWhite from "/trivialEndeavorLogoWhite.svg";
-import GameBoard from './components/gameboard';
 
 export default function App(): JSX.Element {
   // <> Do the thing
   console.log(`Beginning rendering of Trivial Endeavor`);
+  console.log(`Version ${packageJson.version}`);
 
 
   const { colorMode } = useColorMode()
@@ -33,7 +35,7 @@ export default function App(): JSX.Element {
           <Box display={{ sm: 'flex' }}>
             <Center id="version">
               <Image id="app-logo" src={logo} alt="Trivial Endeavor logo" w='300px' borderRadius={'3xl'} p={5} px={10} />
-              <Text>Version 2.1</Text>
+              <Text>Version {packageJson.version}</Text>
             </Center>
             <Box id="links" justifyContent={'center'}>
               <Heading as="h3">Links</Heading>
