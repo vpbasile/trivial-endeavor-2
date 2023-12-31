@@ -1,3 +1,4 @@
+import { CheckCircleIcon, CloseIcon, QuestionOutlineIcon } from "@chakra-ui/icons";
 import { Box, Button } from "@chakra-ui/react";
 import { guessType, propsType } from "../gameReducer";
 import { categoryList, questionInternal } from "../helpers/queryTheTrivia";
@@ -23,6 +24,7 @@ export default function AnswerButton(props: AnswerButtonProps) {
 	const { gameState, dispatch } = props;
 	const currentPlayerIndex = gameState.currentPlayerIndex;
 	const question = props.question;
+	const guessEntered = props.guessEntered;
 
 	// If the question is null, the player has not selected a question yet
 	if (question === undefined) { return null; }
@@ -36,15 +38,27 @@ export default function AnswerButton(props: AnswerButtonProps) {
 	const buttonID = `choice-${buttonIndex}`;
 
 	let color = "gray";
-	if (gameState.guessEntered) {
+	if (guessEntered) {
 		if (buttonIndex === question.correctIndex) color = "green";
 		else color = "red";
+	}
+
+	// const buttonIcon = gameState.guessEntered ? (buttonIndex === question.correctIndex ? <CheckCircleIcon /> : <CloseIcon />) : <QuestionOutlineIcon />;
+
+	// If no guess has been enetere, display a question mark
+	let buttonIcon = <QuestionOutlineIcon />;
+	// If a guess has been entered, display a check mark or an x
+	if (guessEntered) {
+		if (buttonIndex === question.correctIndex) buttonIcon = <CheckCircleIcon />;
+		else buttonIcon = <CloseIcon />;
 	}
 
 	return (
 		<Box py={2}>
 			<Button
 				colorScheme={color}
+				leftIcon={buttonIcon}
+				rightIcon={buttonIcon}
 				id={buttonID}
 				whiteSpace={'normal'}
 				w={'100%'}

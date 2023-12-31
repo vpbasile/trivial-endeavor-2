@@ -46,7 +46,7 @@ export const initialGameState: gameStateType = {
     guessEntered: null,
     playerList: [newPlayer(0), newPlayer(1)],
     askedQuestions: [""],
-    devMode: true,
+    devMode: false,
 }
 
 
