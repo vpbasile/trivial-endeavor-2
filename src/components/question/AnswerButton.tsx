@@ -1,4 +1,3 @@
-import { CheckCircleIcon, CloseIcon, QuestionOutlineIcon } from "@chakra-ui/icons";
 import { Box, Button } from "@chakra-ui/react";
 import { guessType, propsType } from "../gameReducer";
 import { categoryList, questionInternal } from "../helpers/queryTheTrivia";
@@ -14,6 +13,8 @@ interface AnswerButtonProps extends propsType {
 	guessEntered: guessType; // The guess entered by the player
 	text: string; // The text displayed on the button
 	isDisabled: boolean; // Whether the button is disabled
+	icon?: JSX.Element; // The icon displayed on the button
+	colorOverride?: string; // The color of the button
 }
 
 /**
@@ -24,7 +25,10 @@ export default function AnswerButton(props: AnswerButtonProps) {
 	const { gameState, dispatch } = props;
 	const currentPlayerIndex = gameState.currentPlayerIndex;
 	const question = props.question;
-	const guessEntered = props.guessEntered;
+	const buttonIcon = props.icon;
+	const colorOverride = props.colorOverride;
+	// If the colorOverride prop is not undefined, use it. Otherwise, use gray
+	const color = colorOverride ? colorOverride : "gray";
 
 	// If the question is null, the player has not selected a question yet
 	if (question === undefined) { return null; }
@@ -37,21 +41,8 @@ export default function AnswerButton(props: AnswerButtonProps) {
 
 	const buttonID = `choice-${buttonIndex}`;
 
-	let color = "gray";
-	if (guessEntered) {
-		if (buttonIndex === question.correctIndex) color = "green";
-		else color = "red";
-	}
 
 	// const buttonIcon = gameState.guessEntered ? (buttonIndex === question.correctIndex ? <CheckCircleIcon /> : <CloseIcon />) : <QuestionOutlineIcon />;
-
-	// If no guess has been enetere, display a question mark
-	let buttonIcon = <QuestionOutlineIcon />;
-	// If a guess has been entered, display a check mark or an x
-	if (guessEntered) {
-		if (buttonIndex === question.correctIndex) buttonIcon = <CheckCircleIcon />;
-		else buttonIcon = <CloseIcon />;
-	}
 
 	return (
 		<Box py={2}>

@@ -29,7 +29,7 @@ export type gameStateType = {
     devMode: boolean,
 }
 
-export function nullQuestion(overrideCategory?: categoryTag): questionInternal { return { questionText: "What would a question look like if there were one?", choices: ["Just like the above", "With words much like the ones above", "Nothing like the below", "All of the above"], correctAnswer: "Just like the above", correctIndex: 0, categoryTag: overrideCategory || categoryList[0].queryTag } }
+export function nullQuestion(overrideCategory?: categoryTag): questionInternal { return { questionText: "What would a question look like if there were one?", choices: ["Correct answer", "With words much like the ones above", "Nothing like the below", "All of the above"], correctAnswer: "Correct answer", correctIndex: 0, categoryTag: overrideCategory || categoryList[0].queryTag } }
 const namesToUse = ["Agamemnon", "Boethius", "Charlemagne", "Donatello", "Euripides", "Fibonacci", "Genghis Khan", "Homer", "Isaac Newton", "Julius Caesar", "Kublai Khan", "Leonardo da Vinci", "Machiavelli", "Napoleon", "Ovid", "Plato", "Quintilian", "Raphael", "Socrates", "Thucydides", "Ulysses", "Virgil", "William Shakespeare", "Xenophon", "Yoda", "Zeno of Citium"]
 function newPlayer(playerIndex: number) {
     return {
@@ -116,6 +116,7 @@ export default function gameReducer(state: gameStateType, action: GameAction): g
         }
         // Question actions
         case "player_win": {
+            // <><> FIXME Win condition is not working
             const { playerIndex } = action.payload;
             const winningPlayer = state.playerList[playerIndex];
             const vyingForPlace = state.vyingForPlace;

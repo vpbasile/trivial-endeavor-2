@@ -3,8 +3,7 @@ import { GameAction, category, nullQuestion } from "../gameReducer";
 import { getQuestion } from "../helpers/queryTheTrivia";
 
 export const newQuestion = async (category: category, devMode: boolean, dispatch: Dispatch<GameAction>) => {
-    // Update the UI
-    const categoryTitle = category.title;
+    // Update the UI to indicate that we're fetching a new question
     dispatch({ type: "phase_get_question" })
     // Clear the question while we wait for the API to respond
 
