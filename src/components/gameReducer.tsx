@@ -27,6 +27,7 @@ export type gameStateType = {
     playerList: player[],
     askedQuestions: string[],
     devMode: boolean,
+    neededToWin: number,
 }
 
 export function nullQuestion(overrideCategory?: categoryTag): questionInternal { return { questionText: "What would a question look like if there were one?", choices: ["Correct answer", "With words much like the ones above", "Nothing like the below", "All of the above"], correctAnswer: "Correct answer", correctIndex: 0, categoryTag: overrideCategory || categoryList[0].queryTag } }
@@ -37,6 +38,7 @@ function newPlayer(playerIndex: number) {
         correctCategories: [], wonPlace: 0
     };
 }
+
 export const initialGameState: gameStateType = {
     currentPhase: "Welcome",
     currentPlayerIndex: 0,
@@ -47,6 +49,7 @@ export const initialGameState: gameStateType = {
     playerList: [newPlayer(0), newPlayer(1)],
     askedQuestions: [""],
     devMode: false,
+    neededToWin: categoryList.length,
 }
 
 
@@ -85,9 +88,10 @@ export default function gameReducer(state: gameStateType, action: GameAction): g
             // Remove the last player in the playerList array
             return { ...state, playerList: [...state.playerList.slice(0, (state.playerList.length - 1))] };
         case "toggle_dev_mode": {
-            const newValue = state.devMode ? false : true;
-            newValue ? console.log("Dev mode is now off") : console.log("Dev mode is now on")
-            return { ...state, devMode: newValue };
+            const devMode = state.devMode ? false : true;
+            devMode ? console.log("Dev mode is now off") : console.log("Dev mode is now on")
+            const neededToWin = devMode ? 2 : categoryList.length;
+            return { ...state, devMode, neededToWin };
         }
         // Game flow actions
         case "phase_begin_game":
@@ -97,8 +101,8 @@ export default function gameReducer(state: gameStateType, action: GameAction): g
         case "phase_next_player": {
             const gameState = state;
             const currentPlayerIndex = gameState.currentPlayerIndex;
-            const neededToWin = gameState.devMode ? 2 : categoryList.length;
-            const whichPlayer = nextPlayer(gameState.playerList.length, currentPlayerIndex, neededToWin, gameState.playerList);
+            const whichPlayer = nextPlayer(gameState.playerList.length, currentPlayerIndex, gameState.neededToWin, gameState.playerList);
+            console.log(`It is now ${gameState.playerList[whichPlayer].name}'s turn.`)
             // Upate the current phase to select and the current player index to the next player
             return { ...state, currentPhase: "Select", currentPlayerIndex: whichPlayer, guessEntered: null, displayMessage: wrapHeading(`${state.playerList[whichPlayer].name}, select a question!`) };
         }
@@ -115,6 +119,23 @@ export default function gameReducer(state: gameStateType, action: GameAction): g
             return { ...state, guessEntered: guess, currentPhase: "Feedback", displayMessage: message };
         }
         // Question actions
+        case "give_player_score": {
+
+            // <> FIXME This is not working - it is double adding the category on the subsequest turn
+            const { playerIndex, categoryTag } = action.payload;
+            // If the player has not already gotten this category
+            // if (state.playerList[playerIndex].correctCategories.includes(categoryTag)) {
+            //     console.log("Player has already gotten this category");
+            //     return state;
+            // }
+            const updatedPlayerList = [...state.playerList];
+            const updatedPlayer = { ...updatedPlayerList[playerIndex] };
+            updatedPlayer.correctCategories.push(categoryTag);
+            updatedPlayerList[playerIndex] = updatedPlayer;
+            console.log(`${updatedPlayer.name} has gotten the ${categoryTag} category!`, `They now have ${updatedPlayer.correctCategories.length} points out of ${state.neededToWin} needed to win.`);
+            console.log(`Their list of correct categories is now: ${updatedPlayer.correctCategories}`)
+            return { ...state, playerList: updatedPlayerList };
+        }
         case "player_win": {
             // <><> FIXME Win condition is not working
             const { playerIndex } = action.payload;
@@ -124,19 +145,6 @@ export default function gameReducer(state: gameStateType, action: GameAction): g
             winningPlayer.wonPlace = vyingForPlace;
             // Increment the vyingForPlace counter and update the winning players wonPlace
             return { ...state, vyingForPlace: vyingForPlace + 1, playerList: [...state.playerList] };
-        }
-        case "give_player_score": {
-            const { playerIndex, categoryTag } = action.payload;
-            // If the player has not already gotten this category
-            if (state.playerList[playerIndex].correctCategories.includes(categoryTag)) {
-                console.log("Player has already gotten this category");
-                return state;
-            }
-            const updatedPlayerList = [...state.playerList];
-            const updatedPlayer = { ...updatedPlayerList[playerIndex] };
-            updatedPlayer.correctCategories.push(categoryTag);
-            updatedPlayerList[playerIndex] = updatedPlayer;
-            return { ...state, playerList: updatedPlayerList };
         }
         case "SETaskedQuestions":
             return { ...state, askedQuestions: action.payload };

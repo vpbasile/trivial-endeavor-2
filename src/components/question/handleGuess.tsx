@@ -13,13 +13,14 @@ import { sleep, wrapHeading } from "../helpers/routines";
 export function handleGuess(question: questionInternal, guess: number, player: player, category: categoryTag, neededToWin: number, dispatch: Dispatch<GameAction>, devMode?:boolean): void {
     const correctIndex = question.correctIndex;
     console.log(`${player.name} guessed choice ${guess}: ${question.choices[guess]}.`);
+    const score = player.correctCategories.length
     if (guess === correctIndex) {
         // If the player guessed correctly, 
         console.log("That is correct!");
         dispatch({ type: "phase_feedback", payload: { guess, message: wrapHeading('Correct!') } });
         dispatch({ type: "give_player_score", payload: { playerIndex: player.index, categoryTag: category } });
         // If the player has enough points to win, set their place and move on to the next player
-        if (player.correctCategories.length >= neededToWin) {
+        if (score >= neededToWin) {
             dispatch({ type: "player_win", payload: { playerIndex: player.index } });
         }
     } else {

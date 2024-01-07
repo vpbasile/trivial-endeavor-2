@@ -37,7 +37,7 @@ export default function AnswerButton(props: AnswerButtonProps) {
 	const buttonText = props.text;
 	const questionCategoryTag = question.categoryTag;
 	const isDisabled = props.isDisabled;
-	const neededToWin = gameState.devMode ? 2 : categoryList.length;
+	const neededToWin = gameState.neededToWin;
 
 	const buttonID = `choice-${buttonIndex}`;
 
