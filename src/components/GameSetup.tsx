@@ -36,8 +36,8 @@ export default function GameSetup(props: propsType) {
 	const rosterMaxed: boolean = playerCount < 4
 	const rosterMinnd: boolean = playerList.length === 1;
 
-	const addTeam = () => dispatch({ type: 'add_player', payload: playerCount + 1 });
-	const removeTeam = () => dispatch({ type: 'remove_player', payload: playerCount - 1 });
+	const addTeam = () => dispatch({ type: 'add_player' });
+	const removeTeam = () => dispatch({ type: 'remove_player' });
 
 	const addButton =
 		<Button

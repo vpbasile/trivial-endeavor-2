@@ -1,5 +1,6 @@
 
-import { category, questionInternal } from "./queryTheTrivia";
+import { category } from "../gameReducer";
+import { questionInternal } from "./queryTheTrivia";
 import { shuffleArray } from "./routines";
 
 type questionFromAPI = {
