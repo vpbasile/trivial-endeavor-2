@@ -7,6 +7,7 @@ vpbasile/trivial-endeavor-2 is built on the following main stack:
 - [JavaScript](https://developer.mozilla.org/en-US/docs/Web/JavaScript) – Languages
 - [TypeScript](http://www.typescriptlang.org) – Languages
 - [ESLint](http://eslint.org/) – Code Review
+- [Vite](https://vitejs.dev/) – JS Build Tools / JS Task Runners
 
 Full tech stack [here](/techstack.md)
 
@@ -20,6 +21,7 @@ vpbasile/trivial-endeavor-2 is built on the following main stack:
 - <img width='25' height='25' src='https://img.stackshare.io/service/1209/javascript.jpeg' alt='JavaScript'/> [JavaScript](https://developer.mozilla.org/en-US/docs/Web/JavaScript) – Languages
 - <img width='25' height='25' src='https://img.stackshare.io/service/1612/bynNY5dJ.jpg' alt='TypeScript'/> [TypeScript](http://www.typescriptlang.org) – Languages
 - <img width='25' height='25' src='https://img.stackshare.io/service/3337/Q4L7Jncy.jpg' alt='ESLint'/> [ESLint](http://eslint.org/) – Code Review
+- <img width='25' height='25' src='https://img.stackshare.io/service/21547/default_1aeac791cde11ff66cc0b20dcc6144eeb185c905.png' alt='Vite'/> [Vite](https://vitejs.dev/) – JS Build Tools / JS Task Runners
 
 Full tech stack [here](/techstack.md)
 
@@ -30,7 +32,7 @@ Full tech stack [here](/techstack.md)
 # Tech Stack File
 ![](https://img.stackshare.io/repo.svg "repo") [vpbasile/trivial-endeavor-2](https://github.com/vpbasile/trivial-endeavor-2)![](https://img.stackshare.io/public_badge.svg "public")
 <br/><br/>
-|14<br/>Tools used|01/05/24 <br/>Report generated|
+|17<br/>Tools used|01/11/24 <br/>Report generated|
 |------|------|
 </div>
 
@@ -68,7 +70,7 @@ Full tech stack [here](/techstack.md)
 </tr>
 </table>
 
-## <img src='https://img.stackshare.io/devops.svg'/> DevOps (3)
+## <img src='https://img.stackshare.io/devops.svg'/> DevOps (4)
 <table><tr>
   <td align='center'>
   <img width='36' height='36' src='https://img.stackshare.io/service/3337/Q4L7Jncy.jpg' alt='ESLint'>
@@ -87,6 +89,14 @@ Full tech stack [here](/techstack.md)
 </td>
 
 <td align='center'>
+  <img width='36' height='36' src='https://img.stackshare.io/service/21547/default_1aeac791cde11ff66cc0b20dcc6144eeb185c905.png' alt='Vite'>
+  <br>
+  <sub><a href="https://vitejs.dev/">Vite</a></sub>
+  <br>
+  <sub></sub>
+</td>
+
+<td align='center'>
   <img width='36' height='36' src='https://img.stackshare.io/service/1120/lejvzrnlpb308aftn31u.png' alt='npm'>
   <br>
   <sub><a href="https://www.npmjs.com/">npm</a></sub>
@@ -98,9 +108,9 @@ Full tech stack [here](/techstack.md)
 </table>
 
 
-## <img src='https://img.stackshare.io/group.svg' /> Open source packages (8)</h2>
+## <img src='https://img.stackshare.io/group.svg' /> Open source packages (10)</h2>
 
-## <img width='24' height='24' src='https://img.stackshare.io/service/1120/lejvzrnlpb308aftn31u.png'/> npm (8)
+## <img width='24' height='24' src='https://img.stackshare.io/service/1120/lejvzrnlpb308aftn31u.png'/> npm (10)
 
 |NAME|VERSION|LAST UPDATED|LAST UPDATED BY|LICENSE|VULNERABILITIES|
 |:------|:------|:------|:------|:------|:------|
@@ -112,6 +122,8 @@ Full tech stack [here](/techstack.md)
 |[eslint-plugin-react-hooks](https://www.npmjs.com/eslint-plugin-react-hooks)|v4.6.0|09/15/23|Vincent Basile |MIT|N/A|
 |[gh-pages](https://www.npmjs.com/gh-pages)|v6.0.0|09/16/23|Vincent Basile |MIT|N/A|
 |[react-dom](https://www.npmjs.com/react-dom)|v18.2.0|09/15/23|Vincent Basile |MIT|N/A|
+|[react-error-boundary](https://www.npmjs.com/react-error-boundary)|v4.0.11|09/15/23|Vincent Basile |N/A|N/A|
+|[vite](https://www.npmjs.com/vite)|v4.4.9|09/15/23|Vincent Basile |N/A|[CVE-2023-49293](https://github.com/advisories/GHSA-92r3-m2mg-pj97) (Moderate)|
 
 <br/>
 <div align='center'>
