@@ -3,9 +3,9 @@
 ## Tech Stack
 vpbasile/trivial-endeavor-2 is built on the following main stack:
 
-- [React](https://reactjs.org/) – Javascript UI Libraries
 - [JavaScript](https://developer.mozilla.org/en-US/docs/Web/JavaScript) – Languages
 - [TypeScript](http://www.typescriptlang.org) – Languages
+- [React](https://reactjs.org/) – Javascript UI Libraries
 - [ESLint](http://eslint.org/) – Code Review
 - [Vite](https://vitejs.dev/) – JS Build Tools / JS Task Runners
 
@@ -17,9 +17,9 @@ Full tech stack [here](/techstack.md)
 ## Tech Stack
 vpbasile/trivial-endeavor-2 is built on the following main stack:
 
-- <img width='25' height='25' src='https://img.stackshare.io/service/1020/OYIaJ1KK.png' alt='React'/> [React](https://reactjs.org/) – Javascript UI Libraries
 - <img width='25' height='25' src='https://img.stackshare.io/service/1209/javascript.jpeg' alt='JavaScript'/> [JavaScript](https://developer.mozilla.org/en-US/docs/Web/JavaScript) – Languages
 - <img width='25' height='25' src='https://img.stackshare.io/service/1612/bynNY5dJ.jpg' alt='TypeScript'/> [TypeScript](http://www.typescriptlang.org) – Languages
+- <img width='25' height='25' src='https://img.stackshare.io/service/1020/OYIaJ1KK.png' alt='React'/> [React](https://reactjs.org/) – Javascript UI Libraries
 - <img width='25' height='25' src='https://img.stackshare.io/service/3337/Q4L7Jncy.jpg' alt='ESLint'/> [ESLint](http://eslint.org/) – Code Review
 - <img width='25' height='25' src='https://img.stackshare.io/service/21547/default_1aeac791cde11ff66cc0b20dcc6144eeb185c905.png' alt='Vite'/> [Vite](https://vitejs.dev/) – JS Build Tools / JS Task Runners
 
@@ -32,7 +32,7 @@ Full tech stack [here](/techstack.md)
 # Tech Stack File
 ![](https://img.stackshare.io/repo.svg "repo") [vpbasile/trivial-endeavor-2](https://github.com/vpbasile/trivial-endeavor-2)![](https://img.stackshare.io/public_badge.svg "public")
 <br/><br/>
-|17<br/>Tools used|01/11/24 <br/>Report generated|
+|17<br/>Tools used|02/29/24 <br/>Report generated|
 |------|------|
 </div>
 
@@ -123,7 +123,7 @@ Full tech stack [here](/techstack.md)
 |[gh-pages](https://www.npmjs.com/gh-pages)|v6.0.0|09/16/23|Vincent Basile |MIT|N/A|
 |[react-dom](https://www.npmjs.com/react-dom)|v18.2.0|09/15/23|Vincent Basile |MIT|N/A|
 |[react-error-boundary](https://www.npmjs.com/react-error-boundary)|v4.0.11|09/15/23|Vincent Basile |N/A|N/A|
-|[vite](https://www.npmjs.com/vite)|v4.4.9|09/15/23|Vincent Basile |N/A|[CVE-2023-49293](https://github.com/advisories/GHSA-92r3-m2mg-pj97) (Moderate)|
+|[vite](https://www.npmjs.com/vite)|v4.4.9|09/15/23|Vincent Basile |N/A|[CVE-2024-23331](https://github.com/advisories/GHSA-c24v-8rfc-w8vw) (High)<br/>[CVE-2023-49293](https://github.com/advisories/GHSA-92r3-m2mg-pj97) (Moderate)|
 
 <br/>
 <div align='center'>
