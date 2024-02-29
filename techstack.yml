@@ -2,7 +2,7 @@ repo_name: vpbasile/trivial-endeavor-2
 report_id: 59b6f3a9b6e8865f960c79a649c0a795
 version: 0.1
 repo_type: Public
-timestamp: '2024-01-11T12:27:59+00:00'
+timestamp: '2024-02-29T18:12:22+00:00'
 requested_by: vpbasile
 provider: github
 branch: main
@@ -231,6 +231,13 @@ tools:
   last_updated_by: Vincent Basile
   last_updated_on: 2023-09-15 22:51:01.000000000 Z
   vulnerabilities:
+  - name: Vite dev server option `server.fs.deny` can be bypassed when hosted on case-insensitive
+      filesystem
+    cve_id: CVE-2024-23331
+    cve_url: https://github.com/advisories/GHSA-c24v-8rfc-w8vw
+    detected_date: Jan 20
+    severity: high
+    first_patched: 4.5.2
   - name: Vite XSS vulnerability in `server.transformIndexHtml` via URL payload
     cve_id: CVE-2023-49293
     cve_url: https://github.com/advisories/GHSA-92r3-m2mg-pj97
