@@ -7,7 +7,7 @@
  */
 import { Dispatch } from "react";
 import { categoryList, questionInternal } from "./helpers/queryTheTrivia";
-import { getCategory, wrapHeading } from "./helpers/routines";
+import { getCategory, ordinal, wrapHeading } from "./helpers/routines";
 
 export type categoryTag = string
 export type category = { key: string, queryTag: categoryTag, title: string, color: string }
@@ -34,10 +34,12 @@ export function nullQuestion(overrideCategory?: categoryTag): questionInternal {
 const namesToUse = ["Agamemnon", "Boethius", "Charlemagne", "Donatello", "Euripides", "Fibonacci", "Genghis Khan", "Homer", "Isaac Newton", "Julius Caesar", "Kublai Khan", "Leonardo da Vinci", "Machiavelli", "Napoleon", "Ovid", "Plato", "Quintilian", "Raphael", "Socrates", "Thucydides", "Ulysses", "Virgil", "William Shakespeare", "Xenophon", "Yoda", "Zeno of Citium"]
 function newPlayer(playerIndex: number) {
     return {
-        index: playerIndex, key: playerIndex, name: namesToUse[Math.floor(Math.random() * namesToUse.length)],
+        index: playerIndex, key: playerIndex, name: namesToUse.shift() || "Player" + playerIndex,
         correctCategories: [], wonPlace: 0
     };
 }
+
+const devModeDefault = false;
 
 export const initialGameState: gameStateType = {
     currentPhase: "Welcome",
@@ -48,8 +50,8 @@ export const initialGameState: gameStateType = {
     guessEntered: null,
     playerList: [newPlayer(0), newPlayer(1)],
     askedQuestions: [""],
-    devMode: false,
-    neededToWin: categoryList.length,
+    devMode: devModeDefault,
+    neededToWin: devModeDefault ? 2 : categoryList.length,
 }
 
 
@@ -67,9 +69,9 @@ export type GameAction =
     { type: "phase_answer_question", payload: questionInternal } |
     { type: "phase_feedback", payload: { guess: guessType, message: JSX.Element } } |
     // Question actions
-    { type: "give_player_score", payload: { playerIndex: number, categoryTag: string } } | // Payload is the player index for the player who is scoring and categoryTag for the category they are scoring
+    { type: "give_player_token", payload: { playerIndex: number, categoryTag: string } } | // Payload is the player index for the player who is scoring and categoryTag for the category they are scoring
     // Are these two actions redundant?
-    { type: "player_win", payload: { playerIndex: number } } |
+    { type: "give_player_medal", payload: { playerIndex: number } } |
     { type: "clear_question" } |
     { type: "SETaskedQuestions", payload: string[] } // Payload is the id of the new question to add to the list
 
@@ -96,9 +98,11 @@ export default function gameReducer(state: gameStateType, action: GameAction): g
         // Game flow actions
         case "phase_begin_game":
             // Begin the game
-            console.log("Beginning the game");
+            console.log("-Begin phase_begin_game-");
             return { ...state, currentPhase: "Select", currentPlayerIndex: 0, displayMessage: wrapHeading(`${state.playerList[0].name}, select a question to begin!`) };
         case "phase_next_player": {
+            // Move on to the next player
+            console.log("-wBegin phase_next_player-");
             const gameState = state;
             const currentPlayerIndex = gameState.currentPlayerIndex;
             const whichPlayer = nextPlayer(gameState.playerList.length, currentPlayerIndex, gameState.neededToWin, gameState.playerList);
@@ -106,45 +110,54 @@ export default function gameReducer(state: gameStateType, action: GameAction): g
             // Upate the current phase to select and the current player index to the next player
             return { ...state, currentPhase: "Select", currentPlayerIndex: whichPlayer, guessEntered: null, displayMessage: wrapHeading(`${state.playerList[whichPlayer].name}, select a question!`) };
         }
-        case "phase_get_question": return { ...state, currentPhase: "Question", currentQuestion: nullQuestion(), displayMessage: wrapHeading(`Please wait`) };
+        case "phase_get_question": {
+            // Get a question of the selected category for the current player
+            console.log("-Begin phase_get_question-");
+            return { ...state, currentPhase: "Question", currentQuestion: nullQuestion(), displayMessage: wrapHeading(`Please wait`) };
+        }
         case "phase_answer_question": {
+            // Display the choices
+            console.log("-Begin phase_answer_question-");
             const question = action.payload;
             const categoryTag = question.categoryTag;
             const category = getCategory(categoryList, categoryTag);
             return { ...state, currentPhase: "Answer", currentQuestion: question, displayMessage: wrapHeading(category.title, category.color) };
         }
         case "phase_feedback": {
+            // Display the feedback
+            console.log("-Begin phase_feedback-");
             const { guess, message } = action.payload;
             // Enable the next player button
+            console.log("-Begin phase_feedback-");
             return { ...state, guessEntered: guess, currentPhase: "Feedback", displayMessage: message };
         }
         // Question actions
-        case "give_player_score": {
-
+        case "give_player_token": {
             // <> FIXME This is not working - it is double adding the category on the subsequest turn
             const { playerIndex, categoryTag } = action.payload;
-            // If the player has not already gotten this category
-            // if (state.playerList[playerIndex].correctCategories.includes(categoryTag)) {
-            //     console.log("Player has already gotten this category");
-            //     return state;
-            // }
             const updatedPlayerList = [...state.playerList];
             const updatedPlayer = { ...updatedPlayerList[playerIndex] };
-            updatedPlayer.correctCategories.push(categoryTag);
+            if (!updatedPlayer.correctCategories.includes(categoryTag)) updatedPlayer.correctCategories.push(categoryTag);
             updatedPlayerList[playerIndex] = updatedPlayer;
-            console.log(`${updatedPlayer.name} has gotten the ${categoryTag} category!`, `They now have ${updatedPlayer.correctCategories.length} points out of ${state.neededToWin} needed to win.`);
+            const message = `${updatedPlayer.name} has gotten the ${categoryTag} category! They now have ${updatedPlayer.correctCategories.length} points out of ${state.neededToWin} needed to win.`
+            console.log(message);
+            // FIXME - This is not working - it is double adding the category on the subsequent turn
             console.log(`Their list of correct categories is now: ${updatedPlayer.correctCategories}`)
-            return { ...state, playerList: updatedPlayerList };
+            console.log("-Begin phase_feedback-");
+            return { ...state, playerList: updatedPlayerList, displayMessage: wrapHeading(message), currentPhase: "Feedback"};
         }
-        case "player_win": {
+        case "give_player_medal": {
             // <><> FIXME Win condition is not working
             const { playerIndex } = action.payload;
             const winningPlayer = state.playerList[playerIndex];
             const vyingForPlace = state.vyingForPlace;
-            console.log(`${winningPlayer.name} has gotten enough points!`)
+            const message = `${winningPlayer.name} wins ${ordinal(vyingForPlace)} place!`;
+            // This is displaying the correct place
+            console.log(message)
             winningPlayer.wonPlace = vyingForPlace;
             // Increment the vyingForPlace counter and update the winning players wonPlace
-            return { ...state, vyingForPlace: vyingForPlace + 1, playerList: [...state.playerList] };
+            console.log("-Begin phase_feedback-");
+            return { ...state, vyingForPlace: (vyingForPlace + 1), playerList: [...state.playerList], displayMessage: wrapHeading(message), currentPhase: "Feedback"};
         }
         case "SETaskedQuestions":
             return { ...state, askedQuestions: action.payload };
