@@ -1,7 +1,7 @@
 import { Dispatch } from "react";
 import { GameAction, categoryTag, player } from "../gameReducer";
 import { questionInternal } from "../helpers/queryTheTrivia";
-import { sleep, wrapHeading } from "../helpers/routines";
+import { wrapHeading } from "../helpers/routines";
 
 /**
  * Handles the player's guess.
@@ -40,9 +40,9 @@ export function handleGuess(question: questionInternal, guess: number, player: p
         dispatch({ type: "phase_feedback", payload: { guess, message: wrapHeading(message) } });
     }
     // If we're not in devmode, then wait 5 seconds before moving on to the next player
-    if (!devMode) {
-        sleep(5000).then(() => {
-            dispatch({ type: "phase_next_player" });
-        }); // Wait 5 seconds before moving on to the next player
-    }
+    // if (!devMode) {
+    //     sleep(5000).then(() => {
+    //         dispatch({ type: "phase_next_player" });
+    //     }); // Wait 5 seconds before moving on to the next player
+    // }
 }

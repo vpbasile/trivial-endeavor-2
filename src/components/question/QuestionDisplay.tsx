@@ -3,6 +3,7 @@ import { Box, Heading } from "@chakra-ui/react";
 import { propsType } from "../gameReducer";
 import { newBreaks } from "../helpers/style";
 import AnswerButton from "./AnswerButton";
+import NextTurnButton from "./NextTurnButton";
 
 export default function QuestionDisplay(props: propsType): JSX.Element | null {
 	// Cache the props
@@ -16,8 +17,6 @@ export default function QuestionDisplay(props: propsType): JSX.Element | null {
 
 	// Make answer buttons
 	let buttonIndex = -1;
-
-
 
 	function answerButtons() {
 		switch (gameState.currentPhase) {
@@ -57,7 +56,7 @@ export default function QuestionDisplay(props: propsType): JSX.Element | null {
 					<AnswerButton
 						key={buttonIndex}
 						index={buttonIndex}
-						text={choice}	
+						text={choice}
 						isDisabled={true}
 						question={currentQuestion}
 						guessEntered={guessEntered}
@@ -72,6 +71,7 @@ export default function QuestionDisplay(props: propsType): JSX.Element | null {
 	return (
 		// FIXME Need to have a way to give this box the color of the current category
 		<Box id="questionWrapper">
+			{(gameState.currentPhase === "Feedback") && <NextTurnButton gameState={gameState} dispatch={dispatch} />}
 			<Heading id="display-question" bg={'gray.500'} p={8} borderRadius={'lg'} maxW={newBreaks}>{currentQuestion.questionText}</Heading>
 			<Box id="buttonWrapper" p={2}>{answerButtons()}</Box>
 		</Box>
