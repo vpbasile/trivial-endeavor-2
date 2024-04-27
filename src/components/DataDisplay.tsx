@@ -27,7 +27,6 @@ export default function DataDisplay(props: propsType) {
 			</Stack>
 			{/* {If devMode is on, then return the text} */}
 			{devMode ? (<Box id="devData" whiteSpace={'normal'} maxWidth={'50%'}>
-				<Button onClick={() => dispatch({ type: 'phase_next_player' })} isDisabled={currentPhase !== "Feedback"}>Next Player</Button>
 				<Heading as={'h3'}>gameState values:</Heading>
 				<UnorderedList>
 					<ListItem>Phase: {currentPhase}</ListItem>

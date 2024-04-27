@@ -5,9 +5,10 @@
  *
  * @packageDocumentation
  */
+import { VStack } from "@chakra-ui/react";
 import { Dispatch } from "react";
 import { categoryList, questionInternal } from "./helpers/queryTheTrivia";
-import { getCategory, ordinal, wrapHeading } from "./helpers/routines";
+import { getCategory, ordinal, winnerColor, wrapHeading } from "./helpers/routines";
 
 export type categoryTag = string
 export type category = { key: string, queryTag: categoryTag, title: string, color: string }
@@ -20,6 +21,7 @@ export type situationHolder = { phase: gamePhase, currentPlayerIndex: number }
 export type gameStateType = {
     currentPhase: gamePhase,
     currentPlayerIndex: number,
+    playerIndicator: string,
     displayMessage: JSX.Element,
     currentQuestion: questionInternal,
     vyingForPlace: number,
@@ -39,16 +41,17 @@ function newPlayer(playerIndex: number) {
     };
 }
 
-const devModeDefault = false;
+const devModeDefault = true;
 
 export const initialGameState: gameStateType = {
     currentPhase: "Welcome",
     currentPlayerIndex: 0,
+    playerIndicator: "Player 0",
     displayMessage: wrapHeading("Welcome! You can play with up to 4 teams."),
     currentQuestion: nullQuestion(),
     vyingForPlace: 1,
     guessEntered: null,
-    playerList: [newPlayer(0), newPlayer(1)],
+    playerList: [newPlayer(0), newPlayer(1), newPlayer(2), newPlayer(3)],
     askedQuestions: [""],
     devMode: devModeDefault,
     neededToWin: devModeDefault ? 2 : categoryList.length,
@@ -63,11 +66,11 @@ export type GameAction =
     { type: "remove_player" } | // Payload is the player index to be removed
     { type: "toggle_dev_mode" } |
     // Game flow actions
-    { type: "phase_begin_game" } |
-    { type: "phase_next_player" } | // Payload is the player index for the next player
-    { type: "phase_get_question" } |
-    { type: "phase_answer_question", payload: questionInternal } |
-    { type: "phase_feedback", payload: { guess: guessType, message: JSX.Element } } |
+    { type: "phase_1_begin_game" } |
+    { type: "phase_5_next_player" } | // Payload is the player index for the next player
+    { type: "phase_2_get_question" } |
+    { type: "phase_3_answer_question", payload: { question: questionInternal, playerIndex: number } } |
+    { type: "phase_4_feedback", payload: { guess: guessType, message: JSX.Element } } |
     // Question actions
     { type: "give_player_token", payload: { playerIndex: number, categoryTag: string } } | // Payload is the player index for the player who is scoring and categoryTag for the category they are scoring
     // Are these two actions redundant?
@@ -83,12 +86,15 @@ export default function gameReducer(state: gameStateType, action: GameAction): g
         // Setup actions
         case "add_player": {
             // Add another player to the playerList array
-            const newPlayerIndex = state.playerList.length;
-            return { ...state, playerList: [...state.playerList, newPlayer(newPlayerIndex)] };
+            const { playerList } = state;
+            const newPlayerIndex = playerList.length;
+            return { ...state, playerList: [...playerList, newPlayer(newPlayerIndex)] };
         }
-        case "remove_player":
+        case "remove_player": {
             // Remove the last player in the playerList array
-            return { ...state, playerList: [...state.playerList.slice(0, (state.playerList.length - 1))] };
+            const { playerList } = state;
+            return { ...state, playerList: [...playerList.slice(0, (playerList.length - 1))] };
+        }
         case "toggle_dev_mode": {
             const devMode = state.devMode ? false : true;
             devMode ? console.log("Dev mode is now off") : console.log("Dev mode is now on")
@@ -96,43 +102,52 @@ export default function gameReducer(state: gameStateType, action: GameAction): g
             return { ...state, devMode, neededToWin };
         }
         // Game flow actions
-        case "phase_begin_game":
+        case "phase_1_begin_game":
             // Begin the game
-            console.log("-Begin phase_begin_game-");
-            return { ...state, currentPhase: "Select", currentPlayerIndex: 0, displayMessage: wrapHeading(`${state.playerList[0].name}, select a question to begin!`) };
-        case "phase_next_player": {
-            // Move on to the next player
-            console.log("-wBegin phase_next_player-");
-            const gameState = state;
-            const currentPlayerIndex = gameState.currentPlayerIndex;
-            const whichPlayer = nextPlayer(gameState.playerList.length, currentPlayerIndex, gameState.neededToWin, gameState.playerList);
-            console.log(`It is now ${gameState.playerList[whichPlayer].name}'s turn.`)
-            // Upate the current phase to select and the current player index to the next player
-            return { ...state, currentPhase: "Select", currentPlayerIndex: whichPlayer, guessEntered: null, displayMessage: wrapHeading(`${state.playerList[whichPlayer].name}, select a question!`) };
-        }
-        case "phase_get_question": {
+            console.log("-Begin phase_1_begin_game-");
+            return { ...state, currentPhase: "Select", currentPlayerIndex: 0, playerIndicator: state.playerList[0].name, displayMessage: wrapHeading(`Select a category to begin!`) };
+        case "phase_2_get_question": {
             // Get a question of the selected category for the current player
-            console.log("-Begin phase_get_question-");
+            console.log("-Begin phase_2_get_question-");
             return { ...state, currentPhase: "Question", currentQuestion: nullQuestion(), displayMessage: wrapHeading(`Please wait`) };
         }
-        case "phase_answer_question": {
+        case "phase_3_answer_question": {
             // Display the choices
-            console.log("-Begin phase_answer_question-");
-            const question = action.payload;
+            console.log("-Begin phase_3_answer_question-");
+            const { question } = action.payload;
             const categoryTag = question.categoryTag;
             const category = getCategory(categoryList, categoryTag);
-            return { ...state, currentPhase: "Answer", currentQuestion: question, displayMessage: wrapHeading(category.title, category.color) };
+            const buttonContents = category ? wrapHeading(category.title, category.color) : "Category";
+            return {
+                ...state, currentPhase: "Answer", currentQuestion: question, displayMessage: <>
+                    {buttonContents}
+                </>
+            };
         }
-        case "phase_feedback": {
+        case "phase_4_feedback": {
             // Display the feedback
-            console.log("-Begin phase_feedback-");
+            console.log("-Begin phase_4_feedback-");
+            const { currentPlayerIndex, neededToWin, playerList } = state;
             const { guess, message } = action.payload;
-            // Enable the next player button
-            console.log("-Begin phase_feedback-");
-            return { ...state, guessEntered: guess, currentPhase: "Feedback", displayMessage: message };
+            // These two lines are written the same 
+            const whoIsNext = nextPlayer(currentPlayerIndex, neededToWin, playerList);
+            const playerIndicator = `${playerList[whoIsNext].name}, you're up next!`;
+            return { ...state, guessEntered: guess, playerIndicator, currentPhase: "Feedback", displayMessage: message };
+        }
+        case "phase_5_next_player": {
+            // Move on to the next player
+            console.log("-Begin phase_5_next_player-");
+            const { currentPlayerIndex, neededToWin, playerList } = state
+            const whichPlayer = nextPlayer(currentPlayerIndex, neededToWin, playerList);
+            const playerIndicator = playerList[whichPlayer].name;
+            console.log(`It is now ${playerIndicator}'s turn.`)
+            // Upate the current phase to select and the current player index to the next player
+            return { ...state, currentPhase: "Select", currentPlayerIndex: whichPlayer, playerIndicator, guessEntered: null, displayMessage: wrapHeading(`Select a question!`) };
+
         }
         // Question actions
         case "give_player_token": {
+            console.log("-Begin give_player_token-");
             // <> FIXME This is not working - it is double adding the category on the subsequest turn
             const { playerIndex, categoryTag } = action.payload;
             const updatedPlayerList = [...state.playerList];
@@ -143,21 +158,40 @@ export default function gameReducer(state: gameStateType, action: GameAction): g
             console.log(message);
             // FIXME - This is not working - it is double adding the category on the subsequent turn
             console.log(`Their list of correct categories is now: ${updatedPlayer.correctCategories}`)
-            console.log("-Begin phase_feedback-");
-            return { ...state, playerList: updatedPlayerList, displayMessage: wrapHeading(message), currentPhase: "Feedback"};
+            return { ...state, playerList: updatedPlayerList, displayMessage: wrapHeading(message), currentPhase: "Feedback" };
         }
         case "give_player_medal": {
+            console.log("-Begin give_player_medal-");
             // <><> FIXME Win condition is not working
             const { playerIndex } = action.payload;
-            const winningPlayer = state.playerList[playerIndex];
-            const vyingForPlace = state.vyingForPlace;
-            const message = `${winningPlayer.name} wins ${ordinal(vyingForPlace)} place!`;
+            const { playerList, vyingForPlace, neededToWin } = state;
+            const winningPlayer = playerList[playerIndex];
+            const whoIsNext = nextPlayer(playerIndex, neededToWin, playerList);
+            const color = winnerColor(vyingForPlace);
             // This is displaying the correct place
-            console.log(message)
+            winnerColor(vyingForPlace)
             winningPlayer.wonPlace = vyingForPlace;
-            // Increment the vyingForPlace counter and update the winning players wonPlace
-            console.log("-Begin phase_feedback-");
-            return { ...state, vyingForPlace: (vyingForPlace + 1), playerList: [...state.playerList], displayMessage: wrapHeading(message), currentPhase: "Feedback"};
+            // FIXME - Add handling for a single-player game
+            if (vyingForPlace < playerList.length - 1) {
+                // There are more medals to win, so continue the game
+                const message = `${winningPlayer.name} wins ${ordinal(vyingForPlace)} place!`;
+                console.log(message)
+                const playerIndicator = `${playerList[whoIsNext].name}, you're up next!`;
+                const displayMessage = wrapHeading(message, color)
+                return { ...state, vyingForPlace: (vyingForPlace + 1), playerList: [...playerList], playerIndicator, displayMessage, currentPhase: "Feedback" };
+            } else {
+                // All medals have been won, so end the game
+                const playerIndicator = `Game over!`
+                // FIXME - This would be better if it listed the players in order of their place
+                const displayMessage = <VStack>
+                    {playerList.map((player,index) => {
+                        const playerPlace = player.wonPlace;
+                        return wrapHeading(`${player.name} - ${ordinal(playerPlace)}`, winnerColor(playerPlace), player.name + index)
+                    })}
+                </VStack>
+                console.log(displayMessage)
+                return { ...state, playerList: [...playerList], playerIndicator, displayMessage, currentPhase: "End" };
+            }
         }
         case "SETaskedQuestions":
             return { ...state, askedQuestions: action.payload };
@@ -171,8 +205,16 @@ export interface propsType {
     gameState: gameStateType,
     dispatch: Dispatch<GameAction>,
 }
-
-function nextPlayer(playerCount: number, currentPlayerIndex: number, neededToWin: number, playerList: player[]): number {
+/**
+ * This function determines which player is next in the game.
+ *
+ * @param {number} currentPlayerIndex - Which player is currently taking their turn
+ * @param {number} neededToWin - The number of points needed to win the game
+ * @param {player[]} playerList - The list of players in the game
+ * @return {*}  {number} - The index of the next player
+ */
+function nextPlayer(currentPlayerIndex: number, neededToWin: number, playerList: player[]): number {
+    const playerCount = playerList.length;
     for (let i = 1; i < playerCount; i++) {
         const nextPlayerIndex = (currentPlayerIndex + i) % playerCount;
         const thatPlayer = playerList[nextPlayerIndex];
@@ -183,4 +225,5 @@ function nextPlayer(playerCount: number, currentPlayerIndex: number, neededToWin
         }
     }
     return (currentPlayerIndex + 1) % playerCount;
+    // return undefined;
 }

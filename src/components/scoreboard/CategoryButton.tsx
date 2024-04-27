@@ -1,6 +1,7 @@
 import { CheckCircleIcon } from "@chakra-ui/icons";
 import { Button } from "@chakra-ui/react";
 import { category, player, propsType } from "../gameReducer";
+import { ordinal, winnerColor } from "../helpers/routines";
 import { newQuestion } from "./newQuestion";
 
 interface categoryButtonProps extends propsType { category: category, player: player, isDisabled: boolean }
@@ -16,18 +17,19 @@ export default function CategoryButton(props: categoryButtonProps) {
 
 	const handleClick = () => {
 		console.log(`${player.name} requests a ${category.title} question`);
-		newQuestion(category, devMode, dispatch);
+		newQuestion(category, devMode, dispatch, player.index);
 	};
 
 	// If the player is a winner, the button should be gold and disabled.
 	// This part is only working while in devMode.
 	const hasWon = player.wonPlace;
 	if (hasWon) {
-		switch (hasWon) {
-			case 1: return <Button key={buttonKey} isDisabled={true} colorScheme="yellow">First place!</Button>;
-			case 2: return <Button key={buttonKey} isDisabled={true} colorScheme="cyan">Second place!</Button>;
-			case 3: return <Button key={buttonKey} isDisabled={true} colorScheme="orange">Third place!</Button>;
-		}
+		return <Button key={buttonKey} isDisabled={true} colorScheme={winnerColor(hasWon)}>{ordinal(hasWon)} place!</Button>;
+		// switch (hasWon) {
+		// 	case 1: return <Button key={buttonKey} isDisabled={true} colorScheme="yellow">First place!</Button>;
+		// 	case 2: return <Button key={buttonKey} isDisabled={true} colorScheme="cyan">Second place!</Button>;
+		// 	case 3: return <Button key={buttonKey} isDisabled={true} colorScheme="orange">Third place!</Button>;
+		// }
 	} else {
 		if (player.correctCategories.includes(category.queryTag)) {
 

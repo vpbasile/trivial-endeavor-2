@@ -1,4 +1,4 @@
-import { Heading } from "@chakra-ui/react";
+import { Button } from "@chakra-ui/react";
 import { category } from "../gameReducer";
 import { newBreaks } from "./style";
 
@@ -33,12 +33,20 @@ export function ordinal(number: number): "first" | "second" | "third" | "last" {
     }
 }
 
+export function winnerColor(place: number) {
+	switch (place) {
+		case 1: return "yellow";
+		case 2: return "cyan";
+		case 3: return "orange";
+	}
+}
+
 /**
 * Returns a promise and sleeps
 */
 export function sleep(ms: number) { return new Promise(resolve => setTimeout(resolve, ms)); }
 
-export function wrapHeading(text:string, color?: string) { return < Heading id='displayMessage' as='h2' whiteSpace={'normal'} color={color} borderRadius={'lg'} maxW={newBreaks}> {text}</Heading >
+export function wrapHeading(text:string, color?: string, key?:string) { return < Button id='displayMessage' isDisabled w={'100%'} whiteSpace={'normal'} colorScheme={color} borderRadius={'lg'} maxW={newBreaks} key={key}> {text}</Button >
      }
 
 //Return the category object given its queryTag
