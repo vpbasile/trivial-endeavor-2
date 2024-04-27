@@ -11,7 +11,7 @@ import { wrapHeading } from "../helpers/routines";
  * @param neededToWin - The number of points needed to win the game.
  */
 
-export function handleGuess(question: questionInternal, guess: number, player: player, category: categoryTag, neededToWin: number, dispatch: Dispatch<GameAction>, devMode?:boolean): void {
+export function handleGuess(question: questionInternal, guess: number, player: player, category: categoryTag, neededToWin: number, dispatch: Dispatch<GameAction>): void {
     const correctIndex = question.correctIndex;
     console.log('--handleGuess--')
     // If the player guessed correctly, give them a token for the category, display a message,

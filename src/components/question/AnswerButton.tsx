@@ -55,7 +55,7 @@ export default function AnswerButton(props: AnswerButtonProps) {
 				w={'100%'}
 				py={2}
 				isDisabled={isDisabled}
-				onClick={() => handleGuess(question, buttonIndex, gameState.playerList[currentPlayerIndex], questionCategoryTag, neededToWin, dispatch, gameState.devMode)}
+				onClick={() => handleGuess(question, buttonIndex, gameState.playerList[currentPlayerIndex], questionCategoryTag, neededToWin, dispatch)}
 			>
 				{buttonText}
 			</Button>

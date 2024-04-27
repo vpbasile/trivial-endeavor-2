@@ -34,7 +34,7 @@ export type gameStateType = {
 
 export function nullQuestion(overrideCategory?: categoryTag): questionInternal { return { questionText: "What would a question look like if there were one?", choices: ["Correct answer", "With words much like the ones above", "Nothing like the below", "All of the above"], correctAnswer: "Correct answer", correctIndex: 0, categoryTag: overrideCategory || categoryList[0].queryTag } }
 const namesToUse = ["Player 1", "Player 2", "Player 3", "Player 4"]
-const otherNames = ["Aristotle", "Boethius", "Charlemagne", "Donatello", "Euripides", "Fibonacci", "Genghis Khan", "Homer", "Isaac Newton", "Julius Caesar", "Kublai Khan", "Leonardo da Vinci", "Machiavelli", "Napoleon", "Ovid", "Plato", "Quintilian", "Raphael", "Socrates", "Thucydides", "Ulysses", "Virgil", "William Shakespeare", "Xenophon", "Yoda", "Zeno of Citium"];
+// const otherNames = ["Aristotle", "Boethius", "Charlemagne", "Donatello", "Euripides", "Fibonacci", "Genghis Khan", "Homer", "Isaac Newton", "Julius Caesar", "Kublai Khan", "Leonardo da Vinci", "Machiavelli", "Napoleon", "Ovid", "Plato", "Quintilian", "Raphael", "Socrates", "Thucydides", "Ulysses", "Virgil", "William Shakespeare", "Xenophon", "Yoda", "Zeno of Citium"];
 function newPlayer(playerIndex: number) {
     return {
         index: playerIndex, key: playerIndex, name: namesToUse[playerIndex] || "Player" + playerIndex,
