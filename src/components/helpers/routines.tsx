@@ -24,12 +24,12 @@ export function shuffleArray(array: string[]): string[] {
 /**
 * Returns first, second, thrd, or last
 */
-export function ordinal(number: number): "first" | "second" | "third" | "last" {
+export function ordinal(number: number): "First" | "Second" | "Third" | "Last" {
     switch (number) {
-        case 1: return "first";
-        case 2: return "second";
-        case 3: return "third";
-        default: return "last";
+        case 1: return "First";
+        case 2: return "Second";
+        case 3: return "Third";
+        default: return "Last";
     }
 }
 
