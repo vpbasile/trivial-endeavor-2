@@ -4,12 +4,13 @@
  * @returns The game board component.
  */
 import { ArrowForwardIcon, QuestionIcon } from "@chakra-ui/icons";
-import { Box, Button, Center, Collapse } from "@chakra-ui/react";
+import { Box, Center, Collapse, Stack } from "@chakra-ui/react";
 import { useReducer } from "react";
 import { ErrorBoundary } from "react-error-boundary";
 import DataDisplay from "./DataDisplay";
 import GameSetup from "./GameSetup";
 import gameReducer, { initialGameState } from "./gameReducer";
+import { SameButton } from "./helpers/SameButton";
 import AppRow from "./helpers/appRow";
 import { newBreaks } from "./helpers/style";
 import QuestionDisplay from "./question/QuestionDisplay";
@@ -31,25 +32,17 @@ export default function GameBoard() {
 
     return (<ErrorBoundary fallback={<Box>Error in component AppRow</Box>}>
         <Box id="gameflowDisplay">
-            {(phase !== "Welcome") && <Button
-                id="turnTracker"
-                leftIcon={icon}
-                rightIcon={icon}
-                whiteSpace={'normal'}
-                w={'100%'}
-                isDisabled={currentPhase !== "Feedback"}
-                variant={'outline'}
-                onClick={() => dispatch({ type: 'phase_5_next_player' })}>{playerIndicator}</Button>}
-            <Center
-                id="infoBox"
-                width={'100%'}
-                py={4} px={2}
-                alignContent={'center'} borderRadius={'lg'}
-            >
+            <Stack id="displayMessage" p={3}>
                 {displayMessage}
-            </Center>
+                {(phase !== "Welcome") && <SameButton id="turnTracker"
+                    text={playerIndicator}
+                    isDisabled={currentPhase !== "Feedback"}
+                    leftIcon={icon}
+                    rightIcon={icon}
+                    onClick={() => dispatch({ type: 'phase_5_next_player' })} />}
+            </Stack>
         </Box>
-        <Box id="gameBoardContainer" maxWidth={newBreaks}>
+        <Center id="gameBoardContainer" maxWidth={newBreaks}>
             <Collapse in={currentPhase === "Welcome"} unmountOnExit animateOpacity>
                 <Box id="setup">
                     <GameSetup gameState={gameState} dispatch={dispatch} />
@@ -67,7 +60,7 @@ export default function GameBoard() {
                     }
                 </Box>
             </Collapse>
-        </Box>
+        </Center>
         <AppRow id="controlRow" >
             < ErrorBoundary fallback={<Box>Error in component DataDisplay</Box>}>
                 <DataDisplay gameState={gameState} dispatch={dispatch} />

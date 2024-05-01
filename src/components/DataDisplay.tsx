@@ -44,7 +44,6 @@ export default function DataDisplay(props: propsType) {
 				<UnorderedList>
 					<ListItem>'Needed to win' is set to 2 when in dev mode</ListItem>
 					<ListItem>Choosing a category with dev mode on will use a dummy question instead of querying the API.</ListItem>
-					<ListItem>When in dev mode, the game will not auto-advance.  Click the 'Next Player' button to advance.</ListItem>
 				</UnorderedList>
 				{/* Display the gamestate in a readable format */}
 			</Box>) : null}

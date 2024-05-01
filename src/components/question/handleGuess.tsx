@@ -1,7 +1,7 @@
 import { Dispatch } from "react";
 import { GameAction, categoryTag, player } from "../gameReducer";
 import { questionInternal } from "../helpers/queryTheTrivia";
-import { wrapHeading } from "../helpers/routines";
+import { SameButton } from "../helpers/SameButton";
 
 /**
  * Handles the player's guess.
@@ -31,13 +31,13 @@ export function handleGuess(question: questionInternal, guess: number, player: p
         } else {
             const message = `That is correct!  ${player.name} now has ${score} points.`;
             console.log(message);
-            dispatch({ type: "phase_4_feedback", payload: { guess, message: wrapHeading(message, "green") } });
+            dispatch({ type: "phase_4_feedback", payload: { guess, message: <SameButton text={message} color="green" /> } });
         }
     } else {
         // If the player guessed incorrectly, display a message and move on to the next player
         const message = `That is incorrect.  The correct answer was`;
         console.log(message, `${correctIndex}: ${question.choices[correctIndex]}`)
-        dispatch({ type: "phase_4_feedback", payload: { guess, message: wrapHeading(message, "red") } });
+        dispatch({ type: "phase_4_feedback", payload: { guess, message: <SameButton text={message} color="red" /> } });
     }
     // If we're not in devmode, then wait 5 seconds before moving on to the next player
     // if (!devMode) {

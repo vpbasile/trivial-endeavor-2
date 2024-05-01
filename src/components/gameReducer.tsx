@@ -8,7 +8,8 @@
 import { VStack } from "@chakra-ui/react";
 import { Dispatch } from "react";
 import { categoryList, questionInternal } from "./helpers/queryTheTrivia";
-import { getCategory, ordinal, winnerColor, wrapHeading } from "./helpers/routines";
+import { getCategory, ordinal, winnerColor } from "./helpers/routines";
+import { SameButton } from "./helpers/SameButton";
 
 export type categoryTag = string
 export type category = { key: string, queryTag: categoryTag, title: string, color: string }
@@ -42,13 +43,13 @@ function newPlayer(playerIndex: number) {
     };
 }
 
-const devModeDefault = true;
+const devModeDefault = false;
 
 export const initialGameState: gameStateType = {
     currentPhase: "Welcome",
     currentPlayerIndex: 0,
     playerIndicator: "Player 0",
-    displayMessage: wrapHeading("Welcome! You can play with up to 4 teams."),
+    displayMessage: <SameButton text={"Welcome! You can play with up to 4 teams."} />,
     currentQuestion: nullQuestion(),
     vyingForPlace: 1,
     guessEntered: null,
@@ -106,11 +107,11 @@ export default function gameReducer(state: gameStateType, action: GameAction): g
         case "phase_1_begin_game":
             // Begin the game
             console.log("-Begin phase_1_begin_game-");
-            return { ...state, currentPhase: "Select", currentPlayerIndex: 0, playerIndicator: state.playerList[0].name, displayMessage: wrapHeading(`Select a category to begin!`) };
+            return { ...state, currentPhase: "Select", currentPlayerIndex: 0, playerIndicator: state.playerList[0].name, displayMessage: <SameButton text={`Select a category to begin!`} /> };
         case "phase_2_get_question": {
             // Get a question of the selected category for the current player
             console.log("-Begin phase_2_get_question-");
-            return { ...state, currentPhase: "Question", currentQuestion: nullQuestion(), displayMessage: wrapHeading(`Please wait`) };
+            return { ...state, currentPhase: "Question", currentQuestion: nullQuestion(), displayMessage: <SameButton text={`Please wait`} /> };
         }
         case "phase_3_answer_question": {
             // Display the choices
@@ -118,7 +119,7 @@ export default function gameReducer(state: gameStateType, action: GameAction): g
             const { question } = action.payload;
             const categoryTag = question.categoryTag;
             const category = getCategory(categoryList, categoryTag);
-            const buttonContents = category ? wrapHeading(category.title, category.color) : "Category";
+            const buttonContents = category ? <SameButton text={category.title} color={category.color} /> : "Category";
             return {
                 ...state, currentPhase: "Answer", currentQuestion: question, displayMessage: <>
                     {buttonContents}
@@ -143,7 +144,7 @@ export default function gameReducer(state: gameStateType, action: GameAction): g
             const playerIndicator = playerList[whichPlayer].name;
             console.log(`It is now ${playerIndicator}'s turn.`)
             // Upate the current phase to select and the current player index to the next player
-            return { ...state, currentPhase: "Select", currentPlayerIndex: whichPlayer, playerIndicator, guessEntered: null, displayMessage: wrapHeading(`Select a question!`) };
+            return { ...state, currentPhase: "Select", currentPlayerIndex: whichPlayer, playerIndicator, guessEntered: null, displayMessage: <SameButton text={`Select a question!`} /> };
 
         }
         // Question actions
@@ -159,7 +160,7 @@ export default function gameReducer(state: gameStateType, action: GameAction): g
             console.log(message);
             // FIXME - This is not working - it is double adding the category on the subsequent turn
             console.log(`Their list of correct categories is now: ${updatedPlayer.correctCategories}`)
-            return { ...state, playerList: updatedPlayerList, displayMessage: wrapHeading(message), currentPhase: "Feedback" };
+            return { ...state, playerList: updatedPlayerList, displayMessage: <SameButton text={message} />, currentPhase: "Feedback" };
         }
         case "give_player_medal": {
             console.log("-Begin give_player_medal-");
@@ -178,8 +179,10 @@ export default function gameReducer(state: gameStateType, action: GameAction): g
                 const message = `${winningPlayer.name} wins ${ordinal(vyingForPlace)} place!`;
                 console.log(message)
                 const playerIndicator = `${playerList[whoIsNext].name}, you're up next!`;
-                const displayMessage = wrapHeading(message, color)
-                return { ...state, vyingForPlace: (vyingForPlace + 1), playerList: [...playerList], playerIndicator, displayMessage, currentPhase: "Feedback" };
+                const displayMessage = <SameButton text={message} color={color} />
+                return {
+                    ...state, vyingForPlace: (vyingForPlace + 1), playerList: [...playerList], playerIndicator, displayMessage, currentPhase: "Feedback"
+                };
             } else {
                 // All medals have been won, so end the game
                 const playerIndicator = `Game over!`
@@ -187,7 +190,7 @@ export default function gameReducer(state: gameStateType, action: GameAction): g
                 const displayMessage = <VStack>
                     {playerList.map((player, index) => {
                         const playerPlace = player.wonPlace;
-                        return wrapHeading(`${player.name} - ${ordinal(playerPlace)}`, winnerColor(playerPlace), player.name + index)
+                        return <SameButton text={`${player.name} - ${ordinal(playerPlace)}`} color={winnerColor(playerPlace)} key={player.name + index} />
                     })}
                 </VStack>
                 console.log(displayMessage)
