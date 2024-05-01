@@ -11,7 +11,7 @@ export function SameButton(
         rightIcon?: JSX.Element,
         onClick?: () => void
     }) {
-    return (<Button id={props.id} key={props.key}
+    return (<Button id={props.id} key={props.id}
         w={'100%'} whiteSpace={'normal'}
         py={4} px={2}
         alignContent={'center'}
