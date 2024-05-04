@@ -7,26 +7,49 @@ import { ArrowForwardIcon, QuestionIcon } from "@chakra-ui/icons";
 import { Box, Center, Collapse, Stack } from "@chakra-ui/react";
 import { useReducer } from "react";
 import { ErrorBoundary } from "react-error-boundary";
-import DataDisplay from "./DataDisplay";
-import GameSetup from "./GameSetup";
-import gameReducer, { initialGameState } from "./gameReducer";
-import { SameButton } from "./helpers/SameButton";
-import AppRow from "./helpers/appRow";
-import { newBreaks } from "./helpers/style";
-import QuestionDisplay from "./question/QuestionDisplay";
-import PlayerColumn from "./scoreboard/PlayerColumn";
+import { useParams } from "react-router-dom";
+import DataDisplay from "../components/DataDisplay";
+import gameReducer, { gameStateType, nullQuestion } from "../components/gameReducer";
+import DevModeButton from "../components/helpers/DevModeButton";
+import { SameButton } from "../components/helpers/SameButton";
+import AppRow from "../components/helpers/appRow";
+import { categoryList } from "../components/helpers/queryTheTrivia";
+import { newBreaks } from "../components/helpers/style";
+import QuestionDisplay from "../components/question/QuestionDisplay";
+import PlayerColumn from "../components/scoreboard/PlayerColumn";
 
 export default function GameBoard() {
+
+    // Access the parameters from the URL
+    const { devModeEntered, playerNames } = useParams();
+    let playerNamesArray: string[] = [];
+    if (playerNames) playerNamesArray = playerNames.split("-");
+    const playerListInit = playerNamesArray.map((name, index) => ({ index, key: index, name, correctCategories: [], wonPlace: 0 }))
+
+    // If devMode is 0, then the game is in normal mode. If devMode is 1, then the game is in developer mode.
+    const devModeDefault = devModeEntered === "1";
+
+    const initialGameState: gameStateType = {
+        currentPhase: "Select",
+        currentPlayerIndex: 0,
+        playerIndicator: playerListInit[0].name,
+        displayMessage: <SameButton text={`Select a question!`} />,
+        currentQuestion: nullQuestion(),
+        vyingForPlace: 1,
+        guessEntered: null,
+        playerList: playerListInit,
+        askedQuestions: [""],
+        devMode: devModeDefault,
+        neededToWin: devModeDefault ? 2 : categoryList.length,
+    }
 
     const [gameState, dispatch] = useReducer(gameReducer, initialGameState);
     const { currentPhase, playerList, currentPlayerIndex, playerIndicator, displayMessage } = gameState;
 
-    const phase = gameState.currentPhase;
-
     let icon = undefined;
-    if (phase === "Feedback") {
+    if (currentPhase === "Feedback") {
         icon = <ArrowForwardIcon />;
-    } else if (phase === "Answer" || phase === "Question") {
+    } else if (currentPhase === "Answer" || currentPhase === "Question") {
         icon = <QuestionIcon />;
     }
 
@@ -34,7 +57,7 @@ export default function GameBoard() {
         <Box id="gameflowDisplay">
             <Stack id="displayMessage" p={3}>
                 {displayMessage}
-                {(phase !== "Welcome") && <SameButton id="turnTracker"
+                {(currentPhase !== "Welcome") && <SameButton id="turnTracker"
                     text={playerIndicator}
                     isDisabled={currentPhase !== "Feedback"}
                     leftIcon={icon}
@@ -43,11 +66,6 @@ export default function GameBoard() {
             </Stack>
         </Box>
         <Center id="gameBoardContainer" maxWidth={newBreaks}>
-            <Collapse in={currentPhase === "Welcome"} unmountOnExit animateOpacity>
-                <Box id="setup">
-                    <GameSetup gameState={gameState} dispatch={dispatch} />
-                </Box>
-            </Collapse>
             <Collapse in={currentPhase === "Answer" || currentPhase === "Feedback"} unmountOnExit animateOpacity>
                 <AppRow id="question-row">
                     <QuestionDisplay key={"currentQuestion"} gameState={gameState} dispatch={dispatch} />
@@ -63,7 +81,8 @@ export default function GameBoard() {
         </Center>
         <AppRow id="controlRow" >
             < ErrorBoundary fallback={<Box>Error in component DataDisplay</Box>}>
-                <DataDisplay gameState={gameState} dispatch={dispatch} />
+                <DevModeButton devMode={gameState.devMode} dispatch={dispatch} />
+                <DataDisplay gameState={gameState} />
             </ErrorBoundary>
 
         </AppRow>

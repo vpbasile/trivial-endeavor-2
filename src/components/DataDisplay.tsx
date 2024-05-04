@@ -1,9 +1,8 @@
-import { Box, Button, Heading, ListItem, Stack, UnorderedList } from "@chakra-ui/react";
-import { propsType } from "./gameReducer";
-import ColorModeButton from "./helpers/colorModeButton";
+import { Box, Heading, ListItem, Stack, UnorderedList } from "@chakra-ui/react";
+import { gameStateType } from "./gameReducer";
 
-export default function DataDisplay(props: propsType) {
-	const { gameState, dispatch } = props;
+export default function DataDisplay(props: { gameState: gameStateType }) {
+	const { gameState } = props;
 
 	// Situation
 	const { currentPlayerIndex,
@@ -14,17 +13,8 @@ export default function DataDisplay(props: propsType) {
 		devMode } = gameState;
 	const currentPlayer = playerList[currentPlayerIndex];
 
-	// Devmode
-	const toggle_dev_mode = () => dispatch({ type: 'toggle_dev_mode' });
-
 	return (
 		<Stack id="devModeBox">
-			<Stack id="specialControls" p={8} direction={{ base: 'column', sm: 'row' }}>
-				<ColorModeButton />
-				<Button id="devModeToggle" onClick={toggle_dev_mode}>
-					{devMode ? <>{"Dev Mode is On"}</> : <>{"Dev Mode is Off"}</>}
-				</Button>
-			</Stack>
 			{/* {If devMode is on, then return the text} */}
 			{devMode ? (<Box id="devData" whiteSpace={'normal'} maxWidth={'50%'}>
 				<Heading as={'h3'}>gameState values:</Heading>

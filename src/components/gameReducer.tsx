@@ -2,9 +2,9 @@
  * This file contains the game reducer and related types for the trivia game.
  * It defines the game state, game actions, and the game reducer function.
  * It also includes helper functions for managing the game flow.
- *
- * @packageDocumentation
- */
+*
+* @packageDocumentation
+*/
 import { VStack } from "@chakra-ui/react";
 import { Dispatch } from "react";
 import { categoryList, questionInternal } from "./helpers/queryTheTrivia";
@@ -18,6 +18,7 @@ export type winners = number;
 export type player = { index: number, name: string, correctCategories: string[], wonPlace: winners, key?: number }
 export type gamePhase = "Welcome" | "Select" | "Question" | "Answer" | "Feedback" | "Score" | "End"
 export type situationHolder = { phase: gamePhase, currentPlayerIndex: number }
+export type dispatchType = Dispatch<GameAction>;
 
 export type gameStateType = {
     currentPhase: gamePhase,
@@ -33,6 +34,12 @@ export type gameStateType = {
     neededToWin: number,
 }
 
+// The props for the came components should mosly be the same
+export type propsType = {
+    gameState: gameStateType,
+    dispatch: dispatchType,
+}
+
 export function nullQuestion(overrideCategory?: categoryTag): questionInternal { return { questionText: "What would a question look like if there were one?", choices: ["Correct answer", "With words much like the ones above", "Nothing like the below", "All of the above"], correctAnswer: "Correct answer", correctIndex: 0, categoryTag: overrideCategory || categoryList[0].queryTag } }
 const namesToUse = ["Player 1", "Player 2", "Player 3", "Player 4"]
 // const otherNames = ["Aristotle", "Boethius", "Charlemagne", "Donatello", "Euripides", "Fibonacci", "Genghis Khan", "Homer", "Isaac Newton", "Julius Caesar", "Kublai Khan", "Leonardo da Vinci", "Machiavelli", "Napoleon", "Ovid", "Plato", "Quintilian", "Raphael", "Socrates", "Thucydides", "Ulysses", "Virgil", "William Shakespeare", "Xenophon", "Yoda", "Zeno of Citium"];
@@ -42,23 +49,6 @@ function newPlayer(playerIndex: number) {
         correctCategories: [], wonPlace: 0
     };
 }
-
-const devModeDefault = false;
-
-export const initialGameState: gameStateType = {
-    currentPhase: "Welcome",
-    currentPlayerIndex: 0,
-    playerIndicator: "Player 0",
-    displayMessage: <SameButton text={"Welcome! You can play with up to 4 teams."} />,
-    currentQuestion: nullQuestion(),
-    vyingForPlace: 1,
-    guessEntered: null,
-    playerList: [newPlayer(0), newPlayer(1), newPlayer(2), newPlayer(3)],
-    askedQuestions: [""],
-    devMode: devModeDefault,
-    neededToWin: devModeDefault ? 2 : categoryList.length,
-}
-
 
 export type GameAction =
     // Universal actions
@@ -204,11 +194,6 @@ export default function gameReducer(state: gameStateType, action: GameAction): g
     }
 }
 
-// The props for the came components should mosly be the same
-export interface propsType {
-    gameState: gameStateType,
-    dispatch: Dispatch<GameAction>,
-}
 /**
  * This function determines which player is next in the game.
  *

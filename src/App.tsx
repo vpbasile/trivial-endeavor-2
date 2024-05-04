@@ -1,66 +1,31 @@
-
-// Import ChakraUI elements
-import { Box, Center, Heading, Image, Link, List, ListIcon, ListItem, Text, useColorMode } from '@chakra-ui/react';
-import packageJson from '../package.json';
-
-// Import my utility modules and data structures
-
-// <> Import my modules
-import { ExternalLinkIcon, QuestionIcon } from '@chakra-ui/icons';
-import GameBoard from './components/gameboard';
-import AppRow from "./components/helpers/appRow";
-import logoBlack from "/trivialEndeavorLogoBlack.svg";
-import logoWhite from "/trivialEndeavorLogoWhite.svg";
+import { BrowserRouter, Route, Routes } from 'react-router-dom';
+import ErrorPage from './routes/error-page';
+import GameBoard from './routes/GameBoard';
+import GameSetup from './routes/GameSetup';
+import Layout from './routes/Layout';
 
 export default function App(): JSX.Element {
-  // <> Do the thing
-  console.log(`Beginning rendering of Trivial Endeavor`);
-  console.log(`Version ${packageJson.version}`);
 
+  // const namesToUse = ["Player 1", "Player 2", "Player 3", "Player 4"]
+  // const otherNames = ["Aristotle", "Boethius", "Charlemagne", "Donatello", "Euripides", "Fibonacci", "Genghis Khan", "Homer", "Isaac Newton", "Julius Caesar", "Kublai Khan", "Leonardo da Vinci", "Machiavelli", "Napoleon", "Ovid", "Plato", "Quintilian", "Raphael", "Socrates", "Thucydides", "Ulysses", "Virgil", "William Shakespeare", "Xenophon", "Yoda", "Zeno of Citium"];
+  // function newPlayer(playerIndex: number) {
+  //   return {
+  //     index: playerIndex, key: playerIndex, name: namesToUse[playerIndex] || "Player" + playerIndex,
+  //     correctCategories: [], wonPlace: 0
+  //   };
+  // }
 
-  const { colorMode } = useColorMode()
-  const logo = (colorMode === "dark") ? logoWhite : logoBlack
-
+  // Now that we have figured out what the game will look like, initialize the gameState
   return (
-    <Center>
-      <Box id="appContainer" maxWidth={'100%'}>
-        <AppRow id="header">
-          <Center id="logoBox" w={'full'}>
-            <Image id="app-logo" alt="Trivial Endeavor logo" src={logo} w={{ base: '90%', sm: '50%' }} />
-            
-          </Center>
-        </AppRow>
-        <GameBoard />
-        <AppRow id="footer">
-          <Box display={{ sm: 'flex' }}>
-            <Center id="version">
-              <Image id="app-logo" src={logo} alt="Trivial Endeavor logo" w='300px' borderRadius={'3xl'} p={5} px={10} />
-              <Text>Version {packageJson.version}</Text>
-            </Center>
-            <Box id="links" justifyContent={'center'}>
-              <Heading as="h3">Links</Heading>
-              <List>
-                <ListItem>
-                  <ListIcon as={ExternalLinkIcon} />
-                  <Link href="https://vpbasile.github.io/trivial-endeavor-2" isExternal>Live version</Link>
-                </ListItem>
-                <ListItem>
-                  <ListIcon as={ExternalLinkIcon} />
-                  <Link href="https://github.com/vpbasile/trivial-endeavor-2" isExternal>Repository on GitHub</Link>
-                </ListItem>
-                {/* <ListItem>
-                  <ListIcon as={QuestionIcon} />
-                  <Link href="https://the-trivia-api.com/" isExternal>The Trivia API by Will Fry</Link>
-                </ListItem> */}
-                <ListItem>
-                <ListIcon as={QuestionIcon} />
-                Using questions from <Link href='https://the-trivia-api.com/'>The Trivia API</Link>
-                </ListItem>
-              </List>
-            </Box>
-          </Box>
-        </AppRow>
-      </Box >
-    </Center>
+    <BrowserRouter>
+      <Routes>
+        <Route path="/trivial-endeavor-2/" element={<Layout />} errorElement={<ErrorPage />} >
+          <Route path="/trivial-endeavor-2/" element={<GameSetup />} errorElement={<ErrorPage />} />
+          <Route path="/trivial-endeavor-2/:playerNames/:devMode" element={<GameBoard />} errorElement={<ErrorPage />} />
+          <Route path="/trivial-endeavor-2/:playerNames/" element={<GameBoard />} errorElement={<ErrorPage />} />
+
+        </Route>
+      </Routes>
+    </BrowserRouter>
   );
 }
