@@ -19,15 +19,15 @@ export default function RootRoute() {
     const logo = (colorMode === "dark") ? logoWhite : logoBlack
 
     return (<Box id="appContainer" maxWidth={'100%'}>
-        <AppRow id="header">
+        <AppRow id="head">
             <Center id="logoBox" w={'full'}>
                 <Image id="app-logo" alt="Trivial Endeavor logo" src={logo} w={{ base: '90%', sm: '50%' }} />
             </Center>
         </AppRow>
-        <AppRow id="content">
+        <AppRow id="body">
             <Outlet />
         </AppRow>
-        <AppRow id="footer">
+        <AppRow id="foot">
             <Box display={{ sm: 'flex' }}>
                 <Center id="version">
                     <ColorModeButton />

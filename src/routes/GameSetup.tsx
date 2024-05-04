@@ -1,8 +1,12 @@
 import { AddIcon, MinusIcon } from '@chakra-ui/icons';
-import { Box, Button, Center, Link, List, ListItem, Stack, Text } from '@chakra-ui/react';
+import { Box, Button, Center, HStack, List, ListItem, Stack, Text, VStack } from '@chakra-ui/react';
 import { useState } from 'react';
 import ColorModeButton from '../components/helpers/ColorModeButton';
-import { SameButton } from '../components/helpers/SameButton';
+import { SameBanner } from '../components/helpers/SameBanner';
+
+import { Link as ChakraLink } from '@chakra-ui/react';
+import { Link as ReactRouterLink } from 'react-router-dom';
+
 
 export default function GameSetup() {
 	const [numberOfPlayers, SETnumberOfPlayers] = useState(3)
@@ -44,33 +48,35 @@ export default function GameSetup() {
 	// Create a URL to pass the player names to the game page
 	const URL = '/trivial-endeavor-2/' + encodeURI((playerList.slice(0, numberOfPlayers)).join('-'));
 
-	const startButton =
-		<Link href={URL}
+	const startButton = <Button>
+		<ChakraLink as={ReactRouterLink} to={URL}
 			textAlign={'left'}
 		// leftIcon={<CheckIcon color={'green'} />}
-		// onClick={() => { console.log(`Beginning game with ${numberOfPlayers} players: `, uriSlug) }}
-		>Begin Game</Link>
+		>Begin Game</ChakraLink>
+	</Button>
 
 	return (
-		<Box display={{ sm: 'flex' }}>
-			<SameButton text={"Welcome! You can play with up to 4 teams."} />
-			<Stack id='addRemovePlayers' flex={5} p={8}>
-				{addButton}
-				{startButton}
-				{removeButton}
-				<ColorModeButton />
-			</Stack>
-			<Center id="playerList" flex={5}>
-				<Box w={'fit-content'} py={8}>
-					<Text>Teams/Players</Text>
-					<List>{
-						// I want to display a number of inputs equal to the number of players that the user has selected.
-						playerInputs.slice(0, numberOfPlayers)
-					}</List>
+		<VStack id='gameSetupForm'>
+			<SameBanner text={"Welcome! You can play with up to 4 teams."} />
+			<HStack id='formBody' flex={5} p={8}>
+				<Stack id='addRemovePlayers' flex={5} p={8}>
+					{addButton}
+					{startButton}
+					{removeButton}
+					<ColorModeButton />
+				</Stack>
+				<Center id="playerList" flex={5}>
+					<Box w={'fit-content'} py={8}>
+						<Text>Teams/Players</Text>
+						<List>{
+							// I want to display a number of inputs equal to the number of players that the user has selected.
+							playerInputs.slice(0, numberOfPlayers)
+						}</List>
 
 
 
-				</Box>
-			</Center>
-		</Box>)
+					</Box>
+				</Center>
+			</HStack>
+		</VStack>)
 }

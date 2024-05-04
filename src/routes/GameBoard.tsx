@@ -4,7 +4,7 @@
  * @returns The game board component.
  */
 import { ArrowForwardIcon, QuestionIcon } from "@chakra-ui/icons";
-import { Box, Center, Collapse, Stack } from "@chakra-ui/react";
+import { Box, Collapse, VStack } from "@chakra-ui/react";
 import { useReducer } from "react";
 import { ErrorBoundary } from "react-error-boundary";
 import { useParams } from "react-router-dom";
@@ -54,37 +54,36 @@ export default function GameBoard() {
     }
 
     return (<ErrorBoundary fallback={<Box>Error in component AppRow</Box>}>
-        <Box id="gameflowDisplay">
-            <Stack id="displayMessage" p={3}>
+        <VStack>
+            <VStack id="gameflowDisplay" p={3}>
                 {displayMessage}
-                {(currentPhase !== "Welcome") && <SameButton id="turnTracker"
+                {<SameButton id="turnTracker"
                     text={playerIndicator}
                     isDisabled={currentPhase !== "Feedback"}
                     leftIcon={icon}
                     rightIcon={icon}
                     onClick={() => dispatch({ type: 'phase_5_next_player' })} />}
-            </Stack>
-        </Box>
-        <Center id="gameBoardContainer" maxWidth={newBreaks}>
-            <Collapse in={currentPhase === "Answer" || currentPhase === "Feedback"} unmountOnExit animateOpacity>
-                <AppRow id="question-row">
-                    <QuestionDisplay key={"currentQuestion"} gameState={gameState} dispatch={dispatch} />
-                </AppRow>
-            </Collapse>
-            <Collapse in={currentPhase === "Select"} unmountOnExit animateOpacity>
-                <Box id="scoreboard" display={{ sm: 'flex' }} scrollBehavior={'smooth'}>
-                    {playerList.map((player, index) => (
-                        <PlayerColumn key={player.name + '-column'} gameState={gameState} dispatch={dispatch} playerKey={index} isDisabled={index !== currentPlayerIndex} />))
-                    }
-                </Box>
-            </Collapse>
-        </Center>
-        <AppRow id="controlRow" >
-            < ErrorBoundary fallback={<Box>Error in component DataDisplay</Box>}>
-                <DevModeButton devMode={gameState.devMode} dispatch={dispatch} />
-                <DataDisplay gameState={gameState} />
-            </ErrorBoundary>
-
-        </AppRow>
+            </VStack>
+            <VStack id="gameBoardContainer" maxWidth={newBreaks}>
+                <Collapse in={currentPhase === "Answer" || currentPhase === "Feedback"} unmountOnExit animateOpacity>
+                    <AppRow id="question-row">
+                        <QuestionDisplay key={"currentQuestion"} gameState={gameState} dispatch={dispatch} />
+                    </AppRow>
+                </Collapse>
+                <Collapse in={currentPhase === "Select"} unmountOnExit animateOpacity>
+                    <Box id="scoreboard" display={{ sm: 'flex' }} scrollBehavior={'smooth'}>
+                        {playerList.map((player, index) => (
+                            <PlayerColumn key={player.name + '-column'} gameState={gameState} dispatch={dispatch} playerKey={index} isDisabled={index !== currentPlayerIndex} />))
+                        }
+                    </Box>
+                </Collapse>
+            </VStack>
+            <VStack id="controlRow" >
+                < ErrorBoundary fallback={<Box>Error in component DataDisplay</Box>}>
+                    <DevModeButton devMode={gameState.devMode} dispatch={dispatch} />
+                    <DataDisplay gameState={gameState} />
+                </ErrorBoundary>
+            </VStack>
+        </VStack>
     </ErrorBoundary >)
 }
