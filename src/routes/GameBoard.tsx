@@ -27,7 +27,9 @@ export default function GameBoard() {
     const playerListInit = playerNamesArray.map((name, index) => ({ index, key: index, name, correctCategories: [], wonPlace: 0 }))
 
     // If devMode is 0, then the game is in normal mode. If devMode is 1, then the game is in developer mode.
-    const devModeDefault = devModeEntered === "1";
+    console.log("devModeEntered", devModeEntered);
+    const devModeDefault = (devModeEntered === "1");
+    console.log("devModeDefault", devModeDefault);
 
     const initialGameState: gameStateType = {
         currentPhase: "Select",

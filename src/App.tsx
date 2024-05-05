@@ -20,9 +20,9 @@ export default function App(): JSX.Element {
     <BrowserRouter>
       <Routes>
         <Route path="/trivial-endeavor-2/" element={<Layout />} errorElement={<ErrorPage />} >
-          <Route path="/trivial-endeavor-2/" element={<GameSetup />} errorElement={<ErrorPage />} />
-          <Route path="/trivial-endeavor-2/:playerNames/:devMode" element={<GameBoard />} errorElement={<ErrorPage />} />
+          <Route path="/trivial-endeavor-2/:playerNames/:devModeEntered" element={<GameBoard />} errorElement={<ErrorPage />} />
           <Route path="/trivial-endeavor-2/:playerNames/" element={<GameBoard />} errorElement={<ErrorPage />} />
+          <Route path="/trivial-endeavor-2/" element={<GameSetup />} errorElement={<ErrorPage />} />
 
         </Route>
       </Routes>
