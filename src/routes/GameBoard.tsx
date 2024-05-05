@@ -10,6 +10,7 @@ import { ErrorBoundary } from "react-error-boundary";
 import { useParams } from "react-router-dom";
 import DataDisplay from "../components/DataDisplay";
 import gameReducer, { gameStateType, nullQuestion } from "../components/gameReducer";
+import ColorModeButton from "../components/helpers/ColorModeButton";
 import DevModeButton from "../components/helpers/DevModeButton";
 import { SameButton } from "../components/helpers/SameButton";
 import AppRow from "../components/helpers/appRow";
@@ -81,10 +82,9 @@ export default function GameBoard() {
                 </Collapse>
             </VStack>
             <VStack id="controlRow" >
-                < ErrorBoundary fallback={<Box>Error in component DataDisplay</Box>}>
-                    <DevModeButton devMode={gameState.devMode} dispatch={dispatch} />
-                    <DataDisplay gameState={gameState} />
-                </ErrorBoundary>
+                <ColorModeButton /> 
+                <DevModeButton devMode={gameState.devMode} dispatch={dispatch} />
+                <DataDisplay gameState={gameState} />
             </VStack>
         </VStack>
     </ErrorBoundary >)
