@@ -75,7 +75,7 @@ export default function GameBoard() {
                 <Collapse in={currentPhase === "Select"} unmountOnExit animateOpacity>
                     <Box id="scoreboard" display={{ sm: 'flex' }} scrollBehavior={'smooth'}>
                         {playerList.map((player, index) => (
-                            <PlayerColumn key={player.name + '-column'} gameState={gameState} dispatch={dispatch} playerKey={index} isDisabled={index !== currentPlayerIndex} />))
+                            <PlayerColumn key={player.name + '-column'} gameState={gameState} dispatch={dispatch} playerKey={index} inactive={index !== currentPlayerIndex} />))
                         }
                     </Box>
                 </Collapse>
