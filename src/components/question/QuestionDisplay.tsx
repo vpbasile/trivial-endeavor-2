@@ -13,10 +13,7 @@ export default function QuestionDisplay(props: propsType): JSX.Element | null {
 	const { choices, categoryTag } = currentQuestion
 
 	// Figure out the coloration for the question box
-	const fg = useColorModeValue('dark', 'light')
 	const bg = useColorModeValue('light', 'dark')
-
-	const fgColor = categoryTag + '.' + fg;
 	const bgColor = categoryTag + '.' + bg;
 
 	// Make answer buttons

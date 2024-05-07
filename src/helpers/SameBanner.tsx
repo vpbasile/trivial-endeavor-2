@@ -9,9 +9,6 @@ export function SameBanner(
         children?: JSX.Element
     }) {
 
-    // const fg = useColorModeValue('light', 'dark')
-    // const bg = useColorModeValue('dark', 'light')
-	const fg = useColorModeValue('dark', 'light')
 	const bg = useColorModeValue('light', 'dark')
     return <>
         <Card className="sameBanner" id={props.id} key={props.id}
