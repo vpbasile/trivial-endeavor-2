@@ -9,15 +9,15 @@ import { useReducer } from "react";
 import { ErrorBoundary } from "react-error-boundary";
 import { useParams } from "react-router-dom";
 import DataDisplay from "../components/DataDisplay";
-import gameReducer, { gameStateType, nullQuestion } from "../components/gameReducer";
-import ColorModeButton from "../components/helpers/ColorModeButton";
-import DevModeButton from "../components/helpers/DevModeButton";
-import { SameButton } from "../components/helpers/SameButton";
-import AppRow from "../components/helpers/appRow";
-import { categoryList } from "../components/helpers/queryTheTrivia";
-import { newBreaks } from "../components/helpers/style";
 import QuestionDisplay from "../components/question/QuestionDisplay";
 import PlayerColumn from "../components/scoreboard/PlayerColumn";
+import gameReducer, { gameStateType, nullQuestion } from "../gameReducer";
+import ColorModeButton from "../helpers/ColorModeButton";
+import DevModeButton from "../helpers/DevModeButton";
+import { SameButton } from "../helpers/SameButton";
+import AppRow from "../helpers/appRow";
+import { categoryList } from "../helpers/queryTheTrivia";
+import { newBreaks } from "../helpers/style";
 
 export default function GameBoard() {
 

@@ -1,7 +1,7 @@
 import { CheckCircleIcon } from "@chakra-ui/icons";
 import { Button, useColorModeValue } from "@chakra-ui/react";
-import { category, player, propsType } from "../gameReducer";
-import { ordinal, winnerColor } from "../helpers/routines";
+import { category, player, propsType } from "../../gameReducer";
+import { ordinal, winnerColor } from "../../helpers/routines";
 import { newQuestion } from "./newQuestion";
 
 interface categoryButtonProps extends propsType { category: category, player: player, isDisabled: boolean }

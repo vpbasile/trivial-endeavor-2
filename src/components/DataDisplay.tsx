@@ -1,5 +1,5 @@
 import { Box, Heading, ListItem, Stack, UnorderedList } from "@chakra-ui/react";
-import { gameStateType } from "./gameReducer";
+import { gameStateType } from "../gameReducer";
 
 export default function DataDisplay(props: { gameState: gameStateType }) {
 	const { gameState } = props;

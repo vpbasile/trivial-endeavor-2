@@ -1,7 +1,7 @@
 import { Dispatch } from "react";
-import { GameAction, categoryTag, player } from "../gameReducer";
-import { questionInternal } from "../helpers/queryTheTrivia";
-import { SameButton } from "../helpers/SameButton";
+import { GameAction, categoryTag, player } from "../../gameReducer";
+import { questionInternal } from "../../helpers/queryTheTrivia";
+import { SameButton } from "../../helpers/SameButton";
 
 /**
  * Handles the player's guess.

@@ -1,8 +1,8 @@
 import { AddIcon, MinusIcon } from '@chakra-ui/icons';
 import { Box, Button, Center, HStack, List, ListItem, Stack, Text, VStack } from '@chakra-ui/react';
 import { useState } from 'react';
-import ColorModeButton from '../components/helpers/ColorModeButton';
-import { SameBanner } from '../components/helpers/SameBanner';
+import ColorModeButton from '../helpers/ColorModeButton';
+import { SameBanner } from '../helpers/SameBanner';
 
 import { Link as ChakraLink } from '@chakra-ui/react';
 import { Link as ReactRouterLink } from 'react-router-dom';

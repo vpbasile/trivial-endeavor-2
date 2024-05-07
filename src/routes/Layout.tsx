@@ -1,5 +1,5 @@
 import { Box, useColorMode } from '@chakra-ui/react';
-import AppRow from '../components/helpers/appRow';
+import AppRow from '../helpers/appRow';
 
 import logoBlack from "/trivialEndeavorLogoBlack.svg";
 import logoWhite from "/trivialEndeavorLogoWhite.svg";

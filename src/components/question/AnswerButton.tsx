@@ -1,6 +1,6 @@
 import { Box, Button } from "@chakra-ui/react";
-import { guessType, propsType } from "../gameReducer";
-import { questionInternal } from "../helpers/queryTheTrivia";
+import { guessType, propsType } from "../../gameReducer";
+import { questionInternal } from "../../helpers/queryTheTrivia";
 import { handleGuess } from "./handleGuess";
 
 /**
