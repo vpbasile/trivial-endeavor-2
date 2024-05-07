@@ -1,5 +1,5 @@
 import { CheckCircleIcon } from "@chakra-ui/icons";
-import { Button } from "@chakra-ui/react";
+import { Button, useColorModeValue } from "@chakra-ui/react";
 import { category, player, propsType } from "../gameReducer";
 import { ordinal, winnerColor } from "../helpers/routines";
 import { newQuestion } from "./newQuestion";
@@ -14,6 +14,9 @@ export default function CategoryButton(props: categoryButtonProps) {
 	// Props unique to this component
 	const category = props.category;
 	const buttonKey = player.name + '_' + category.queryTag;
+
+	const fg = useColorModeValue('light', 'dark')
+	const bg = useColorModeValue('dark', 'light')
 
 	const handleClick = () => {
 		console.log(`${player.name} requests a ${category.title} question`);
@@ -33,7 +36,10 @@ export default function CategoryButton(props: categoryButtonProps) {
 				key={buttonKey}
 				leftIcon={<CheckCircleIcon />}
 				isDisabled={true}
-				colorScheme={category.color}
+				// colorScheme={category.color}
+				bg={category.queryTag + '.' + bg}
+				color={category.queryTag + '.' + fg}
+				
 				onClick={handleClick}>
 			</Button>
 		} else {
@@ -42,7 +48,9 @@ export default function CategoryButton(props: categoryButtonProps) {
 			return <Button
 				key={buttonKey}
 				isDisabled={isDisabled}
-				colorScheme={category.color}
+				// colorScheme={category.color}
+				bg={category.queryTag + '.' + bg}
+				color={category.queryTag + '.' + fg}
 				onClick={handleClick}
 			>
 				{category.title}
