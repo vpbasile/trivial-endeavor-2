@@ -71,6 +71,7 @@ export type GameAction =
     { type: "SETaskedQuestions", payload: string[] } // Payload is the id of the new question to add to the list
 
 export default function gameReducer(state: gameStateType, action: GameAction): gameStateType {
+    
     switch (action.type) {
         // Universal actions
         case "SETdisplayMessage":
@@ -97,11 +98,11 @@ export default function gameReducer(state: gameStateType, action: GameAction): g
         case "phase_1_begin_game":
             // Begin the game
             console.log("-Begin phase_1_begin_game-");
-            return { ...state, currentPhase: "Select", currentPlayerIndex: 0, playerIndicator: state.playerList[0].name, displayMessage: <SameButton color="grey" text={`Select a category to begin!`} /> };
+            return { ...state, currentPhase: "Select", currentPlayerIndex: 0, playerIndicator: state.playerList[0].name, displayMessage: <SameButton color="grey" text={`Select a category to begin!`} isDisabled /> };
         case "phase_2_get_question": {
             // Get a question of the selected category for the current player
             console.log("-Begin phase_2_get_question-");
-            return { ...state, currentPhase: "Question", currentQuestion: nullQuestion(), displayMessage: <SameButton color='grey' text={`Please wait`} /> };
+            return { ...state, currentPhase: "Question", currentQuestion: nullQuestion(), displayMessage: <SameButton color='grey' text={`Please wait`} isDisabled/> };
         }
         case "phase_3_answer_question": {
             // Display the choices
@@ -109,7 +110,7 @@ export default function gameReducer(state: gameStateType, action: GameAction): g
             const { question } = action.payload;
             const categoryTag = question.categoryTag;
             const category = getCategory(categoryList, categoryTag);
-            const buttonContents = category ? <SameButton text={category.title} color={category.queryTag} /> : "Category";
+            const buttonContents = category ? <SameButton text={category.title} color={category.queryTag} isDisabled /> : "Category";
             return {
                 ...state, currentPhase: "Answer", currentQuestion: question, displayMessage: <>
                     {buttonContents}
@@ -134,7 +135,7 @@ export default function gameReducer(state: gameStateType, action: GameAction): g
             const playerIndicator = playerList[whichPlayer].name;
             console.log(`It is now ${playerIndicator}'s turn.`)
             // Upate the current phase to select and the current player index to the next player
-            return { ...state, currentPhase: "Select", currentPlayerIndex: whichPlayer, playerIndicator, guessEntered: null, displayMessage: <SameButton text={`Select a question!`} /> };
+            return { ...state, currentPhase: "Select", currentPlayerIndex: whichPlayer, playerIndicator, guessEntered: null, displayMessage: <SameButton text={`Select a question!`} isDisabled /> };
 
         }
         // Question actions
@@ -150,7 +151,7 @@ export default function gameReducer(state: gameStateType, action: GameAction): g
             console.log(message);
             // FIXME - This is not working - it is double adding the category on the subsequent turn
             console.log(`Their list of correct categories is now: ${updatedPlayer.correctCategories}`)
-            return { ...state, playerList: updatedPlayerList, displayMessage: <SameButton text={message} />, currentPhase: "Feedback" };
+            return { ...state, playerList: updatedPlayerList, displayMessage: <SameButton text={message} isDisabled/>, currentPhase: "Feedback" };
         }
         case "give_player_medal": {
             console.log("-Begin give_player_medal-");
@@ -169,7 +170,7 @@ export default function gameReducer(state: gameStateType, action: GameAction): g
                 const message = `${winningPlayer.name} wins ${ordinal(vyingForPlace)} place!`;
                 console.log(message)
                 const playerIndicator = `${playerList[whoIsNext].name}, you're up next!`;
-                const displayMessage = <SameButton text={message} color={color} />
+                const displayMessage = <SameButton text={message} color={color} isDisabled />
                 return {
                     ...state, vyingForPlace: (vyingForPlace + 1), playerList: [...playerList], playerIndicator, displayMessage, currentPhase: "Feedback"
                 };
@@ -180,7 +181,7 @@ export default function gameReducer(state: gameStateType, action: GameAction): g
                 const displayMessage = <VStack>
                     {playerList.map((player, index) => {
                         const playerPlace = player.wonPlace;
-                        return <SameButton text={`${player.name} - ${ordinal(playerPlace)}`} color={winnerColor(playerPlace)} key={player.name + index} />
+                        return <SameButton text={`${player.name} - ${ordinal(playerPlace)}`} color={winnerColor(playerPlace)} key={player.name + index} isDisabled/>
                     })}
                 </VStack>
                 console.log(displayMessage)

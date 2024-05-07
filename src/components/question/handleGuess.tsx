@@ -31,13 +31,13 @@ export function handleGuess(question: questionInternal, guess: number, player: p
         } else {
             const message = `That is correct!  ${player.name} now has ${score} points.`;
             console.log(message);
-            dispatch({ type: "phase_4_feedback", payload: { guess, message: <SameButton text={message} color="green" /> } });
+            dispatch({ type: "phase_4_feedback", payload: { guess, message: <SameButton text={message} color="science" isDisabled /> } });
         }
     } else {
         // If the player guessed incorrectly, display a message and move on to the next player
         const message = `That is incorrect.  The correct answer was`;
         console.log(message, `${correctIndex}: ${question.choices[correctIndex]}`)
-        dispatch({ type: "phase_4_feedback", payload: { guess, message: <SameButton text={message} color="red" /> } });
+        dispatch({ type: "phase_4_feedback", payload: { guess, message: <SameButton text={message} color="general_knowledge" isDisabled /> } });
     }
     // If we're not in devmode, then wait 5 seconds before moving on to the next player
     // if (!devMode) {

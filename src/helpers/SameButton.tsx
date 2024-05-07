@@ -12,6 +12,7 @@ export function SameButton(
         onClick?: () => void
     }) {
 
+    const { color, leftIcon, rightIcon, isDisabled, onClick, text } = props;
 
     const fg = useColorModeValue('dark', 'light')
     const bg = useColorModeValue('light', 'dark')
@@ -20,12 +21,13 @@ export function SameButton(
         py={4} px={2}
         alignContent={'center'}
         borderRadius={'lg'}
-        bg={props.color + '.' + bg}
-        color={props.color + '.' + fg}
-        leftIcon={props.leftIcon}
-        rightIcon={props.rightIcon}
-        isDisabled={props.isDisabled}
-        onClick={props.onClick} >
-        {props.text}
+        border={isDisabled ? 'none' : '8px'}
+        bg={color + '.' + bg}
+        color={color + '.' + fg}
+        leftIcon={leftIcon}
+        rightIcon={rightIcon}
+        isDisabled={isDisabled}
+        onClick={onClick} >
+        {text}
     </Button>)
 }

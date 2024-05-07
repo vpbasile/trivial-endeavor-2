@@ -36,7 +36,7 @@ export default function GameBoard() {
         currentPhase: "Select",
         currentPlayerIndex: 0,
         playerIndicator: playerListInit[0].name,
-        displayMessage: <SameButton text={`Select a question!`} />,
+        displayMessage: <SameButton text={`Select a question!`} isDisabled />,
         currentQuestion: nullQuestion(),
         vyingForPlace: 1,
         guessEntered: null,
