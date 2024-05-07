@@ -58,7 +58,7 @@ export default function GameBoard() {
 
     return (<ErrorBoundary fallback={<Box>Error in component AppRow</Box>}>
         <VStack>
-            <VStack id="gameflowDisplay" p={3}>
+            <VStack id="gameflowDisplay" w={'100%'} p={3}>
                 {displayMessage}
                 {<SameButton id="turnTracker"
                     text={playerIndicator}
@@ -81,7 +81,7 @@ export default function GameBoard() {
                     </Box>
                 </Collapse>
             </VStack>
-            <VStack id="controlRow" >
+            <VStack id="controlRow" w={'100%'} p={3}>
                 <ColorModeButton /> 
                 <DevModeButton devMode={gameState.devMode} dispatch={dispatch} />
                 <DataDisplay gameState={gameState} />
