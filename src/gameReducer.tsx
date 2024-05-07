@@ -97,11 +97,11 @@ export default function gameReducer(state: gameStateType, action: GameAction): g
         case "phase_1_begin_game":
             // Begin the game
             console.log("-Begin phase_1_begin_game-");
-            return { ...state, currentPhase: "Select", currentPlayerIndex: 0, playerIndicator: state.playerList[0].name, displayMessage: <SameButton text={`Select a category to begin!`} /> };
+            return { ...state, currentPhase: "Select", currentPlayerIndex: 0, playerIndicator: state.playerList[0].name, displayMessage: <SameButton color="grey" text={`Select a category to begin!`} /> };
         case "phase_2_get_question": {
             // Get a question of the selected category for the current player
             console.log("-Begin phase_2_get_question-");
-            return { ...state, currentPhase: "Question", currentQuestion: nullQuestion(), displayMessage: <SameButton text={`Please wait`} /> };
+            return { ...state, currentPhase: "Question", currentQuestion: nullQuestion(), displayMessage: <SameButton color='grey' text={`Please wait`} /> };
         }
         case "phase_3_answer_question": {
             // Display the choices
@@ -109,7 +109,7 @@ export default function gameReducer(state: gameStateType, action: GameAction): g
             const { question } = action.payload;
             const categoryTag = question.categoryTag;
             const category = getCategory(categoryList, categoryTag);
-            const buttonContents = category ? <SameButton text={category.title} color={category.color} /> : "Category";
+            const buttonContents = category ? <SameButton text={category.title} color={category.queryTag} /> : "Category";
             return {
                 ...state, currentPhase: "Answer", currentQuestion: question, displayMessage: <>
                     {buttonContents}

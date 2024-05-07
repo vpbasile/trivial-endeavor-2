@@ -9,17 +9,18 @@ export function SameBanner(
         children?: JSX.Element
     }) {
 
-    const fg = useColorModeValue('light', 'dark')
-    const bg = useColorModeValue('dark', 'light')
-
+    // const fg = useColorModeValue('light', 'dark')
+    // const bg = useColorModeValue('dark', 'light')
+	const fg = useColorModeValue('dark', 'light')
+	const bg = useColorModeValue('light', 'dark')
     return <>
-        <Card id={props.id} key={props.id}
+        <Card className="sameBanner" id={props.id} key={props.id}
             w={'100%'} whiteSpace={'normal'}
             // p={2}
             alignContent={'center'}
             borderRadius={'lg'}
             bg={props.categoryTag + '.' + bg}
-            color={props.categoryTag + '.' + fg}
+            // color={props.categoryTag + '.' + fg}
         >
             <CardBody>{props.children || props.text}</CardBody>
         </Card>

@@ -11,6 +11,7 @@ const myPalette = {
   sport_and_leisure: { light: '#FBD38D', dark: '#652B19' },
   music: { light: '#D6BCFA', dark: '#322659' },
   film_and_tv: { light: '#FEB2B2', dark: '#63171B' },
+  grey: { light: '#E2E8F0', dark: '#2D3748' },
 }
 
 
