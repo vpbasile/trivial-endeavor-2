@@ -13,15 +13,15 @@ type questionFromAPI = {
 // This should probably be done as a map or a map-like tuple
 export const categoryList: category[] = [
     // <> FIXME <> These keys are probably no longer necessary
-    { key: "00", queryTag: "none", title: "x", color: "black" },
-    { key: "08", queryTag: "science", title: "Science", color: "green" },
-    { key: "02", queryTag: "geography", title: "Geography", color: "blue" },
-    { key: "04", queryTag: "history", title: "History", color: "yellow" },
-    { key: "03", queryTag: "general_knowledge", title: "General Knowledge", color: "pink" },
-    { key: "01", queryTag: "food_and_drink", title: "Food & Drink", color: "cyan" },
-    { key: "05", queryTag: "sport_and_leisure", title: "Sport & Leisure", color: "orange" },
-    { key: "07", queryTag: "music", title: "Music", color: "purple" },
-    { key: "06", queryTag: "movies", title: "Film & TV", color: "red" },
+    { key: "00", queryTag: "none", title: "x" },
+    { key: "08", queryTag: "science", title: "Science" },
+    { key: "02", queryTag: "geography", title: "Geography" },
+    { key: "04", queryTag: "history", title: "History" },
+    { key: "03", queryTag: "general_knowledge", title: "General Knowledge" },
+    { key: "01", queryTag: "food_and_drink", title: "Food & Drink" },
+    { key: "05", queryTag: "sport_and_leisure", title: "Sport & Leisure" },
+    { key: "07", queryTag: "music", title: "Music" },
+    { key: "06", queryTag: "movies", title: "Film & TV" },
 ]
 
 export async function getQuestion(categoryID: string): Promise<questionInternal> {
