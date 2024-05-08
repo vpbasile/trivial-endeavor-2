@@ -1,5 +1,5 @@
 import { AddIcon, MinusIcon } from '@chakra-ui/icons';
-import { Box, Button, Center, HStack, List, ListItem, Stack, Text, VStack } from '@chakra-ui/react';
+import { Button, HStack, Input, Stack, Text, VStack } from '@chakra-ui/react';
 import { useState } from 'react';
 import ColorModeButton from '../helpers/ColorModeButton';
 import { SameBanner } from '../helpers/SameBanner';
@@ -16,10 +16,10 @@ export default function GameSetup() {
 	const [player3temp, setPlayer3temp] = useState("Valerie")
 	const [player4temp, setPlayer4temp] = useState("Rick")
 	// Display that many input fields for player names
-	const player1input = <ListItem key={1 + "namefield"}><input type="text" value={player1temp} onChange={(e) => setPlayer1temp(e.target.value)} /></ListItem>
-	const player2input = <ListItem key={2 + "namefield"}><input type="text" value={player2temp} onChange={(e) => setPlayer2temp(e.target.value)} /></ListItem>
-	const player3input = <ListItem key={3 + "namefield"}><input type="text" value={player3temp} onChange={(e) => setPlayer3temp(e.target.value)} /></ListItem>
-	const player4input = <ListItem key={4 + "namefield"}><input type="text" value={player4temp} onChange={(e) => setPlayer4temp(e.target.value)} /></ListItem>
+	const player1input = <Input type="text" value={player1temp} onChange={(e) => setPlayer1temp(e.target.value)} />
+	const player2input = <Input type="text" value={player2temp} onChange={(e) => setPlayer2temp(e.target.value)} />
+	const player3input = <Input type="text" value={player3temp} onChange={(e) => setPlayer3temp(e.target.value)} />
+	const player4input = <Input type="text" value={player4temp} onChange={(e) => setPlayer4temp(e.target.value)} />
 
 	const playerInputs = [player1input, player2input, player3input, player4input]
 	const playerList = [player1temp, player2temp, player3temp, player4temp]
@@ -65,18 +65,12 @@ export default function GameSetup() {
 					{removeButton}
 					<ColorModeButton />
 				</Stack>
-				<Center id="playerList" flex={5}>
-					<Box w={'fit-content'} py={8}>
-						<Text>Teams/Players</Text>
-						<List>{
-							// I want to display a number of inputs equal to the number of players that the user has selected.
-							playerInputs.slice(0, numberOfPlayers)
-						}</List>
-
-
-
-					</Box>
-				</Center>
+				<Stack id="playerList" flex={5}>
+					<Text>Teams/Players</Text>
+					{/* <List> */}
+						{playerInputs.slice(0, numberOfPlayers)}
+					{/* </List> */}
+				</Stack>
 			</HStack>
 		</VStack>)
 }
