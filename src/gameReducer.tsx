@@ -141,7 +141,6 @@ export default function gameReducer(state: gameStateType, action: GameAction): g
         // Question actions
         case "give_player_token": {
             console.log("-Begin give_player_token-");
-            // <> FIXME This is not working - it is double adding the category on the subsequest turn
             const { playerIndex, categoryTag } = action.payload;
             const updatedPlayerList = [...state.playerList];
             const updatedPlayer = { ...updatedPlayerList[playerIndex] };
@@ -149,13 +148,11 @@ export default function gameReducer(state: gameStateType, action: GameAction): g
             updatedPlayerList[playerIndex] = updatedPlayer;
             const message = `${updatedPlayer.name} has gotten the ${categoryTag} category! They now have ${updatedPlayer.correctCategories.length} points out of ${state.neededToWin} needed to win.`
             console.log(message);
-            // FIXME - This is not working - it is double adding the category on the subsequent turn
             console.log(`Their list of correct categories is now: ${updatedPlayer.correctCategories}`)
             return { ...state, playerList: updatedPlayerList, displayMessage: <SameButton text={message} isDisabled/>, currentPhase: "Feedback" };
         }
         case "give_player_medal": {
             console.log("-Begin give_player_medal-");
-            // <><> FIXME Win condition is not working
             const { playerIndex } = action.payload;
             const { playerList, vyingForPlace, neededToWin } = state;
             const winningPlayer = playerList[playerIndex];

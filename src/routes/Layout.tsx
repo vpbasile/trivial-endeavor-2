@@ -6,8 +6,6 @@ import logoWhite from "/trivialEndeavorLogoWhite.svg";
 
 import packageJson from '../../package.json';
 
-
-// FIXME: Put this file in a better place
 import { Outlet } from 'react-router-dom';
 import Footer from './Footer';
 import Header from './Header';
