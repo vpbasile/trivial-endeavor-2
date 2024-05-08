@@ -8,9 +8,7 @@ import { Box, Collapse, VStack } from "@chakra-ui/react";
 import { useReducer } from "react";
 import { ErrorBoundary } from "react-error-boundary";
 import { useParams } from "react-router-dom";
-import DataDisplay from "../components/DataDisplay";
-import QuestionDisplay from "../components/question/QuestionDisplay";
-import PlayerColumn from "../components/scoreboard/PlayerColumn";
+import DataDisplay from "../dev/DataDisplay";
 import gameReducer, { gameStateType, nullQuestion } from "../gameReducer";
 import ColorModeButton from "../helpers/ColorModeButton";
 import DevModeButton from "../helpers/DevModeButton";
@@ -18,6 +16,8 @@ import { SameButton } from "../helpers/SameButton";
 import AppRow from "../helpers/appRow";
 import { categoryList } from "../helpers/queryTheTrivia";
 import { newBreaks } from "../helpers/style";
+import QuestionDisplay from "../question/QuestionDisplay";
+import PlayerColumn from "../scoreboard/PlayerColumn";
 
 export default function GameBoard() {
 

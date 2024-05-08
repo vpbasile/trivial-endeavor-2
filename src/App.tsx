@@ -1,5 +1,6 @@
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
 // import ColorTest from '../ignores/ColorTest';
+import ColorTest from './dev/ColorTest';
 import ErrorPage from './routes/error-page';
 import GameBoard from './routes/GameBoard';
 import GameSetup from './routes/GameSetup';
@@ -12,7 +13,7 @@ export default function App(): JSX.Element {
     <BrowserRouter>
       <Routes>
         <Route path="/trivial-endeavor-2/" element={<Layout />} errorElement={<ErrorPage />} >
-          {/* <Route path='/trivial-endeavor-2/test' element={<ColorTest />} /> */}
+          <Route path='/trivial-endeavor-2/test' element={<ColorTest />} />
           <Route path="/trivial-endeavor-2/:playerNames/:devModeEntered" element={<GameBoard />} errorElement={<ErrorPage />} />
           <Route path="/trivial-endeavor-2/:playerNames/" element={<GameBoard />} errorElement={<ErrorPage />} />
           <Route path="/trivial-endeavor-2/" element={<GameSetup />} errorElement={<ErrorPage />} />

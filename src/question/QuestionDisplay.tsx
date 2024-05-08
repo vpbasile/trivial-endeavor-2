@@ -1,7 +1,7 @@
 import { CheckCircleIcon, CloseIcon, QuestionOutlineIcon } from "@chakra-ui/icons";
 import { Box, Heading, useColorModeValue } from "@chakra-ui/react";
-import { propsType } from "../../gameReducer";
-import { newBreaks } from "../../helpers/style";
+import { propsType } from "../gameReducer";
+import { newBreaks } from "../helpers/style";
 import AnswerButton from "./AnswerButton";
 
 export default function QuestionDisplay(props: propsType): JSX.Element | null {
@@ -43,11 +43,11 @@ export default function QuestionDisplay(props: propsType): JSX.Element | null {
 				let colorOverride
 				// Color the correct answer green
 				if (buttonIndex === currentQuestion.correctIndex) {
-					colorOverride = 'green';
+					colorOverride = 'correct';
 				}
 				// If the guess was incorrect, color the incorrect answer red
 				else if (buttonIndex === guessEntered) {
-					colorOverride = 'red';
+					colorOverride = 'incorrect';
 				}
 				// Otherwise, make the button gray'
 				else {

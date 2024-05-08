@@ -1,6 +1,6 @@
 import { Dispatch } from "react";
-import { GameAction, category, nullQuestion } from "../../gameReducer";
-import { getQuestion } from "../../helpers/queryTheTrivia";
+import { GameAction, category, nullQuestion } from "../gameReducer";
+import { getQuestion } from "../helpers/queryTheTrivia";
 /**
  *Requests a new question from the API and updates the game state with that question
  *

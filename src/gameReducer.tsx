@@ -12,7 +12,7 @@ import { getCategory, ordinal, winnerColor } from "./helpers/routines";
 import { SameButton } from "./helpers/SameButton";
 
 export type categoryTag = string
-export type category = { key: string, queryTag: categoryTag, title: string, color: string }
+export type category = { key: string, queryTag: categoryTag, title: string }
 export type guessType = null | number;
 export type winners = number;
 export type player = { index: number, name: string, correctCategories: string[], wonPlace: winners, key?: number }

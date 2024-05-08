@@ -19,10 +19,6 @@ export function shuffleArray(array: string[]): string[] {
     return array;
 }
 
-
-/**
-* Returns first, second, thrd, or last
-*/
 export function ordinal(number: number): "First" | "Second" | "Third" | "Last" {
     switch (number) {
         case 1: return "First";
@@ -34,9 +30,9 @@ export function ordinal(number: number): "First" | "Second" | "Third" | "Last" {
 
 export function winnerColor(place: number) {
     switch (place) {
-        case 1: return "yellow";
-        case 2: return "cyan";
-        case 3: return "orange";
+        case 1: return "gold";
+        case 2: return "silver";
+        case 3: return "bronze";
     }
 }
 

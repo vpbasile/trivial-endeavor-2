@@ -1,7 +1,7 @@
 import { Collapse, Show, Stack, Text } from '@chakra-ui/react';
-import { player, propsType } from '../../gameReducer';
-import { categoryList } from '../../helpers/queryTheTrivia';
-import { sidePad } from '../../helpers/style';
+import { player, propsType } from '../gameReducer';
+import { categoryList } from '../helpers/queryTheTrivia';
+import { sidePad } from '../helpers/style';
 import CategoryButton from './CategoryButton';
 
 interface playerColumnProps extends propsType {

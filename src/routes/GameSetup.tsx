@@ -51,7 +51,7 @@ export default function GameSetup() {
 	const startButton = <Button>
 		<ChakraLink as={ReactRouterLink} to={URL}
 			textAlign={'left'}
-		// leftIcon={<CheckIcon color={'green'} />}
+			// leftIcon={<CheckIcon color={'green'} />}
 		>Begin Game</ChakraLink>
 	</Button>
 
@@ -68,7 +68,7 @@ export default function GameSetup() {
 				<Stack id="playerList" flex={5}>
 					<Text>Teams/Players</Text>
 					{/* <List> */}
-						{playerInputs.slice(0, numberOfPlayers)}
+					{playerInputs.slice(0, numberOfPlayers)}
 					{/* </List> */}
 				</Stack>
 			</HStack>
