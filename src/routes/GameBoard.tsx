@@ -27,11 +27,6 @@ export default function GameBoard() {
     if (playerNames) playerNamesArray = playerNames.split("-");
     const playerListInit = playerNamesArray.map((name, index) => ({ index, key: index, name, correctCategories: [], wonPlace: 0 }))
 
-    // If devMode is 0, then the game is in normal mode. If devMode is 1, then the game is in developer mode.
-    console.log("devModeEntered", devModeEntered);
-    const devModeDefault = (devModeEntered === "1");
-    console.log("devModeDefault", devModeDefault);
-
     const initialGameState: gameStateType = {
         currentPhase: "Select",
         currentPlayerIndex: 0,
@@ -39,11 +34,13 @@ export default function GameBoard() {
         displayMessage: <SameButton text={`Select a question!`} isDisabled />,
         currentQuestion: nullQuestion(),
         vyingForPlace: 1,
+        winners: [],
         guessEntered: null,
         playerList: playerListInit,
         askedQuestions: [""],
-        devMode: devModeDefault,
-        neededToWin: devModeDefault ? 2 : categoryList.length,
+        // If devMode is 1, then the game is in developer mode.
+        devMode: (devModeEntered === "1"),
+        neededToWin: (devModeEntered === "1") ? 2 : categoryList.length,
     }
 
     const [gameState, dispatch] = useReducer(gameReducer, initialGameState);
@@ -82,7 +79,7 @@ export default function GameBoard() {
                 </Collapse>
             </VStack>
             <VStack id="controlRow" w={'100%'} p={3}>
-                <ColorModeButton /> 
+                <ColorModeButton />
                 <DevModeButton devMode={gameState.devMode} dispatch={dispatch} />
                 <DataDisplay gameState={gameState} />
             </VStack>

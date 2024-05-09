@@ -21,7 +21,6 @@ export function handleGuess(question: questionInternal, guess: number, player: p
     let score = player.correctCategories.length
     if (guess === correctIndex) {
         // If the player guessed correctly, 
-        console.log("That is the correct response");
         // Give them a token for the category
         dispatch({ type: "give_player_token", payload: { playerIndex: player.index, categoryTag: category } });
         score += 1;
