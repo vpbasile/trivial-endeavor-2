@@ -27,6 +27,7 @@ export type gameStateType = {
     displayMessage: JSX.Element,
     currentQuestion: questionInternal,
     vyingForPlace: number,
+    winners: number[],
     guessEntered: guessType,
     playerList: player[],
     askedQuestions: string[],
@@ -68,10 +69,10 @@ export type GameAction =
     // Are these two actions redundant?
     { type: "give_player_medal", payload: { playerIndex: number } } |
     { type: "clear_question" } |
-    { type: "SETaskedQuestions", payload: string[] } // Payload is the id of the new question to add to the list
-
+    { type: "SETaskedQuestions", payload: string[] } | // Payload is the id of the new question to add to the list
+    { type: "rematch" }
 export default function gameReducer(state: gameStateType, action: GameAction): gameStateType {
-    
+
     switch (action.type) {
         // Universal actions
         case "SETdisplayMessage":
@@ -102,7 +103,7 @@ export default function gameReducer(state: gameStateType, action: GameAction): g
         case "phase_2_get_question": {
             // Get a question of the selected category for the current player
             console.log("-Begin phase_2_get_question-");
-            return { ...state, currentPhase: "Question", currentQuestion: nullQuestion(), displayMessage: <SameButton color='grey' text={`Please wait`} isDisabled/> };
+            return { ...state, currentPhase: "Question", currentQuestion: nullQuestion(), displayMessage: <SameButton color='grey' text={`Please wait`} isDisabled /> };
         }
         case "phase_3_answer_question": {
             // Display the choices
@@ -149,42 +150,50 @@ export default function gameReducer(state: gameStateType, action: GameAction): g
             const message = `${updatedPlayer.name} has gotten the ${categoryTag} category! They now have ${updatedPlayer.correctCategories.length} points out of ${state.neededToWin} needed to win.`
             console.log(message);
             console.log(`Their list of correct categories is now: ${updatedPlayer.correctCategories}`)
-            return { ...state, playerList: updatedPlayerList, displayMessage: <SameButton text={message} isDisabled/>, currentPhase: "Feedback" };
+            return { ...state, playerList: updatedPlayerList, displayMessage: <SameButton text={message} isDisabled />, currentPhase: "Feedback" };
         }
         case "give_player_medal": {
             console.log("-Begin give_player_medal-");
             const { playerIndex } = action.payload;
-            const { playerList, vyingForPlace, neededToWin } = state;
+            const { playerList, vyingForPlace, neededToWin, winners } = state;
             const winningPlayer = playerList[playerIndex];
             const whoIsNext = nextPlayer(playerIndex, neededToWin, playerList);
             const color = winnerColor(vyingForPlace);
             // This is displaying the correct place
             winnerColor(vyingForPlace)
             winningPlayer.wonPlace = vyingForPlace;
+            const updatedWinners = [...winners];
             // FIXME - Add handling for a single-player game
-            if (vyingForPlace < playerList.length - 1) {
+            if (vyingForPlace < playerList.length) {
                 // There are more medals to win, so continue the game
                 const message = `${winningPlayer.name} wins ${ordinal(vyingForPlace)} place!`;
                 console.log(message)
+                updatedWinners.push(playerIndex);
+                console.log(`The winners are now: ${updatedWinners}`)
                 const playerIndicator = `${playerList[whoIsNext].name}, you're up next!`;
                 const displayMessage = <SameButton text={message} color={color} isDisabled />
                 return {
-                    ...state, vyingForPlace: (vyingForPlace + 1), playerList: [...playerList], playerIndicator, displayMessage, currentPhase: "Feedback"
+                    ...state, winners: updatedWinners, vyingForPlace: (vyingForPlace + 1), playerList: [...playerList], playerIndicator, displayMessage, currentPhase: "Feedback"
                 };
             } else {
                 // All medals have been won, so end the game
                 const playerIndicator = `Game over!`
+                updatedWinners.push(playerIndex);
                 // FIXME - This would be better if it listed the players in order of their place
+                updatedWinners.forEach((playerIndex, place) => {
+                    console.log(`${playerList[playerIndex].name} won ${ordinal(place + 1)} place!`)
+                })
                 const displayMessage = <VStack>
-                    {playerList.map((player, index) => {
-                        const playerPlace = player.wonPlace;
-                        return <SameButton text={`${player.name} - ${ordinal(playerPlace)}`} color={winnerColor(playerPlace)} key={player.name + index} isDisabled/>
+                    {updatedWinners.map((playerIndex, index) => {
+                        const place = index + 1;
+                        const playerName = playerList[playerIndex].name;
+                        return <SameButton text={`${playerName} - ${ordinal(place)}`} color={winnerColor(place)} key={playerName + place} isDisabled />
                     })}
                 </VStack>
-                console.log(displayMessage)
                 return { ...state, playerList: [...playerList], playerIndicator, displayMessage, currentPhase: "End" };
             }
         }
+        case "rematch": return state;
         case "SETaskedQuestions":
             return { ...state, askedQuestions: action.payload };
         default:
