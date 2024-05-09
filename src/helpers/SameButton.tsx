@@ -11,9 +11,7 @@ export function SameButton(
         rightIcon?: JSX.Element,
         onClick?: () => void
     }) {
-
     const { color, leftIcon, rightIcon, isDisabled, onClick, text } = props;
-
     const fg = useColorModeValue('dark', 'light')
     const bg = useColorModeValue('light', 'dark')
     return (<Button id={props.id} key={props.id}
@@ -22,12 +20,13 @@ export function SameButton(
         alignContent={'center'}
         borderRadius={'lg'}
         border={isDisabled ? 'none' : '8px'}
+        variant={isDisabled ? 'display-only' : 'solid'}
         bg={color + '.' + bg}
         color={color + '.' + fg}
         leftIcon={leftIcon}
         rightIcon={rightIcon}
-        isDisabled={isDisabled}
+        // isDisabled={isDisabled}
         onClick={onClick} >
         {text}
-    </Button>)
+    </Button >)
 }

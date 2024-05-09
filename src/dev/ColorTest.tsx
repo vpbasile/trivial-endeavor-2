@@ -5,7 +5,11 @@ export default function ColorTest() {
     const fg = useColorModeValue('dark', 'light');
     const bg = useColorModeValue('light', 'dark');
     return (<>
-        <ColorModeButton />
+        <Stack>
+            <ColorModeButton />
+            <Button>Display Only</Button>
+            
+        </Stack>
         <Stack>
             <Button bg={'gold' + '.' + bg}>Gold</Button>
             <Button bg={'silver' + '.' + bg}>Silver</Button>
