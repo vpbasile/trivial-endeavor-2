@@ -27,11 +27,12 @@ export default function GameBoard() {
     if (playerNames) playerNamesArray = playerNames.split("-");
     const playerListInit = playerNamesArray.map((name, index) => ({ index, key: index, name, correctCategories: [], wonPlace: 0 }))
 
+    const firstPlayerName = playerListInit[0].name;
     const initialGameState: gameStateType = {
         currentPhase: "Select",
         currentPlayerIndex: 0,
-        playerIndicator: playerListInit[0].name,
-        displayMessage: <SameButton text={`Select a question!`} isDisabled />,
+        playerIndicator: firstPlayerName,
+        displayMessage: <SameButton text={`Select a question, ${firstPlayerName}!`} isDisabled />,
         currentQuestion: nullQuestion(),
         vyingForPlace: 1,
         winners: [],
@@ -57,14 +58,15 @@ export default function GameBoard() {
         <VStack>
             <VStack id="gameflowDisplay" w={'100%'} p={3}>
                 {displayMessage}
-                {<SameButton id="turnTracker"
-                    text={playerIndicator}
-                    // This button should only be clickable when the game is in the "Feedback" phase.
-                    isDisabled={currentPhase !== "Feedback"}
-                    leftIcon={icon}
-                    rightIcon={icon}
-                    onClick={currentPhase === "Feedback" ? () => dispatch({ type: 'phase_5_next_player' }) : undefined}
-                />}
+                {currentPhase === "Feedback" && (
+                    <SameButton id="turnTracker"
+                        text={playerIndicator}
+                        isDisabled={false}
+                        leftIcon={icon}
+                        rightIcon={icon}
+                        onClick={() => dispatch({ type: 'phase_5_next_player' })}
+                    />
+                )}
             </VStack>
             <VStack id="gameBoardContainer" maxWidth={newBreaks}>
                 <Collapse in={currentPhase === "Answer" || currentPhase === "Feedback"} unmountOnExit animateOpacity>

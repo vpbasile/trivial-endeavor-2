@@ -111,7 +111,8 @@ export default function gameReducer(state: gameStateType, action: GameAction): g
             const { question } = action.payload;
             const categoryTag = question.categoryTag;
             const category = getCategory(categoryList, categoryTag);
-            const buttonContents = category ? <SameButton text={category.title} color={category.queryTag} isDisabled /> : "Category";
+            const currentPlayerName = state.playerList[action.payload.playerIndex].name;
+            const buttonContents = category ? <SameButton id="" text={`Answer this ${category.title} question, ${currentPlayerName}.`} color={category.queryTag} isDisabled /> : "Category";
             return {
                 ...state, currentPhase: "Answer", currentQuestion: question, displayMessage: <>
                     {buttonContents}
@@ -134,9 +135,8 @@ export default function gameReducer(state: gameStateType, action: GameAction): g
             const { currentPlayerIndex, neededToWin, playerList } = state
             const whichPlayer = nextPlayer(currentPlayerIndex, neededToWin, playerList);
             const playerIndicator = playerList[whichPlayer].name;
-            console.log(`It is now ${playerIndicator}'s turn.`)
             // Upate the current phase to select and the current player index to the next player
-            return { ...state, currentPhase: "Select", currentPlayerIndex: whichPlayer, playerIndicator, guessEntered: null, displayMessage: <SameButton text={`Select a question!`} isDisabled /> };
+            return { ...state, currentPhase: "Select", currentPlayerIndex: whichPlayer, playerIndicator, guessEntered: null, displayMessage: <SameButton text={`Select a question, ${playerIndicator}!`} isDisabled /> };
 
         }
         // Question actions
@@ -148,8 +148,6 @@ export default function gameReducer(state: gameStateType, action: GameAction): g
             if (!updatedPlayer.correctCategories.includes(categoryTag)) updatedPlayer.correctCategories.push(categoryTag);
             updatedPlayerList[playerIndex] = updatedPlayer;
             const message = `${updatedPlayer.name} has gotten the ${categoryTag} category! They now have ${updatedPlayer.correctCategories.length} points out of ${state.neededToWin} needed to win.`
-            console.log(message);
-            console.log(`Their list of correct categories is now: ${updatedPlayer.correctCategories}`)
             return { ...state, playerList: updatedPlayerList, displayMessage: <SameButton text={message} isDisabled />, currentPhase: "Feedback" };
         }
         case "give_player_medal": {
