@@ -59,10 +59,12 @@ export default function GameBoard() {
                 {displayMessage}
                 {<SameButton id="turnTracker"
                     text={playerIndicator}
+                    // This button should only be clickable when the game is in the "Feedback" phase.
                     isDisabled={currentPhase !== "Feedback"}
                     leftIcon={icon}
                     rightIcon={icon}
-                    onClick={() => dispatch({ type: 'phase_5_next_player' })} />}
+                    onClick={currentPhase === "Feedback" ? () => dispatch({ type: 'phase_5_next_player' }) : undefined}
+                />}
             </VStack>
             <VStack id="gameBoardContainer" maxWidth={newBreaks}>
                 <Collapse in={currentPhase === "Answer" || currentPhase === "Feedback"} unmountOnExit animateOpacity>
