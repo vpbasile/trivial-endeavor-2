@@ -35,7 +35,7 @@ export type gameStateType = {
     neededToWin: number,
 }
 
-// The props for the came components should mosly be the same
+// The props for the game components should mosly be the same
 export type propsType = {
     gameState: gameStateType,
     dispatch: dispatchType,
