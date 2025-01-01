@@ -91,7 +91,7 @@ export default function gameReducer(state: gameStateType, action: GameAction): g
         }
         case "toggle_dev_mode": {
             const devMode = state.devMode ? false : true;
-            devMode ? console.log("Dev mode is now off") : console.log("Dev mode is now on")
+            devMode ? console.log("Dev mode is now on") : console.log("Dev mode is now off")
             const neededToWin = devMode ? 2 : categoryList.length;
             return { ...state, devMode, neededToWin };
         }
@@ -135,7 +135,7 @@ export default function gameReducer(state: gameStateType, action: GameAction): g
             const { currentPlayerIndex, neededToWin, playerList } = state
             const whichPlayer = nextPlayer(currentPlayerIndex, neededToWin, playerList);
             const playerIndicator = playerList[whichPlayer].name;
-            // Upate the current phase to select and the current player index to the next player
+            // Update the current phase to select and the current player index to the next player
             return { ...state, currentPhase: "Select", currentPlayerIndex: whichPlayer, playerIndicator, guessEntered: null, displayMessage: <SameButton text={`Select a question, ${playerIndicator}!`} isDisabled /> };
 
         }
