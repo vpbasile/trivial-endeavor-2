@@ -16,10 +16,10 @@ export default function GameSetup() {
 	const [player3temp, setPlayer3temp] = useState("Valerie")
 	const [player4temp, setPlayer4temp] = useState("Rick")
 	// Display that many input fields for player names
-	const player1input = <Input type="text" value={player1temp} onChange={(e) => setPlayer1temp(e.target.value)} />
-	const player2input = <Input type="text" value={player2temp} onChange={(e) => setPlayer2temp(e.target.value)} />
-	const player3input = <Input type="text" value={player3temp} onChange={(e) => setPlayer3temp(e.target.value)} />
-	const player4input = <Input type="text" value={player4temp} onChange={(e) => setPlayer4temp(e.target.value)} />
+	const player1input = <Input key="nameInput1" type="text" value={player1temp} onChange={(e) => setPlayer1temp(e.target.value)} />
+	const player2input = <Input key="nameInput2" type="text" value={player2temp} onChange={(e) => setPlayer2temp(e.target.value)} />
+	const player3input = <Input key="nameInput3" type="text" value={player3temp} onChange={(e) => setPlayer3temp(e.target.value)} />
+	const player4input = <Input key="nameInput4" type="text" value={player4temp} onChange={(e) => setPlayer4temp(e.target.value)} />
 
 	const playerInputs = [player1input, player2input, player3input, player4input]
 	const playerList = [player1temp, player2temp, player3temp, player4temp]
