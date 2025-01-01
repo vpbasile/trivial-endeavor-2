@@ -162,7 +162,7 @@ export default function gameReducer(state: gameStateType, action: GameAction): g
             winningPlayer.wonPlace = vyingForPlace;
             const updatedWinners = [...winners];
             // FIXME - Add handling for a single-player game
-            if (vyingForPlace < playerList.length) {
+            if (vyingForPlace < playerList.length - 1) {
                 // There are more medals to win, so continue the game
                 const message = `${winningPlayer.name} wins ${ordinal(vyingForPlace)} place!`;
                 console.log(message)
@@ -174,13 +174,20 @@ export default function gameReducer(state: gameStateType, action: GameAction): g
                     ...state, winners: updatedWinners, vyingForPlace: (vyingForPlace + 1), playerList: [...playerList], playerIndicator, displayMessage, currentPhase: "Feedback"
                 };
             } else {
-                // All medals have been won, so end the game
+                // All medals have been won, end the game
                 const playerIndicator = `Game over!`
                 updatedWinners.push(playerIndex);
-                // FIXME - This would be better if it listed the players in order of their place
-                updatedWinners.forEach((playerIndex, place) => {
-                    console.log(`${playerList[playerIndex].name} won ${ordinal(place + 1)} place!`)
-                })
+                // Assign remaining places to the remaining players based on their score
+                const remainingPlayers = playerList
+                    .map((player, index) => ({ ...player, index }))
+                    .filter(player => !updatedWinners.includes(player.index))
+                    .sort((a, b) => b.correctCategories.length - a.correctCategories.length);
+
+                remainingPlayers.forEach((player, index) => {
+                    player.wonPlace = vyingForPlace + index;
+                    updatedWinners.push(player.index);
+                    console.log(`${player.name} won ${ordinal(player.wonPlace)} place!`);
+                });
                 const displayMessage = <VStack>
                     {updatedWinners.map((playerIndex, index) => {
                         const place = index + 1;
